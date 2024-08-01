@@ -1,10 +1,12 @@
 ﻿# Beam Plugin for Unreal Engine
 
+## Status: `In Active Development`
+
 ## Installation
-TODO
+TODO: setup steps
 
 ## Usage
-TODO
+TODO: how to use
 
-## Examples
-TODO
+## Example
+TODO: link to example repo
