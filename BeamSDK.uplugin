@@ -1,4 +1,4 @@
-{
+﻿{
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
@@ -18,6 +18,12 @@
 			"Name": "PlayerClient",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "Openfort",
+			"Enabled": true
 		}
 	]
 }
