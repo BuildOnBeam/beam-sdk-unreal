@@ -1,4 +1,8 @@
 {
+  "name": "beam-sdk-unreal",
+  "scripts": {
+    "generate": "rm -rf ../Source/BeamPlayer && openapi-generator-cli generate"
+  },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.13.4"
   }
