@@ -10,6 +10,7 @@
         "templateDir": "templates",
         "inputSpec": "https://api.testnet.onbeam.com/api/player-json",
         "skipValidateSpec": false,
+        "type-mappings": "string+uri=FString",
         "additionalProperties": {
           "unrealModuleName": "BeamSDK",
           "modelNamePrefix": "PlayerClient"
