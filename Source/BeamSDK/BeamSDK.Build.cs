@@ -5,7 +5,6 @@ public class BeamSDK : ModuleRules
 {
 	public BeamSDK(ReadOnlyTargetRules Target) : base(Target)
 	{
-		//PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		PCHUsage = PCHUsageMode.NoPCHs;
 
 		PublicIncludePaths.AddRange(
@@ -15,12 +14,12 @@ public class BeamSDK : ModuleRules
 				Path.Combine(ModuleDirectory, "Public", "Storage"),
 				Path.Combine(ModuleDirectory, "Public", "Utils"),
 
+				// Include Openfort support for KeyPair
+				Path.Combine(ModuleDirectory, "External"),
+				Path.Combine(ModuleDirectory, "External", "Openfort"),
+
 				// Include the PlayerClient Public headers
 				Path.Combine(PluginDirectory, "Source", "PlayerClient", "Public"),
-
-				// Include the Openfort Public headers
-				Path.Combine(PluginDirectory, "..", "Openfort", "Source", "Openfort", "Public"),
-				Path.Combine(PluginDirectory, "..", "Openfort", "Source", "Openfort", "External"),
 			}
 		);
 				
@@ -55,7 +54,6 @@ public class BeamSDK : ModuleRules
 				"Slate",
 				"SlateCore",
 				"PlayerClient",
-				"Openfort",
 			}
 		);
 		
@@ -66,5 +64,16 @@ public class BeamSDK : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 		);
+
+
+		// Required for Openfort support for KeyPair
+		if (Target.Platform == UnrealTargetPlatform.Win64)
+		{
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "External/libsecp256k1.lib"));
+		}
+		if (Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.Mac)
+		{
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "External/libsecp256k1.a"));
+		}
 	}
 }
