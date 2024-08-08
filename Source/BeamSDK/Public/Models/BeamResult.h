@@ -14,7 +14,7 @@ enum class EBeamResultType : uint8
 };
 
 
-template<typename TStatusEnum>
+template<typename TResultType>
 struct TBeamResult
 {
 public:
@@ -32,14 +32,14 @@ public:
 
 	/// Actual result object
 	UPROPERTY()
-	TStatusEnum Result;
+	TResultType Result;
 
 public:
 	TBeamResult()
 	{
 	}
 
-	TBeamResult(TStatusEnum result)
+	TBeamResult(TResultType result)
 	{
 		Status = EBeamResultType::Success;
 		Result = result;
