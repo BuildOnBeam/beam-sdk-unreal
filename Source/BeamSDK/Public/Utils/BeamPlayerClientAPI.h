@@ -1,3 +1,5 @@
+#pragma once
+
 // Include the whole PlayerClient API
 #include "PlayerClientAcceptAssetOfferRequestInput.h"
 #include "PlayerClientActivityApi.h"
