@@ -43,16 +43,16 @@ void UBeamClient::LaunchURL(const FString& Url, FString& Params, FString& OutErr
 // --- Config ---
 //
 
-UBeamClient& UBeamClient::SetBeamApiKey(const FString& PublishableApiKey)
+UBeamClient* UBeamClient::SetBeamApiKey(const FString& InPublishableApiKey)
 {
-	BeamApiKey = PublishableApiKey;
-	return *this;
+	BeamApiKey = InPublishableApiKey;
+	return this;
 }
 
-UBeamClient& UBeamClient::SetEnvironment(EBeamEnvironment Environment)
+UBeamClient* UBeamClient::SetEnvironment(EBeamEnvironment InEnvironment)
 {
 	FString apiUrl;
-	switch (Environment)
+	switch (InEnvironment)
 	{
 	case EBeamEnvironment::Mainnet:
 		apiUrl = "https://api.onbeam.com";
@@ -75,19 +75,19 @@ UBeamClient& UBeamClient::SetEnvironment(EBeamEnvironment Environment)
 	ConfigureApi(OperationApi);
 	ConfigureApi(ConnectorApi);
 
-	return *this;
+	return this;
 }
 
-UBeamClient& UBeamClient::SetStorage(IBeamStorageInterface* storage)
+UBeamClient* UBeamClient::SetStorage(IBeamStorageInterface* InStorage)
 {
-	Storage = storage;
-	return *this;
+	Storage = InStorage;
+	return this;
 }
 
-UBeamClient& UBeamClient::SetDebugLogging(bool enable)
+UBeamClient* UBeamClient::SetDebugLogging(bool InEnable)
 {
-	DebugLog = enable;
-	return *this;
+	DebugLog = InEnable;
+	return this;
 }
 
 //

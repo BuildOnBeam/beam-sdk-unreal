@@ -83,22 +83,22 @@ public:
 	/// Sets Publishable Beam API key on the client. WARNING: Do not use keys other than Publishable, they're meant to be private, server-side only!
 	///  @param[in]		PublishableApiKey	Publishable Beam API key
 	/// @return BeamClient
-	UBeamClient& SetBeamApiKey(const FString& PublishableApiKey);
+	UBeamClient* SetBeamApiKey(const FString& PublishableApiKey);
 
 	/// Sets Environment on the client.
 	///  @param[in]		Environment		BeamEnvironment.Mainnet or BeamEnvironment.Testnet (defaults to Testnet)
 	/// @return BeamClient
-	UBeamClient& SetEnvironment(EBeamEnvironment Environment);
+	UBeamClient* SetEnvironment(EBeamEnvironment Environment);
 
 	/// Sets custom storage for Session related information. Defaults to UBeamSaveGameStorage.
 	///  @param[in]		Storage		Storage that implements IStorage
 	/// @return BeamClient
-	UBeamClient& SetStorage(IBeamStorageInterface* storage);
+	UBeamClient* SetStorage(IBeamStorageInterface* storage);
 
 	/// Set to true, to enable Debug.Log() statements. Defaults to false.
 	///  @param[in]		enable		True to enable
 	/// @return BeamClient
-	UBeamClient& SetDebugLogging(bool enable);
+	UBeamClient* SetDebugLogging(bool enable);
 
 public:
 
