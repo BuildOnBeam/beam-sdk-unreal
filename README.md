@@ -1,12 +1,12 @@
 ﻿# Beam Plugin for Unreal Engine
 
-## Status: `In Active Development`
+## Status: `Functional, but in Active Development`
 
-## Installation
-TODO: setup steps
+## Setup
+1. When in the /.openapi-generator/ folder, run `npm run generate-on-windows` or `npm run generate`
+2. This will generate the cpp files in the /Source/PlayerClient/ folder
 
 ## Usage
-TODO: how to use
 
-## Example
-TODO: link to example repo
+An example implementation compatible with versions of Unreal newer than 5.2.1 is provided at:
+[beam-sdk-unreal-example](https://github.com/Merit-Circle/beam-sdk-unreal-example)
