@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-class HexConverter
+class BEAMSDK_API HexConverter
 {
 public:
 	static std::string ToHexString(unsigned char data[], int len);

@@ -2,7 +2,7 @@
 #include <string>
 #include "secp256k1.h"
 
-class KeyPair
+class BEAMSDK_API KeyPair
 {
 private:
 

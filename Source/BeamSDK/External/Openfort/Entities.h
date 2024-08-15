@@ -3,7 +3,7 @@
 #include "Entities.generated.h"
 
 USTRUCT()
-struct FErrorResponse
+struct BEAMSDK_API FErrorResponse
 {
 	GENERATED_USTRUCT_BODY()
 	
@@ -14,7 +14,7 @@ struct FErrorResponse
 };
 
 USTRUCT(BlueprintType, Category = "SignatureSessionResponse")
-struct FSignatureSessionResponse
+struct BEAMSDK_API FSignatureSessionResponse
 {
 	GENERATED_BODY()
 
@@ -32,7 +32,7 @@ struct FSignatureSessionResponse
 };
 
 USTRUCT(BlueprintType, Category = "SignatureSessionResponse")
-struct FTransactionIntentResponse
+struct BEAMSDK_API FTransactionIntentResponse
 {
 	GENERATED_BODY()
 

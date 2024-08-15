@@ -14,7 +14,7 @@ class UOpenfortClient;
 DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_OneParam(FSignatureTransactionIntentComplete, UOpenfortClient, OnSignatureSessionComplete, FTransactionIntentResponse, Response);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UOpenfortClient : public UObject
+class BEAMSDK_API UOpenfortClient : public UObject
 {
 	GENERATED_BODY()
 

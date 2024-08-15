@@ -5,7 +5,7 @@ struct FSignatureTransactionIntentComplete;
 struct FSignatureSessionComplete;
 struct FRequestComplete;
 
-class ApiClient
+class BEAMSDK_API ApiClient
 {
 private:
 	FString apiKey;

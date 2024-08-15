@@ -195,6 +195,7 @@ private:
 		int chainId
 	);
 
+public:
 	void GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntityId, bool InRefresh = false);
 
 private:
