@@ -17,6 +17,8 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Beam Storage")
 	TMap<FString, FString> BeamStorageRegistry;
 
+	static UBeamSaveGameStorage* LoadOrCreate();
+
 public:
 
 	virtual FString Get(FString Key) const;
@@ -24,4 +26,10 @@ public:
 	virtual void Set(FString Key, FString Value);
 
 	virtual void Delete(FString Key);
+
+	virtual void Save();
+
+protected:
+
+	bool bIsDirty = false;
 };

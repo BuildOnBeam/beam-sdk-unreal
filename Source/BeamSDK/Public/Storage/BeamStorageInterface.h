@@ -26,4 +26,6 @@ public:
 	virtual void Set(FString Key, FString Value) PURE_VIRTUAL(IBeamStorageInterface::Set, return; );
 
 	virtual void Delete(FString Key) PURE_VIRTUAL(IBeamStorageInterface::Delete, return; );
+
+	virtual void Save() PURE_VIRTUAL(IBeamStorageInterface::Save, return; );
 };
