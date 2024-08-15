@@ -48,7 +48,7 @@ void PlayerClientActivityApi::GetAssetActivityRequest::SetupHttpRequest(const FH
 		FString JsonBody;
 		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
 
-		WriteJsonValue(Writer, PlayerClientCommonActivityRequestInput);
+		WriteJsonValue(Writer, PlayerClientCommonAssetActivityRequestInput);
 		Writer->Close();
 
 		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
@@ -56,11 +56,11 @@ void PlayerClientActivityApi::GetAssetActivityRequest::SetupHttpRequest(const FH
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
-		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonActivityRequestInput) was ignored, not supported in multipart form"));
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonAssetActivityRequestInput) was ignored, not supported in multipart form"));
 	}
 	else if (Consumes.Contains(TEXT("application/x-www-form-urlencoded")))
 	{
-		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonActivityRequestInput) was ignored, not supported in urlencoded requests"));
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonAssetActivityRequestInput) was ignored, not supported in urlencoded requests"));
 	}
 	else
 	{
@@ -108,7 +108,7 @@ void PlayerClientActivityApi::GetContractActivityRequest::SetupHttpRequest(const
 		FString JsonBody;
 		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
 
-		WriteJsonValue(Writer, PlayerClientCommonActivityRequestInput);
+		WriteJsonValue(Writer, PlayerClientCommonContractActivityRequestInput);
 		Writer->Close();
 
 		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
@@ -116,11 +116,11 @@ void PlayerClientActivityApi::GetContractActivityRequest::SetupHttpRequest(const
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
-		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonActivityRequestInput) was ignored, not supported in multipart form"));
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonContractActivityRequestInput) was ignored, not supported in multipart form"));
 	}
 	else if (Consumes.Contains(TEXT("application/x-www-form-urlencoded")))
 	{
-		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonActivityRequestInput) was ignored, not supported in urlencoded requests"));
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonContractActivityRequestInput) was ignored, not supported in urlencoded requests"));
 	}
 	else
 	{
@@ -168,7 +168,7 @@ void PlayerClientActivityApi::GetUserActivityRequest::SetupHttpRequest(const FHt
 		FString JsonBody;
 		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
 
-		WriteJsonValue(Writer, PlayerClientCommonActivityRequestInput);
+		WriteJsonValue(Writer, PlayerClientCommonUserActivityRequestInput);
 		Writer->Close();
 
 		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
@@ -176,11 +176,11 @@ void PlayerClientActivityApi::GetUserActivityRequest::SetupHttpRequest(const FHt
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
-		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonActivityRequestInput) was ignored, not supported in multipart form"));
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonUserActivityRequestInput) was ignored, not supported in multipart form"));
 	}
 	else if (Consumes.Contains(TEXT("application/x-www-form-urlencoded")))
 	{
-		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonActivityRequestInput) was ignored, not supported in urlencoded requests"));
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientCommonUserActivityRequestInput) was ignored, not supported in urlencoded requests"));
 	}
 	else
 	{

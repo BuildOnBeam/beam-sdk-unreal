@@ -18,14 +18,14 @@ namespace OpenAPI
 {
 
 /*
- * PlayerClientCommonActivityRequestInput
+ * PlayerClientCommonUserActivityRequestInput
  *
  * 
  */
-class PLAYERCLIENT_API PlayerClientCommonActivityRequestInput : public Model
+class PLAYERCLIENT_API PlayerClientCommonUserActivityRequestInput : public Model
 {
 public:
-    virtual ~PlayerClientCommonActivityRequestInput() {}
+    virtual ~PlayerClientCommonUserActivityRequestInput() {}
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 	void WriteJson(JsonWriter& Writer) const final;
 
@@ -45,6 +45,7 @@ public:
 	static bool EnumFromString(const FString& EnumAsString, TypesEnum& EnumValue);
 	TOptional<TArray<TypesEnum>> Types;
 	TOptional<double> ChainId;
+	TOptional<FString> Continuation;
 };
 
 }

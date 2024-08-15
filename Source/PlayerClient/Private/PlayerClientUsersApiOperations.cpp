@@ -101,4 +101,39 @@ bool PlayerClientUsersApi::GetUserResponse::FromJson(const TSharedPtr<FJsonValue
 	return TryGetJsonValue(JsonValue, Content);
 }
 
+FString PlayerClientUsersApi::UnlinkUserRequest::ComputePath() const
+{
+	TMap<FString, FStringFormatArg> PathParams = { 
+	{ TEXT("entityId"), FStringFormatArg(ToUrlString(EntityId)) } };
+
+	FString Path = FString::Format(TEXT("/v1/player/users/{entityId}"), PathParams);
+
+	return Path;
+}
+
+void PlayerClientUsersApi::UnlinkUserRequest::SetupHttpRequest(const FHttpRequestRef& HttpRequest) const
+{
+	static const TArray<FString> Consumes = {  };
+	//static const TArray<FString> Produces = { TEXT("application/json") };
+
+	HttpRequest->SetVerb(TEXT("DELETE"));
+
+}
+
+void PlayerClientUsersApi::UnlinkUserResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
+{
+	Response::SetHttpResponseCode(InHttpResponseCode);
+	switch ((int)InHttpResponseCode)
+	{
+	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	}
+}
+
+bool PlayerClientUsersApi::UnlinkUserResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
+{
+	return TryGetJsonValue(JsonValue, Content);
+}
+
 }

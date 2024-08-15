@@ -68,4 +68,27 @@ public:
     PlayerClientGetUserResponse Content;
 };
 
+/* Unlinks an entity ID from a user
+
+*/
+class PLAYERCLIENT_API PlayerClientUsersApi::UnlinkUserRequest : public Request
+{
+public:
+    virtual ~UnlinkUserRequest() {}
+	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+	FString ComputePath() const final;
+
+	FString EntityId;
+};
+
+class PLAYERCLIENT_API PlayerClientUsersApi::UnlinkUserResponse : public Response
+{
+public:
+    virtual ~UnlinkUserResponse() {}
+	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
+
+    PlayerClientGetUserResponse Content;
+};
+
 }

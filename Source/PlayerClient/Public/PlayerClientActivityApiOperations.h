@@ -15,8 +15,10 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientActivityApi.h"
 
-#include "PlayerClientCommonActivityRequestInput.h"
 #include "PlayerClientCommonActivityResponse.h"
+#include "PlayerClientCommonAssetActivityRequestInput.h"
+#include "PlayerClientCommonContractActivityRequestInput.h"
+#include "PlayerClientCommonUserActivityRequestInput.h"
 
 namespace OpenAPI
 {
@@ -33,7 +35,7 @@ public:
 
 	FString AssetAddress;
 	FString AssetId;
-	PlayerClientCommonActivityRequestInput PlayerClientCommonActivityRequestInput;
+	PlayerClientCommonAssetActivityRequestInput PlayerClientCommonAssetActivityRequestInput;
 };
 
 class PLAYERCLIENT_API PlayerClientActivityApi::GetAssetActivityResponse : public Response
@@ -57,7 +59,7 @@ public:
 	FString ComputePath() const final;
 
 	FString AssetAddress;
-	PlayerClientCommonActivityRequestInput PlayerClientCommonActivityRequestInput;
+	PlayerClientCommonContractActivityRequestInput PlayerClientCommonContractActivityRequestInput;
 };
 
 class PLAYERCLIENT_API PlayerClientActivityApi::GetContractActivityResponse : public Response
@@ -81,7 +83,7 @@ public:
 	FString ComputePath() const final;
 
 	FString EntityId;
-	PlayerClientCommonActivityRequestInput PlayerClientCommonActivityRequestInput;
+	PlayerClientCommonUserActivityRequestInput PlayerClientCommonUserActivityRequestInput;
 };
 
 class PLAYERCLIENT_API PlayerClientActivityApi::GetUserActivityResponse : public Response

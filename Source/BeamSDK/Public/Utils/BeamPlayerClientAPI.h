@@ -13,7 +13,7 @@
 #include "PlayerClientCheck200Response.h"
 #include "PlayerClientCheck200ResponseInfoValue.h"
 #include "PlayerClientCheck503Response.h"
-#include "PlayerClientCommonActivityRequestInput.h"
+#include "PlayerClientCommonUserActivityRequestInput.h"
 #include "PlayerClientCommonActivityResponse.h"
 #include "PlayerClientCommonActivityResponseDataInner.h"
 #include "PlayerClientCommonActivityResponseDataInnerAsset.h"
@@ -117,5 +117,7 @@
 #include "PlayerClientUsersApi.h"
 #include "PlayerClientUsersApiOperations.h"
 #include "PlayerClientWrappingTokenInput.h"
+#include "PlayerClientCommonAssetActivityRequestInput.h"
+#include "PlayerClientCommonContractActivityRequestInput.h"
 
 using namespace OpenAPI;

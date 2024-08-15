@@ -42,16 +42,21 @@ public:
 	class GetAllUsersResponse;
 	class GetUserRequest;
 	class GetUserResponse;
+	class UnlinkUserRequest;
+	class UnlinkUserResponse;
 	
     DECLARE_DELEGATE_OneParam(FGetAllUsersDelegate, const GetAllUsersResponse&);
     DECLARE_DELEGATE_OneParam(FGetUserDelegate, const GetUserResponse&);
+    DECLARE_DELEGATE_OneParam(FUnlinkUserDelegate, const UnlinkUserResponse&);
     
     FHttpRequestPtr GetAllUsers(const GetAllUsersRequest& Request, const FGetAllUsersDelegate& Delegate = FGetAllUsersDelegate()) const;
     FHttpRequestPtr GetUser(const GetUserRequest& Request, const FGetUserDelegate& Delegate = FGetUserDelegate()) const;
+    FHttpRequestPtr UnlinkUser(const UnlinkUserRequest& Request, const FUnlinkUserDelegate& Delegate = FUnlinkUserDelegate()) const;
     
 private:
     void OnGetAllUsersResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetAllUsersDelegate Delegate) const;
     void OnGetUserResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetUserDelegate Delegate) const;
+    void OnUnlinkUserResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FUnlinkUserDelegate Delegate) const;
     
 	FHttpRequestRef CreateHttpRequest(const Request& Request) const;
 	bool IsValid() const;
