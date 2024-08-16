@@ -20,6 +20,7 @@
 #include "BeamSession.h"
 #include "BeamStorageInterface.h"
 #include "BeamOperationSigningBy.h"
+#include "Engine/TimerHandle.h"
 
 #include "BeamClient.generated.h"
 
@@ -177,6 +178,9 @@ private:
 		PlayerClientCommonOperationResponse operation,
 		KeyPair activeSessionKeyPair
 	);
+
+	FTimerHandle PollTimerHandle;
+	void PollForSessionCreation(PlayerClientSessionsApi::GetSessionRequestRequest Request);
 
 #if 0 // Disabled - Is Needed?
 	/// Will retry or return nullptr if received 404.
