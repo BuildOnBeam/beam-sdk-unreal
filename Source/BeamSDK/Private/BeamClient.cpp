@@ -60,7 +60,7 @@ UBeamClient* UBeamClient::SetEnvironment(EBeamEnvironment InEnvironment)
 		apiUrl = "https://api.onbeam.com";
 		break;
 	default:
-		apiUrl = "https://api.BADtestnet.onbeam.com";
+		apiUrl = "https://api.testnet.onbeam.com";
 		break;
 	}
 
