@@ -577,68 +577,68 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(PlayerC
 TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FString entityId, int chainId)
 {
 	auto resultFuture = Async(EAsyncExecution::Thread, [&, entityId, chainId]()
+	{
+		FBeamSessionAndKeyPair sessionKeys;
+		KeyPair& keyPair = sessionKeys.KeyPair;
+
+		FString sessionInfo = Storage->Get(FBeamConstants::Storage::BeamSession + entityId);
+		if (!sessionInfo.IsEmpty())
 		{
-			FBeamSessionAndKeyPair sessionKeys;
-			KeyPair& keyPair = sessionKeys.KeyPair;
+			sessionKeys.BeamSession = FBeamSession();
+			sessionKeys.BeamSession->FromJson(sessionInfo);
+		}
 
-			FString sessionInfo = Storage->Get(FBeamConstants::Storage::BeamSession + entityId);
-			if (!sessionInfo.IsEmpty())
-			{
-				sessionKeys.BeamSession = FBeamSession();
-				sessionKeys.BeamSession->FromJson(sessionInfo);
-			}
+		GetOrCreateSigningKeyPair(keyPair, entityId);
 
-			GetOrCreateSigningKeyPair(keyPair, entityId);
+		// If session is no longer valid, check if we have one saved in the API.
+		if (!sessionKeys.BeamSession.IsSet())
+		{
+			PlayerClientSessionsApi::GetActiveSessionRequest request;
+			request.EntityId = entityId;
+			request.AccountAddress = keyPair.GetAddress().c_str();
+			request.ChainId = chainId;
 
-			// If session is no longer valid, check if we have one saved in the API.
-			if (!sessionKeys.BeamSession.IsSet())
-			{
-				PlayerClientSessionsApi::GetActiveSessionRequest request;
-				request.EntityId = entityId;
-				request.AccountAddress = keyPair.GetAddress().c_str();
-				request.ChainId = chainId;
-
-				const auto resPromise = MakeShared<TPromise<PlayerClientSessionsApi::GetActiveSessionResponse>, ESPMode::ThreadSafe>();
-				auto resFuture = resPromise->GetFuture();
-				auto httpReq = SessionsApi->GetActiveSession(request,
-					PlayerClientSessionsApi::FGetActiveSessionDelegate::CreateLambda(
-					[&, resPromise](const PlayerClientSessionsApi::GetActiveSessionResponse& response)
-					{
-						resPromise->SetValue(response);
-					}));
-				auto res = resFuture.Get();
-				if (res.IsSuccessful())
+			const auto resPromise = MakeShared<TPromise<PlayerClientSessionsApi::GetActiveSessionResponse>, ESPMode::ThreadSafe>();
+			auto resFuture = resPromise->GetFuture();
+			auto httpReq = SessionsApi->GetActiveSession(request,
+				PlayerClientSessionsApi::FGetActiveSessionDelegate::CreateLambda(
+				[&, resPromise](const PlayerClientSessionsApi::GetActiveSessionResponse& response)
 				{
-					sessionKeys.BeamSession = FBeamSession(res);
-				}
-				else
-				{
-					int32 errorCode = (int32)res.GetHttpResponseCode();
-					FString errorMessage = res.GetResponseString();
-
-					UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo returned: %d %s"), errorCode, *errorMessage);
-				}
-			}
-
-			if (sessionKeys.BeamSession.IsSet())
+					resPromise->SetValue(response);
+				}));
+			auto res = resFuture.Get();
+			if (res.IsSuccessful())
 			{
-				FBeamSession& beamSession = sessionKeys.BeamSession.GetValue();
-
-				// Make sure session we just retrieved is valid and owned by current KeyPair.
-				if (beamSession.IsValidNow() && beamSession.IsOwnedBy(keyPair))
-				{
-					Storage->Set(FBeamConstants::Storage::BeamSession + entityId, beamSession.WriteJson());
-					Storage->Save();
-					return sessionKeys;
-				}
+				sessionKeys.BeamSession = FBeamSession(res);
 			}
+			else
+			{
+				int32 errorCode = (int32)res.GetHttpResponseCode();
+				FString errorMessage = res.GetResponseString();
 
-			// If session is not valid or owned by different KeyPair, remove it from cache.
-			Storage->Delete(FBeamConstants::Storage::BeamSession + entityId);
-			Storage->Save();
-			sessionKeys.BeamSession.Reset();
-			return sessionKeys;
-		});
+				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo returned: %d %s"), errorCode, *errorMessage);
+			}
+		}
+
+		if (sessionKeys.BeamSession.IsSet())
+		{
+			FBeamSession& beamSession = sessionKeys.BeamSession.GetValue();
+
+			// Make sure session we just retrieved is valid and owned by current KeyPair.
+			if (beamSession.IsValidNow() && beamSession.IsOwnedBy(keyPair))
+			{
+				Storage->Set(FBeamConstants::Storage::BeamSession + entityId, beamSession.WriteJson());
+				Storage->Save();
+				return sessionKeys;
+			}
+		}
+
+		// If session is not valid or owned by different KeyPair, remove it from cache.
+		Storage->Delete(FBeamConstants::Storage::BeamSession + entityId);
+		Storage->Save();
+		sessionKeys.BeamSession.Reset();
+		return sessionKeys;
+	});
 	return resultFuture;
 }
 
