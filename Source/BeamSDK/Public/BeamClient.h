@@ -261,7 +261,7 @@ private:
 		return Promise->GetFuture();
 	}
 
-	TFuture<TTuple<FBeamSession, KeyPair>> GetActiveSessionAndKeysAsync(
+	TFuture<FBeamSessionAndKeyPair> GetActiveSessionAndKeysAsync(
 		FString entityId,
 		int chainId
 	);
