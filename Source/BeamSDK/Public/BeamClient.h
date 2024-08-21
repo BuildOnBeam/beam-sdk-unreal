@@ -46,6 +46,21 @@ protected:
 		return targetApi;
 	}
 
+public:
+	class FBeamCancellationToken
+	{
+	public:
+		FBeamCancellationToken()
+			: bCancel(false)
+		{}
+
+		bool ShouldCancel() { return bCancel.load(); }
+		void Cancel() { bCancel.store(true); }
+		void Reset() { bCancel.store(false); }
+
+	private:
+		std::atomic<bool> bCancel;
+	};
 
 public:
 	TSharedPtr<PlayerClientAssetsApi> AssetsApi = MakeShared<PlayerClientAssetsApi>();
