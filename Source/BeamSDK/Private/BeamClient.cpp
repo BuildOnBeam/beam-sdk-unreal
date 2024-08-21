@@ -202,146 +202,148 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int chainId, int secondsTimeout)
 {
 	const auto Promise = MakeShared<TPromise<BeamSessionResult>, ESPMode::ThreadSafe>();
-	auto resultFuture = Async(EAsyncExecution::Thread, [&, Promise, entityId, chainId, secondsTimeout]()
+
+	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
+	auto resultFuture = Async(EAsyncExecution::Thread, [&, entityId, chainId, secondsTimeout]()
+	{
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("CreateSessionAsync: Retrieving active session: "
+			"entityId=%s, chainId=%d, secondsTimeout=%d"), *entityId, chainId, secondsTimeout);
 		{
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
+			auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
+			auto& activeSession = sessionKeys.BeamSession;
+			if (activeSession.IsSet())
 			{
-				auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
-				auto& activeSession = sessionKeys.BeamSession;
-				if (activeSession.IsSet())
-				{
-					UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Already has an active session, ending early"));
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Already has an active session, ending early"));
 
-					BeamSessionResult result(EBeamResultType::Error, "Already has an active session");
-					result.Result = *activeSession;
-					return result;
-				}
+				TBeamResult<FBeamSession> result(EBeamResultType::Error, "Already has an active session");
+				result.Result = *activeSession;
+				return result;
 			}
+		}
 
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found, refreshing local KeyPair"));
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found, refreshing local KeyPair"));
 
-			// Refresh keypair to make sure we have no conflicts with existing sessions.
-			KeyPair newKeyPair;
-			GetOrCreateSigningKeyPair(newKeyPair, entityId, true);
+		// Refresh keypair to make sure we have no conflicts with existing sessions.
+		KeyPair newKeyPair;
+		GetOrCreateSigningKeyPair(newKeyPair, entityId, true);
 
-			PlayerClientSessionsApi::CreateSessionRequestRequest request;
-			request.EntityId = entityId;
-			request.PlayerClientGenerateSessionUrlRequestInput.Address = newKeyPair.GetAddress().c_str();
-			request.PlayerClientGenerateSessionUrlRequestInput.ChainId = chainId;
+		PlayerClientSessionsApi::CreateSessionRequestRequest request;
+		request.EntityId = entityId;
+		request.PlayerClientGenerateSessionUrlRequestInput.Address = newKeyPair.GetAddress().c_str();
+		request.PlayerClientGenerateSessionUrlRequestInput.ChainId = chainId;
 
-			const auto resPromise = MakeShared<TPromise<PlayerClientSessionsApi::CreateSessionRequestResponse>, ESPMode::ThreadSafe>();
-			auto resFuture = resPromise->GetFuture();
-			SessionsApi->CreateSessionRequest(request,
-				PlayerClientSessionsApi::FCreateSessionRequestDelegate::CreateLambda(
-				[&, resPromise](const PlayerClientSessionsApi::CreateSessionRequestResponse& response)
-				{
-					resPromise->SetValue(response);
-				}));
+		const auto resPromise = MakeShared<TPromise<PlayerClientSessionsApi::CreateSessionRequestResponse>, ESPMode::ThreadSafe>();
+		auto resFuture = resPromise->GetFuture();
+		SessionsApi->CreateSessionRequest(request,
+			PlayerClientSessionsApi::FCreateSessionRequestDelegate::CreateLambda(
+			[&, resPromise](const PlayerClientSessionsApi::CreateSessionRequestResponse& response)
+		{
+			resPromise->SetValue(response);
+		}));
 
-			auto res = resFuture.Get();
-			if (!res.IsSuccessful())
+		auto res = resFuture.Get();
+		if (!res.IsSuccessful())
+		{
+			int32 errorCode = (int32)res.GetHttpResponseCode();
+			FString errorMessage = res.GetResponseString();
+
+			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed creating session request: %d %s"), errorCode, *errorMessage);
+			return TBeamResult<FBeamSession>(EBeamResultType::Error, res.GetResponseString());
+		}
+
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Created session request: %s to check for session result"), *res.Content.Id);
+		PlayerClientGenerateSessionRequestResponse beamSessionRequest = res.Content;
+
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Opening %s"), *beamSessionRequest.Url);
+
+		// Open "identity.onbeam.com".
+		FString launchErrors = LaunchURL(beamSessionRequest.Url);
+
+		TBeamResult<FBeamSession> beamResultModel;
+
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Started polling for Session creation result"));
+		// Start polling for results of the operation.
+		bool error = false;
+
+		PlayerClientSessionsApi::GetSessionRequestRequest gsRequest;
+		gsRequest.RequestId = beamSessionRequest.Id;
+
+		auto cancellationToken = MakeShared<FBeamCancellationToken>();
+
+		auto actionToPerform = [&, gsRequest, cancellationToken]()->TFuture<PlayerClientSessionsApi::GetSessionRequestResponse>
+		{
+			const auto gsPromise = MakeShared<TPromise<PlayerClientSessionsApi::GetSessionRequestResponse>, ESPMode::ThreadSafe>();
+			SessionsApi->GetSessionRequest(gsRequest, PlayerClientSessionsApi::FGetSessionRequestDelegate::CreateLambda(
+				[&, gsPromise](const PlayerClientSessionsApi::GetSessionRequestResponse& GetSessionResponse)
 			{
-				int32 errorCode = (int32)res.GetHttpResponseCode();
-				FString errorMessage = res.GetResponseString();
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: %s"), *GetSessionResponse.GetResponseString());
+				gsPromise->SetValue(GetSessionResponse);
+			}));
+			return gsPromise->GetFuture();
+		};
 
-				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed creating session request: %d %s"), errorCode, *errorMessage);
-				return BeamSessionResult(EBeamResultType::Error, res.GetResponseString());
+		TFunction<bool(const PlayerClientSessionsApi::GetSessionRequestResponse&)> shouldRetry =
+			[&](const PlayerClientSessionsApi::GetSessionRequestResponse& res)->bool
+		{
+			FString status = PlayerClientGetSessionRequestResponse::EnumToString(res.Content.Status);
+			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: Status - %s"), *status);
+			return res.Content.Status == PlayerClientGetSessionRequestResponse::StatusEnum::Pending;
+		};
+
+		auto pollingResult = PollForResult<PlayerClientSessionsApi::GetSessionRequestResponse>(actionToPerform, shouldRetry, secondsTimeout, 1, cancellationToken).Get();
+		if (!pollingResult.IsSet())
+		{
+			return TBeamResult<FBeamSession>(EBeamResultType::Error, "Polling for created session encountered an error or timed out");
+		}
+
+		switch (pollingResult.GetValue().Content.Status)
+		{
+		case PlayerClientGetSessionRequestResponse::StatusEnum::Pending:
+			beamResultModel.Status = EBeamResultType::Pending;
+			break;
+		case PlayerClientGetSessionRequestResponse::StatusEnum::Accepted:
+			beamResultModel.Status = EBeamResultType::Success;
+			break;
+		case PlayerClientGetSessionRequestResponse::StatusEnum::Error:
+		default:
+			beamResultModel.Status = EBeamResultType::Error;
+			beamResultModel.Error = "Encountered an error when requesting a session";
+			error = true;
+			break;
+		}
+
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving newly created Session"));
+
+		// Retrieve newly created session.
+		if (!error)
+		{
+			auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
+			if (sessionKeys.BeamSession.IsSet())
+			{
+				auto& beamSession = sessionKeys.BeamSession.GetValue();
+				beamResultModel.Result = beamSession;
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieved a session: %s, valid from: %s, to: %s"),
+					*beamSession.SessionAddress,
+					*FText::AsDateTime(beamSession.StartTime).ToString(),
+					*FText::AsDateTime(beamSession.EndTime).ToString());
 			}
-
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Created session request: %s to check for session result"), *res.Content.Id);
-			PlayerClientGenerateSessionRequestResponse beamSessionRequest = res.Content;
-
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Opening %s"), *beamSessionRequest.Url);
-
-			// Open "identity.onbeam.com".
-			FString launchErrors = LaunchURL(beamSessionRequest.Url);
-
-			BeamSessionResult beamResultModel;
-
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Started polling for Session creation result"));
-			// Start polling for results of the operation.
-			bool error = false;
-
-			PlayerClientSessionsApi::GetSessionRequestRequest gsRequest;
-			gsRequest.RequestId = beamSessionRequest.Id;
-
-			auto cancellationToken = MakeShared<FBeamCancellationToken>();
-
-			auto actionToPerform =
-				[&, gsRequest, cancellationToken]()->TFuture<PlayerClientSessionsApi::GetSessionRequestResponse>
-				{
-					const auto gsPromise = MakeShared<TPromise<PlayerClientSessionsApi::GetSessionRequestResponse>, ESPMode::ThreadSafe>();
-					SessionsApi->GetSessionRequest(gsRequest, PlayerClientSessionsApi::FGetSessionRequestDelegate::CreateLambda(
-						[&, gsPromise](const PlayerClientSessionsApi::GetSessionRequestResponse& GetSessionResponse)
-						{
-							UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: %s"), *GetSessionResponse.GetResponseString());
-							gsPromise->SetValue(GetSessionResponse);
-						}));
-					return gsPromise->GetFuture();
-				};
-
-			TFunction<bool(const PlayerClientSessionsApi::GetSessionRequestResponse&)> shouldRetry =
-				[&](const PlayerClientSessionsApi::GetSessionRequestResponse& res)->bool
-				{
-					FString status = PlayerClientGetSessionRequestResponse::EnumToString(res.Content.Status);
-					UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: Status - %s"), *status);
-					return res.Content.Status == PlayerClientGetSessionRequestResponse::StatusEnum::Pending;
-				};
-
-			auto pollingResult = PollForResult<PlayerClientSessionsApi::GetSessionRequestResponse>(actionToPerform, shouldRetry, secondsTimeout, 1, cancellationToken).Get();
-			if (!pollingResult.IsSet())
+			else
 			{
-				return BeamSessionResult(EBeamResultType::Error, "Polling for created session encountered an error or timed out");
-			}
-
-			switch (pollingResult.GetValue().Content.Status)
-			{
-			case PlayerClientGetSessionRequestResponse::StatusEnum::Pending:
-				beamResultModel.Status = EBeamResultType::Pending;
-				break;
-			case PlayerClientGetSessionRequestResponse::StatusEnum::Accepted:
-				beamResultModel.Status = EBeamResultType::Success;
-				break;
-			case PlayerClientGetSessionRequestResponse::StatusEnum::Error:
-			default:
+				beamResultModel.Error = "Could not retrieve session after it was created";
 				beamResultModel.Status = EBeamResultType::Error;
-				beamResultModel.Error = "Encountered an error when requesting a session";
-				error = true;
-				break;
 			}
+		}
 
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving newly created Session"));
-
-			// Retrieve newly created session.
-			if (!error)
-			{
-				auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
-				if (sessionKeys.BeamSession.IsSet())
-				{
-					auto& beamSession = sessionKeys.BeamSession.GetValue();
-					beamResultModel.Result = beamSession;
-					UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieved a session: %s, valid from: %s, to: %s"),
-						*beamSession.SessionAddress,
-						*FText::AsDateTime(beamSession.StartTime).ToString(),
-						*FText::AsDateTime(beamSession.EndTime).ToString());
-				}
-				else
-				{
-					beamResultModel.Error = "Could not retrieve session after it was created";
-					beamResultModel.Status = EBeamResultType::Error;
-				}
-			}
-
-			return beamResultModel;
-		});
-	resultFuture.Next(
-		[Promise](const BeamSessionResult& Response)
+		return beamResultModel;
+	})
+	.Next([Promise](const TBeamResult<FBeamSession>& Response)
+	{
+		AsyncTask(ENamedThreads::GameThread, [Promise, Response]()
 		{
-			AsyncTask(ENamedThreads::GameThread, [Promise, Response]()
-			{
-					Promise->SetValue(Response);
-			});
+			Promise->SetValue(Response);
 		});
+	});
+	//return resultFuture;
 	return Promise->GetFuture();
 }
 
