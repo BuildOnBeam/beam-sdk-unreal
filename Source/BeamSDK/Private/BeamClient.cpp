@@ -204,7 +204,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 	const auto Promise = MakeShared<TPromise<BeamSessionResult>, ESPMode::ThreadSafe>();
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
-	auto resultFuture = Async(EAsyncExecution::Thread, [&, entityId, chainId, secondsTimeout]()
+	auto resultFuture = Async(EAsyncExecution::Thread, [&, Promise, entityId, chainId, secondsTimeout]()
 	{
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("CreateSessionAsync: Retrieving active session: "
 			"entityId=%s, chainId=%d, secondsTimeout=%d"), *entityId, chainId, secondsTimeout);
@@ -215,7 +215,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 			{
 				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Already has an active session, ending early"));
 
-				TBeamResult<FBeamSession> result(EBeamResultType::Error, "Already has an active session");
+				BeamSessionResult result(EBeamResultType::Error, "Already has an active session");
 				result.Result = *activeSession;
 				return result;
 			}
@@ -248,7 +248,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 			FString errorMessage = res.GetResponseString();
 
 			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed creating session request: %d %s"), errorCode, *errorMessage);
-			return TBeamResult<FBeamSession>(EBeamResultType::Error, res.GetResponseString());
+			return BeamSessionResult(EBeamResultType::Error, res.GetResponseString());
 		}
 
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Created session request: %s to check for session result"), *res.Content.Id);
@@ -259,7 +259,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		// Open "identity.onbeam.com".
 		FString launchErrors = LaunchURL(beamSessionRequest.Url);
 
-		TBeamResult<FBeamSession> beamResultModel;
+		BeamSessionResult beamResultModel;
 
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Started polling for Session creation result"));
 		// Start polling for results of the operation.
@@ -293,7 +293,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		auto pollingResult = PollForResult<PlayerClientSessionsApi::GetSessionRequestResponse>(actionToPerform, shouldRetry, secondsTimeout, 1, cancellationToken).Get();
 		if (!pollingResult.IsSet())
 		{
-			return TBeamResult<FBeamSession>(EBeamResultType::Error, "Polling for created session encountered an error or timed out");
+			return BeamSessionResult(EBeamResultType::Error, "Polling for created session encountered an error or timed out");
 		}
 
 		switch (pollingResult.GetValue().Content.Status)
@@ -335,15 +335,14 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		}
 
 		return beamResultModel;
-	})
-	.Next([Promise](const TBeamResult<FBeamSession>& Response)
+	});
+resultFuture.Next([Promise](const BeamSessionResult& Response)
 	{
 		AsyncTask(ENamedThreads::GameThread, [Promise, Response]()
 		{
 			Promise->SetValue(Response);
 		});
 	});
-	//return resultFuture;
 	return Promise->GetFuture();
 }
 
