@@ -622,50 +622,6 @@ TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> UBeamClien
 	return Promise->GetFuture();
 }
 
-// TODO: Decide whether to keep, then Finish porting C# to Unreal C++ if needed.
-#if 0 // Disabled - AND - UN/PARTIALY PORTED C# CODE
-/// Will retry or return nullptr if received 404.
-static async UniTask<T> UBeamClient::PollForResult<T>(
-	Func<UniTask<T>> actionToPerform,
-	Func<T, bool> shouldRetry,
-	int secondsTimeout = DefaultTimeoutInSeconds,
-	int secondsBetweenPolls = 1,
-	CancellationToken cancellationToken = default)
-where T : class
-{
-	await UniTask.Delay(2000, cancellationToken: cancellationToken);
-
-	auto endTime = FDateTime::Now().AddSeconds(secondsTimeout);
-
-	while ((endTime - FDateTime::Now()).TotalSeconds > 0)
-	{
-		T result;
-		try
-		{
-			result = await actionToPerform.Invoke();
-		}
-		catch (ApiException e)
-		{
-			if (e.ErrorCode == 404)
-			{
-				return nullptr;
-			}
-
-			throw;
-		}
-
-		auto retry = shouldRetry.Invoke(result);
-		if (!retry)
-		{
-			return result;
-		}
-
-		await UniTask.Delay(secondsBetweenPolls * 1000, cancellationToken: cancellationToken);
-	}
-
-	return nullptr;
-}
-#endif // Disabled - AND - UN/PARTIALY PORTED C# CODE
 
 //async UniTask<(BeamSession, KeyPair)> UBeamClient::GetActiveSessionAndKeysAsync(
 TFuture<TTuple<FBeamSession, KeyPair>> UBeamClient::GetActiveSessionAndKeysAsync(

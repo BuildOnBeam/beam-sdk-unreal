@@ -20,6 +20,8 @@
 #include "BeamSession.h"
 #include "BeamStorageInterface.h"
 #include "BeamOperationSigningBy.h"
+
+#include "Async/Async.h"
 #include "Engine/TimerHandle.h"
 
 #include "BeamClient.generated.h"
@@ -187,30 +189,77 @@ public:
 
 private:
 
-	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationUsingBrowserAsync(
-		PlayerClientCommonOperationResponse operation,
-		int secondsTimeout
-	);
+	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationUsingBrowserAsync(PlayerClientCommonOperationResponse operation, int secondsTimeout);
 
-	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationUsingSessionAsync(
-		PlayerClientCommonOperationResponse operation,
-		KeyPair activeSessionKeyPair
-	);
+	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationUsingSessionAsync(PlayerClientCommonOperationResponse operation, KeyPair activeSessionKeyPair);
 
 	FTimerHandle PollTimerHandle;
 	void PollForSessionCreation(PlayerClientSessionsApi::GetSessionRequestRequest Request);
 
-#if 0 // Disabled - Is Needed?
 	/// Will retry or return nullptr if received 404.
-	//static async UniTask<T> PollForResult<T>(
-	static TFuture<T> PollForResult<T>(
-		Func<UniTask<T>> actionToPerform,
-		Func<T, bool> shouldRetry,
+	template<typename TResultType>
+	static TFuture<TOptional<TResultType>> PollForResult(
+		TFunction<TFuture<TResultType>()> actionToPerform,
+		TFunction<bool(const TResultType&)> shouldRetry,
 		int secondsTimeout = DefaultTimeoutInSeconds,
 		int secondsBetweenPolls = 1,
-		CancellationToken cancellationToken = default
-	);
-#endif // Disabled
+		TSharedPtr<FBeamCancellationToken> cancellationToken = nullptr
+	)
+	{
+		const auto Promise = MakeShared<TPromise<TOptional<TResultType>>, ESPMode::ThreadSafe>();
+		AsyncTask(ENamedThreads::AnyThread, [&, Promise, secondsTimeout, secondsBetweenPolls, actionToPerform, shouldRetry, cancellationToken]()
+		{
+			// This code will run asynchronously, without freezing the game thread
+			FPlatformProcess::Sleep(2.0f);
+
+			TOptional<TResultType> result;
+			FDateTime endTime = FDateTime::Now() + FTimespan(0, 0, secondsTimeout);
+			while ((endTime - FDateTime::Now()).GetTotalSeconds() > 0.0)
+			{
+				TFuture<TResultType> actionFuture = actionToPerform();
+				while (!actionFuture.IsReady())
+				{
+					if (actionFuture.WaitFor(FTimespan::FromMilliseconds(100.0)))
+					{
+						result = actionFuture.Get();
+						if (result.IsSet())
+						{
+							if (result.GetValue().GetHttpResponseCode() == 404)
+							{
+								result.Reset();
+							}
+						}
+						break;
+					}
+					else if (cancellationToken.IsValid() && cancellationToken->ShouldCancel())
+					{
+						cancellationToken->Reset();
+						result.Reset();
+						break;
+					}
+				}
+
+				if (result.IsSet())
+				{
+					auto temp = result.GetValue();
+					bool test = shouldRetry(temp);
+					if (!test)
+					{
+						break;
+					}
+				}
+
+				FPlatformProcess::Sleep(secondsBetweenPolls);
+			}
+
+			AsyncTask(ENamedThreads::GameThread, [Promise, result]()
+			{
+				// This code will be executed on the game thread
+				Promise->SetValue(result);
+			});
+		});
+		return Promise->GetFuture();
+	}
 
 	TFuture<TTuple<FBeamSession, KeyPair>> GetActiveSessionAndKeysAsync(
 		FString entityId,
