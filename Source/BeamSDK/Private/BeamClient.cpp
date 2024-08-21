@@ -206,20 +206,21 @@ TFuture<TBeamResult<FBeamSession>> UBeamClient::CreateSessionAsync(FString entit
 	const auto Promise = MakeShared<TPromise<TBeamResult<FBeamSession>>, ESPMode::ThreadSafe>();
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
-	auto resultFuture = Async(EAsyncExecution::Thread, [&, Promise, entityId, chainId, secondsTimeout]()
+	auto resultFuture = Async(EAsyncExecution::Thread, [&, entityId, chainId, secondsTimeout]()
 	{
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("CreateSessionAsync: Retrieving active session: "
 			"entityId=%s, chainId=%d, secondsTimeout=%d"), *entityId, chainId, secondsTimeout);
-		
-		auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
-		auto& activeSession = sessionKeys.BeamSession;
-		if (activeSession.IsSet())
 		{
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Already has an active session, ending early"));
+			auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
+			auto& activeSession = sessionKeys.BeamSession;
+			if (activeSession.IsSet())
+			{
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Already has an active session, ending early"));
 
-			TBeamResult<FBeamSession> result(EBeamResultType::Error, "Already has an active session");
-			result.Result = *activeSession;
-			return result;
+				TBeamResult<FBeamSession> result(EBeamResultType::Error, "Already has an active session");
+				result.Result = *activeSession;
+				return result;
+			}
 		}
 
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found, refreshing local KeyPair"));
