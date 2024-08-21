@@ -86,12 +86,15 @@ public:
 // Virtual methods
 public:
 	/// Launches a URL in a browser. (optionally override if needed)
-	///  @param[in]		InUrl		The url to browse to
-	///  @param[in]		InParams	The maximum radius of any agent that will be added to the crowd. [Limit: > 0]
-	///  @param[out]	OutError	The navigation mesh to use for planning.
-	/// @return True if the initialization succeeded.
+	///  @param[in]		InUrl		The url to browse to.
+	///  @param[in]		InParams	Optional input parameters.
+	///  @param[out]	OutError	Error result from launch request.
 	virtual void LaunchURL(const FString& InUrl, FString& InParams, FString& OutError);
 
+	/// Launches a URL in a browser. (optionally override if needed)
+	///  @param[in]		InUrl		The url to browse to.
+	/// @return Error result from launch request.
+	virtual FString LaunchURL(const FString& Url);
 
 // Config
 public:

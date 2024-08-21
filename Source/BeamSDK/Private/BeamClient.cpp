@@ -39,6 +39,13 @@ void UBeamClient::LaunchURL(const FString& Url, FString& Params, FString& OutErr
 	FPlatformProcess::LaunchURL(*Url, *Params, &OutError);
 }
 
+FString UBeamClient::LaunchURL(const FString& Url)
+{
+	FString Params, LaunchUrlError;
+	FPlatformProcess::LaunchURL(*Url, *Params, &LaunchUrlError);
+	return LaunchUrlError;
+}
+
 
 
 //
