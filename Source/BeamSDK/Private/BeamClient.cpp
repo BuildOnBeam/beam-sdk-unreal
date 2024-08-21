@@ -146,26 +146,23 @@ TFuture<TBeamResult<PlayerClientGetConnectionRequestResponse::StatusEnum>> UBeam
 	return Promise->GetFuture();
 }
 
-//async UniTask<BeamResult<BeamSession>> GetActiveSessionAsync(
 TFuture<TBeamResult<FBeamSession>> UBeamClient::GetActiveSessionAsync(FString entityId, int chainId)
 {
-	const auto Promise = MakeShared<TPromise<TBeamResult<FBeamSession>>, ESPMode::ThreadSafe>();
-
-// TODO: Finish porting C# to Unreal C++
-#if 0 // UN/PARTIALY PORTED C# CODE
-	UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
-	auto(activeSession, _) = await GetActiveSessionAndKeysAsync(entityId, chainId, cancellationToken);
-
-	if (activeSession == nullptr)
-	{
-		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found"));
-		return new BeamResult<BeamSession>(EBeamResultType::Error, "No active session found");
-	}
-
-	return new BeamResult<BeamSession>(activeSession);
-#endif // UN/PARTIALY PORTED C# CODE
-	Promise->SetValue(TBeamResult<FBeamSession>());
-	return Promise->GetFuture();
+	auto resultFuture = Async(EAsyncExecution::Thread, [&, entityId, chainId]()
+		{
+			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
+			auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
+			if (!sessionKeys.BeamSession.IsSet())
+			{
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found"));
+				return TBeamResult<FBeamSession>(EBeamResultType::Error, "No active session found");
+			}
+			else
+			{
+				return TBeamResult<FBeamSession>(sessionKeys.BeamSession.GetValue());
+			}
+		});
+	return resultFuture;
 }
 
 //async UniTask<BeamResult<CommonOperationResponse.StatusEnum>> RevokeSessionAsync(
