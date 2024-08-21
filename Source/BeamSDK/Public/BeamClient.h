@@ -193,9 +193,6 @@ private:
 
 	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationUsingSessionAsync(PlayerClientCommonOperationResponse operation, KeyPair activeSessionKeyPair);
 
-	FTimerHandle PollTimerHandle;
-	void PollForSessionCreation(PlayerClientSessionsApi::GetSessionRequestRequest Request);
-
 	/// Will retry or return nullptr if received 404.
 	template<typename TResultType>
 	static TFuture<TOptional<TResultType>> PollForResult(
