@@ -28,6 +28,10 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBeamClient, Log, All);
 
+typedef TBeamResult<FBeamSession> BeamSessionResult;
+typedef TBeamResult<PlayerClientCommonOperationResponse::StatusEnum> BeamOperationResult;
+typedef TBeamResult<PlayerClientGetConnectionRequestResponse::StatusEnum> BeamConnectionResult;
+
 constexpr int DefaultTimeoutInSeconds = 240;
 
 /**
@@ -129,7 +133,7 @@ public:
 	///  @param[in]		ChainId			ChainId to perform operation on. Defaults to 13337.
 	///  @param[in]		SecondsTimeout	Optional timeout in seconds, defaults to 240
 	/// @return TFuture
-	TFuture<TBeamResult<PlayerClientGetConnectionRequestResponse::StatusEnum>> ConnectUserToGameAsync(
+	TFuture<BeamConnectionResult> ConnectUserToGameAsync(
 		FString EntityId,
 		int32 ChainId = FBeamConstants::DefaultChainId,
 		int32 SecondsTimeout = DefaultTimeoutInSeconds
@@ -139,7 +143,7 @@ public:
 	///  @param[in]		entityId	Entity Id of the User performing signing
 	///  @param[in]		chainId		ChainId to perform operation on. Defaults to 13337.
 	/// @return TFuture
-	TFuture<TBeamResult<FBeamSession>> GetActiveSessionAsync(
+	TFuture<BeamSessionResult> GetActiveSessionAsync(
 		FString entityId,
 		int chainId = FBeamConstants::DefaultChainId
 	);
@@ -150,19 +154,20 @@ public:
 	///  @param[in]		chainId			ChainId to perform operation on. Defaults to 13337.
 	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
 	/// @return TFuture
-	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> RevokeSessionAsync(
+	TFuture<BeamOperationResult> RevokeSessionAsync(
 		FString entityId,
 		FString sessionAddress,
 		int chainId = FBeamConstants::DefaultChainId,
 		int secondsTimeout = DefaultTimeoutInSeconds
 	);
 
+public:
 	/// Opens an external browser to sign a Session, returns the result via callback arg.
 	///  @param[in]		entityId		Entity Id of the User performing signing
 	///  @param[in]		chainId			ChainId to perform operation on. Defaults to 13337.
 	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
 	/// @return TFuture
-	TFuture<TBeamResult<FBeamSession>> CreateSessionAsync(
+	TFuture<BeamSessionResult> CreateSessionAsync(
 		FString entityId,
 		int chainId = FBeamConstants::DefaultChainId,
 		int secondsTimeout = DefaultTimeoutInSeconds
@@ -175,7 +180,7 @@ public:
 	///  @param[in]		signingBy		If set to Auto, will try to use a local Session and open Browser if there is no valid Session.
 	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
 	/// @return TFuture
-	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationAsync(
+	TFuture<BeamOperationResult> SignOperationAsync(
 		FString entityId,
 		FString operationId,
 		int chainId = FBeamConstants::DefaultChainId,
@@ -189,9 +194,9 @@ public:
 
 private:
 
-	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationUsingBrowserAsync(PlayerClientCommonOperationResponse operation, int secondsTimeout);
+	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(PlayerClientCommonOperationResponse operation, int secondsTimeout);
 
-	TFuture<TBeamResult<PlayerClientCommonOperationResponse::StatusEnum>> SignOperationUsingSessionAsync(PlayerClientCommonOperationResponse operation, KeyPair activeSessionKeyPair);
+	TFuture<BeamOperationResult> SignOperationUsingSessionAsync(PlayerClientCommonOperationResponse operation, KeyPair activeSessionKeyPair);
 
 	/// Will retry or return nullptr if received 404.
 	template<typename TResultType>
@@ -258,10 +263,7 @@ private:
 		return Promise->GetFuture();
 	}
 
-	TFuture<FBeamSessionAndKeyPair> GetActiveSessionAndKeysAsync(
-		FString entityId,
-		int chainId
-	);
+	TFuture<FBeamSessionAndKeyPair> GetActiveSessionAndKeysAsync(FString entityId, int chainId);
 
 public:
 	void GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntityId, bool InRefresh = false);
@@ -270,5 +272,5 @@ private:
 	FString BeamApiKey;
 	FString BeamApiUrl;
 	bool DebugLog = false;
-	IBeamStorageInterface* Storage = nullptr; //= new UBeamSaveGameStorage();
+	IBeamStorageInterface* Storage = nullptr;
 };
