@@ -654,8 +654,8 @@ void UBeamClient::GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntit
 		FString privateKey = Storage->Get(entityIdParam);
 		if (!privateKey.IsEmpty())
 		{
-			//return KeyPair.Load(privateKey);
 			OutKeyPair.Initialize(std::string(TCHAR_TO_UTF8(*privateKey)));
+			return;
 		}
 	}
 
