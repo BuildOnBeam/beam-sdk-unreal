@@ -242,13 +242,17 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		}));
 
 		auto res = resFuture.Get();
-		if (!res.IsSuccessful())
+		if (!res.IsSuccessful() || !IsOk(res.GetHttpResponseCode()))
 		{
-			int32 errorCode = (int32)res.GetHttpResponseCode();
-			FString errorMessage = res.GetResponseString();
-
-			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed creating session request: %d %s"), errorCode, *errorMessage);
-			return BeamSessionResult(EBeamResultType::Error, res.GetResponseString());
+			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed CreateSessionRequest: "
+				"%d %s"), res.GetHttpResponseCode(), *res.GetResponseString());
+			return BeamSessionResult(EBeamResultType::Error, "Failed to create session request");
+		}
+		
+		if (res.Content.Status == PlayerClientGenerateSessionRequestResponse::StatusEnum::Error)
+		{
+			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed creating session request: %s"), *res.GetResponseString());
+			return BeamSessionResult(EBeamResultType::Error, "CreateSession returned status=Error");
 		}
 
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Created session request: %s to check for session result"), *res.Content.Id);
@@ -276,7 +280,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 			SessionsApi->GetSessionRequest(gsRequest, PlayerClientSessionsApi::FGetSessionRequestDelegate::CreateLambda(
 				[&, gsPromise](const PlayerClientSessionsApi::GetSessionRequestResponse& GetSessionResponse)
 			{
-				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: %s"), *GetSessionResponse.GetResponseString());
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: response=%s"), *GetSessionResponse.GetHttpResponse()->GetContentAsString());
 				gsPromise->SetValue(GetSessionResponse);
 			}));
 			return gsPromise->GetFuture();
@@ -286,7 +290,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 			[&](const PlayerClientSessionsApi::GetSessionRequestResponse& res)->bool
 		{
 			FString status = PlayerClientGetSessionRequestResponse::EnumToString(res.Content.Status);
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: Status - %s"), *status);
+			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: Status=%s"), *status);
 			return res.Content.Status == PlayerClientGetSessionRequestResponse::StatusEnum::Pending;
 		};
 
@@ -603,20 +607,19 @@ TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FStrin
 			auto httpReq = SessionsApi->GetActiveSession(request,
 				PlayerClientSessionsApi::FGetActiveSessionDelegate::CreateLambda(
 				[&, resPromise](const PlayerClientSessionsApi::GetActiveSessionResponse& response)
-				{
-					resPromise->SetValue(response);
-				}));
-			auto res = resFuture.Get();
-			if (res.IsSuccessful())
 			{
-				sessionKeys.BeamSession = FBeamSession(res);
+				resPromise->SetValue(response);
+			}));
+			
+			auto res = resFuture.Get();
+			if (!res.IsSuccessful() || !IsOk(res.GetHttpResponseCode()))
+			{
+				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo returned: %d %s"),
+					res.GetHttpResponseCode(), *res.GetHttpResponse()->GetContentAsString());
 			}
 			else
 			{
-				int32 errorCode = (int32)res.GetHttpResponseCode();
-				FString errorMessage = res.GetResponseString();
-
-				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo returned: %d %s"), errorCode, *errorMessage);
+				sessionKeys.BeamSession = FBeamSession(res);
 			}
 		}
 
