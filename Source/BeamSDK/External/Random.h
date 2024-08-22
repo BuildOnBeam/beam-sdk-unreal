@@ -26,6 +26,9 @@
 #include <bcrypt.h>
 #include <cstdlib>
 
+// Fix linker errors for BCryptGenRandom
+#pragma comment(lib, "bcrypt.lib")
+
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
 #include <sys/random.h>
 #elif defined(__OpenBSD__)
@@ -45,16 +48,17 @@
 #define TEXT(x) TEXT_PASTE(x)// Define macro UE4
 
 
-
 /* Returns 1 on success, and 0 on failure. */
 static int fill_random(unsigned char data[], size_t size) {
+/*  // NOTE: rand() MUST be seeded by an srand() call in this module for this to generate unique keys.
     for (int i = 0; i < size; ++i)
     {
         const unsigned char randChar_i = rand() % UCHAR_MAX;
         data[i] = randChar_i;
     }
     return 1;
-/*#if defined(_WIN32)
+ */
+#if defined(_WIN32)
     NTSTATUS res = BCryptGenRandom(NULL, data, size, BCRYPT_USE_SYSTEM_PREFERRED_RNG);
     if (res != STATUS_SUCCESS || size > ULONG_MAX) {
         return 0;
@@ -79,7 +83,7 @@ static int fill_random(unsigned char data[], size_t size) {
         return 0;
     }
 #endif
-    return 0;*/
+    return 0;
 }
 
 /*static void print_hex(unsigned char* data, size_t size) {
