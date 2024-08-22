@@ -4,3 +4,8 @@ Binaries/
 Intermediate/
 
 */node_modules/
+
+# Local file types
+*.log
+*.old
+*.bak
