@@ -663,8 +663,6 @@ TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FStrin
 }
 
 
-// Allows debugging the generated keys for debug and devopment builds. (1 = On, 0 = Off [default])
-#define DEBUG_KEY_GEN 0
 void UBeamClient::GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntityId, bool InRefresh)
 {
 	FString entityStorageKey = FBeamConstants::Storage::BeamSigningKey + InEntityId;
@@ -679,6 +677,9 @@ void UBeamClient::GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntit
 	}
 
 	OutKeyPair.Generate();
+
+// Allows debugging the generated keys for debug and devopment builds. (1 = On, 0 = Off [default])
+#define DEBUG_KEY_GEN 0
 #if !UE_BUILD_SHIPPING && DEBUG_KEY_GEN
 	{
 		FString address = OutKeyPair.GetAddress().c_str();
@@ -687,10 +688,10 @@ void UBeamClient::GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntit
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("KeyPair:\n  address:%s\n  public: %s\n  private: %s"), *address, *publicKey, *privateKey);
 	}
 #endif
+#undef DEBUG_KEY_GEN
 
 	Storage->Set(entityStorageKey, OutKeyPair.GetPrivateKeyHex().c_str());
 	Storage->Save();
 }
-#undef DEBUG_KEY_GEN
 
 UE_ENABLE_OPTIMIZATION
