@@ -27,16 +27,6 @@ UBeamClient::UBeamClient()
 }
 
 
-void UBeamClient::RunTests()
-{
-	UE_LOG(LogBeamClient, Log, TEXT("----- RUNNING FBeamApiError TESTS -----"));
-	FBeamApiError::Test_Basic();
-
-	UE_LOG(LogBeamClient, Log, TEXT("----- RUNNING FBeamSession TESTS -----"));
-	FBeamSession::Test_Basic();
-}
-
-
 void UBeamClient::LaunchURL(const FString& Url, FString& Params, FString& OutError)
 {
 	FPlatformProcess::LaunchURL(*Url, *Params, &OutError);

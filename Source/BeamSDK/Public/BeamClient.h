@@ -83,12 +83,6 @@ public:
 	UBeamClient();
 
 
-// Tests
-public:
-	UFUNCTION(BlueprintCallable, Category = "Test")
-	void RunTests();
-
-
 // Virtual methods
 public:
 	/// Launches a URL in a browser. (optionally override if needed)

@@ -35,8 +35,4 @@ public:
 	static bool FromJson(const FString& InJsonString, FBeamApiError& OutBeamApiError);
 
 	bool FromJson(const FString& InJsonString);
-
-public:
-	static void Test(const FString& TestName, const FString& TestJson);
-	static void Test_Basic();
 };

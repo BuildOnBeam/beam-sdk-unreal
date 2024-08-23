@@ -37,11 +37,6 @@ public:
 
 	bool IsValidNow();
 	bool IsOwnedBy(KeyPair keyPair);
-
-public:
-	static void Test(const FString& TestName, const FString& TestJson);
-	static void Test_Basic();
-	static void Test_ReadWrite();
 };
 
 struct FBeamSessionAndKeyPair
