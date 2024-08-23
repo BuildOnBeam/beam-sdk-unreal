@@ -184,7 +184,7 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 	request.PlayerClientRevokeSessionRequestInput.ChainId = chainId;
 
 	SessionsApi->RevokeSession(request,
-		PlayerClientSessionsApi::FRevokeSessionDelegate::CreateLambda([&, secondsTimeout](const PlayerClientSessionsApi::RevokeSessionResponse& res)
+		PlayerClientSessionsApi::FRevokeSessionDelegate::CreateLambda([&, Promise, secondsTimeout](const PlayerClientSessionsApi::RevokeSessionResponse& res)
 	{
 		BeamOperationResult result;
 		PlayerClientCommonOperationResponse operation = res.Content;
