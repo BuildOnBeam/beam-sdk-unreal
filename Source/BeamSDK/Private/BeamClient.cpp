@@ -102,14 +102,26 @@ UBeamClient* UBeamClient::SetDebugLogging(bool InEnable)
 //
 
 
-TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString EntityId, int32 ChainId, int32 SecondsTimeout)
+TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString entityId, int32 chainId, int32 secondsTimeout)
 {
 	const auto Promise = MakeShared<TPromise<BeamConnectionResult>, ESPMode::ThreadSafe>();
 
 // TODO: Finish porting C# to Unreal C++
 #if 0 // UN/PARTIALY PORTED C# CODE
 	UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving connection request"));
+
 	PlayerClientCreateConnectionRequestResponse connRequest;
+
+	PlayerClientCreateConnectionRequestInput input;
+	input.EntityId = entityId;
+	input.ChainId = chainId;
+
+	ConnectorApi->CreateConnectionRequest(input,
+		DELEGATE([](const PlayerClientCreateConnectionRequestResponse& res)
+	{
+	}));
+	
+	
 	try
 	{
 		connRequest = await PlayerClientConnectorApi.CreateConnectionRequestAsync(
@@ -126,7 +138,7 @@ TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString Entity
 
 	auto pollingResult = await PollForResult(
 		actionToPerform: () = > ConnectorApi.GetConnectionRequestAsync(connRequest.Id, cancellationToken),
-		shouldRetry: res = > res.Status == GetConnectionRequestResponse.StatusEnum.Pending,
+		shouldRetry: res = > res.Status == GetConnectionRequestResponse::StatusEnum::Pending,
 		secondsTimeout: secondsTimeout,
 		secondsBetweenPolls : 1,
 		cancellationToken : cancellationToken);
@@ -143,19 +155,19 @@ TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString Entity
 TFuture<BeamSessionResult> UBeamClient::GetActiveSessionAsync(FString entityId, int chainId)
 {
 	auto resultFuture = Async(EAsyncExecution::Thread, [&, entityId, chainId]()
+	{
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
+		auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
+		if (!sessionKeys.BeamSession.IsSet())
 		{
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
-			auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
-			if (!sessionKeys.BeamSession.IsSet())
-			{
-				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found"));
-				return BeamSessionResult(EBeamResultType::Error, "No active session found");
-			}
-			else
-			{
-				return BeamSessionResult(sessionKeys.BeamSession.GetValue());
-			}
-		});
+			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found"));
+			return BeamSessionResult(EBeamResultType::Error, "No active session found");
+		}
+		else
+		{
+			return BeamSessionResult(sessionKeys.BeamSession.GetValue());
+		}
+	});
 	return resultFuture;
 }
 
@@ -164,27 +176,37 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 {
 	const auto Promise = MakeShared<TPromise<BeamOperationResult>, ESPMode::ThreadSafe>();
 
-// TODO: Finish porting C# to Unreal C++
-#if 0 // UN/PARTIALY PORTED C# CODE
 	UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
 
-	CommonOperationResponse operation;
+	PlayerClientSessionsApi::RevokeSessionRequest request;
+	request.EntityId = entityId;
+	request.PlayerClientRevokeSessionRequestInput.Address = sessionAddress;
+	request.PlayerClientRevokeSessionRequestInput.ChainId = chainId;
 
-	try
+	SessionsApi->RevokeSession(request,
+		PlayerClientSessionsApi::FRevokeSessionDelegate::CreateLambda([&, secondsTimeout](const PlayerClientSessionsApi::RevokeSessionResponse& res)
 	{
-		operation = await SessionsApi.RevokeSessionAsync(entityId,
-			new RevokeSessionRequestInput(sessionAddress, chainId: chainId), cancellationToken);
-	}
-	catch (ApiException e)
-	{
-		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Failed RevokeSessionAsync: %s %s"), *e.Message, *e.ErrorContent);
-		return BeamOperationResult(EBeamResultType::Error, e.Message);
-	}
+		BeamOperationResult result;
+		PlayerClientCommonOperationResponse operation = res.Content;
+		if (res.IsSuccessful() && IsOk(res.GetHttpResponseCode()))
+		{
+			result = SignOperationUsingBrowserAsync(operation, secondsTimeout).Get();
+		}
+		else
+		{
+			int32 errorCode = (int32)res.GetHttpResponseCode();
+			FString errorMessage = res.GetHttpResponse()->GetContentAsString();
+			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Failed RevokeSessionAsync: %d: %s"), errorCode, *errorMessage);
 
-	auto result = await SignOperationUsingBrowserAsync(operation, secondsTimeout, cancellationToken);
-	return result;
-#endif // UN/PARTIALY PORTED C# CODE
+			result = BeamOperationResult(EBeamResultType::Error, errorMessage);
+		}
 
+		// Resolve the promise on the game thread for convienence.
+		AsyncTask(ENamedThreads::GameThread, [Promise, result]()
+		{
+			Promise->SetValue(result);
+		});
+	}));
 	return Promise->GetFuture();
 }
 
@@ -234,14 +256,16 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		auto res = resFuture.Get();
 		if (!res.IsSuccessful() || !IsOk(res.GetHttpResponseCode()))
 		{
-			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed CreateSessionRequest: "
-				"%d %s"), res.GetHttpResponseCode(), *res.GetResponseString());
+			int32 errorCode = (int32)res.GetHttpResponseCode();
+			FString errorMessage = res.GetHttpResponse()->GetContentAsString();
+			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed CreateSessionRequest: %d %s"), errorCode, *errorMessage);
 			return BeamSessionResult(EBeamResultType::Error, "Failed to create session request");
 		}
 		
-		if (res.Content.Status == PlayerClientGenerateSessionRequestResponse::StatusEnum::Error)
+		if (res.Content.Status == GenerateSessionRequestStatusEnum::Error)
 		{
-			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed creating session request: %s"), *res.GetResponseString());
+			FString errorMessage = res.GetHttpResponse()->GetContentAsString();
+			UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("Failed creating session request: %s"), *errorMessage);
 			return BeamSessionResult(EBeamResultType::Error, "CreateSession returned status=Error");
 		}
 
@@ -253,10 +277,9 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		// Open "identity.onbeam.com".
 		FString launchErrors = LaunchURL(beamSessionRequest.Url);
 
-		BeamSessionResult beamResultModel;
-
-		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Started polling for Session creation result"));
 		// Start polling for results of the operation.
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Started polling for Session creation result"));
+
 		bool error = false;
 
 		PlayerClientSessionsApi::GetSessionRequestRequest gsRequest;
@@ -264,41 +287,44 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 
 		auto cancellationToken = MakeShared<FBeamCancellationToken>();
 
-		auto actionToPerform = [&, gsRequest, cancellationToken]()->TFuture<PlayerClientSessionsApi::GetSessionRequestResponse>
+		// This action will be polled in the PollForResult call below.
+		auto actionToPerform = [&, gsRequest, cancellationToken]() -> TFuture<PlayerClientSessionsApi::GetSessionRequestResponse>
 		{
 			const auto gsPromise = MakeShared<TPromise<PlayerClientSessionsApi::GetSessionRequestResponse>, ESPMode::ThreadSafe>();
 			SessionsApi->GetSessionRequest(gsRequest, PlayerClientSessionsApi::FGetSessionRequestDelegate::CreateLambda(
 				[&, gsPromise](const PlayerClientSessionsApi::GetSessionRequestResponse& GetSessionResponse)
 			{
-				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: response=%s"), *GetSessionResponse.GetHttpResponse()->GetContentAsString());
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: %s"), *GetSessionResponse.GetHttpResponse()->GetContentAsString());
 				gsPromise->SetValue(GetSessionResponse);
 			}));
 			return gsPromise->GetFuture();
 		};
 
-		TFunction<bool(const PlayerClientSessionsApi::GetSessionRequestResponse&)> shouldRetry =
-			[&](const PlayerClientSessionsApi::GetSessionRequestResponse& res)->bool
+		// This controls whether the above action should continue to poll.
+		auto shouldRetry = [&](const PlayerClientSessionsApi::GetSessionRequestResponse& res) -> bool
 		{
 			FString status = PlayerClientGetSessionRequestResponse::EnumToString(res.Content.Status);
 			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: Status=%s"), *status);
-			return res.Content.Status == PlayerClientGetSessionRequestResponse::StatusEnum::Pending;
+			return res.Content.Status == GetSessionRequestStatusEnum::Pending;
 		};
 
+		// This call initiates the polling, and waits for the result.
 		auto pollingResult = PollForResult<PlayerClientSessionsApi::GetSessionRequestResponse>(actionToPerform, shouldRetry, secondsTimeout, 1, cancellationToken).Get();
 		if (!pollingResult.IsSet())
 		{
 			return BeamSessionResult(EBeamResultType::Error, "Polling for created session encountered an error or timed out");
 		}
 
+		BeamSessionResult beamResultModel;
 		switch (pollingResult.GetValue().Content.Status)
 		{
-		case PlayerClientGetSessionRequestResponse::StatusEnum::Pending:
+		case GetSessionRequestStatusEnum::Pending:
 			beamResultModel.Status = EBeamResultType::Pending;
 			break;
-		case PlayerClientGetSessionRequestResponse::StatusEnum::Accepted:
+		case GetSessionRequestStatusEnum::Accepted:
 			beamResultModel.Status = EBeamResultType::Success;
 			break;
-		case PlayerClientGetSessionRequestResponse::StatusEnum::Error:
+		case GetSessionRequestStatusEnum::Error:
 		default:
 			beamResultModel.Status = EBeamResultType::Error;
 			beamResultModel.Error = "Encountered an error when requesting a session";
@@ -329,12 +355,13 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		}
 
 		return beamResultModel;
-	});
-resultFuture.Next([Promise](const BeamSessionResult& Response)
+	})
+	.Next([Promise](const BeamSessionResult& result)
 	{
-		AsyncTask(ENamedThreads::GameThread, [Promise, Response]()
+		// Resolve the promise on the game thread for convienence.
+		AsyncTask(ENamedThreads::GameThread, [Promise, result]()
 		{
-			Promise->SetValue(Response);
+			Promise->SetValue(result);
 		});
 	});
 	return Promise->GetFuture();
@@ -345,8 +372,8 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId, F
 {
 	const auto Promise = MakeShared<TPromise<BeamOperationResult>, ESPMode::ThreadSafe>();
 	auto resultFuture = Async(EAsyncExecution::Thread, [&, Promise, entityId, operationId, chainId, signingBy, secondsTimeout]()
-		{
-			BeamOperationResult result;
+	{
+		BeamOperationResult result;
 
 
 
@@ -397,7 +424,7 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId, F
 	UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("No active session found, %s set to %s"), *nameof(signingBy), *signingBy.ToString());
 	return BeamOperationResult
 	{
-		Result = CommonOperationResponse.StatusEnum.Error,
+		Result = CommonOperationStatusEnum::Error,
 		Status = EBeamResultType::Error,
 		Error = FString::Printf(TEXT("No active session found, %s set to %s"), *nameof(signingBy), *signingBy.ToString())
 	};
@@ -405,28 +432,27 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId, F
 
 
 
-			return result;
-		});
-	resultFuture.Next(
-		[Promise](const BeamOperationResult& Response)
+		return result;
+	})
+	.Next([Promise](const BeamOperationResult& result)
+	{
+		// Resolve the promise on the game thread for convienence.
+		AsyncTask(ENamedThreads::GameThread, [Promise, result]()
 		{
-			AsyncTask(ENamedThreads::GameThread, [Promise, Response]()
-			{
-				Promise->SetValue(Response);
-			});
+			Promise->SetValue(result);
 		});
+	});
 	return Promise->GetFuture();
 }
 
 
-/// Clears any details of local Session like private key, or Session validity details. Useful when f.e. switching users on the same device.
-///  @param[in]		entityId		EntityId
 void UBeamClient::ClearLocalSession(FString EntityId)
 {
 	if (Storage)
 	{
 		Storage->Delete(FBeamConstants::Storage::BeamSession + EntityId);
 		Storage->Delete(FBeamConstants::Storage::BeamSigningKey + EntityId);
+		Storage->Save();
 	}
 }
 
@@ -449,28 +475,28 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingBrowserAsync(PlayerC
 	auto pollingResult = await PollForResult(
 		actionToPerform: () = > OperationApi.GetOperationAsync(operation.Id, cancellationToken),
 		shouldRetry: res = > res == nullptr ||
-		res.Status != CommonOperationResponse.StatusEnum.Pending ||
-		res.Status == CommonOperationResponse.StatusEnum.Pending &&
+		res.Status != CommonOperationStatusEnum::Pending ||
+		res.Status == CommonOperationStatusEnum::Pending &&
 		res.UpdatedAt != nullptr && res.UpdatedAt > now,
 		secondsTimeout: secondsTimeout,
 		secondsBetweenPolls : 1,
 		cancellationToken : cancellationToken);
 
 	//auto pollingStatus = pollingResult ? .Status;
-	auto pollingStatus = pollingResult ? pollingResult.Status : CommonOperationResponse::StatusEnum::Error;
+	auto pollingStatus = pollingResult ? pollingResult.Status : CommonOperationStatusEnum::Error;
 
 	UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Got operation({operation.Id}) result: %s"), *pollingStatus.ToString());
 	auto beamResult = BeamOperationResult(pollingStatus);
 
 	switch (pollingStatus)
 	{
-	case CommonOperationResponse::StatusEnum::Pending:
-	case CommonOperationResponse::StatusEnum::Executed:
-	case CommonOperationResponse::StatusEnum::Rejected:
-	case CommonOperationResponse::StatusEnum::Signed:
+	case CommonOperationStatusEnum::Pending:
+	case CommonOperationStatusEnum::Executed:
+	case CommonOperationStatusEnum::Rejected:
+	case CommonOperationStatusEnum::Signed:
 		beamResult.Status = EBeamResultType::Success;
 		break;
-	case CommonOperationResponse::StatusEnum::Error:
+	case CommonOperationStatusEnum::Error:
 		beamResult.Status = EBeamResultType::Error;
 		beamResult.Error = TEXT("Operation encountered an error");
 		break;
@@ -498,14 +524,14 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(PlayerC
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Operation(%s) has no transactions to sign, ending"), *operation.Id);
 		return BeamOperationResult
 		{
-			Result = CommonOperationResponse.StatusEnum.Error,
+			Result = CommonOperationStatusEnum::Error,
 			Status = EBeamResultType::Error,
 			Error = TEXT("Operation has no transactions to sign")
 		};
 	}
 
 	auto confirmationModel = new ConfirmOperationRequest(
-		ConfirmOperationRequest.StatusEnum.Pending,
+		ConfirmOperationStatusEnum::Pending,
 		transactions: new List<ConfirmOperationRequestTransactionsInner>());
 
 	for (auto& transaction : operation.Transactions)
@@ -542,9 +568,9 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(PlayerC
 	{
 		auto res = await OperationApi.ProcessOperationAsync(operation.Id, confirmationModel,
 			cancellationToken);
-		auto didFail = res.Status != CommonOperationResponse.StatusEnum.Executed &&
-			res.Status != CommonOperationResponse.StatusEnum.Signed &&
-			res.Status != CommonOperationResponse.StatusEnum.Pending;
+		auto didFail = res.Status != CommonOperationStatusEnum::Executed &&
+			res.Status != CommonOperationStatusEnum::Signed &&
+			res.Status != CommonOperationStatusEnum::Pending;
 
 		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Confirmed operation(%s), status: %s"), *operation.Id, *res.Status.ToString());
 		return BeamOperationResult
@@ -602,14 +628,15 @@ TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FStrin
 			}));
 			
 			auto res = resFuture.Get();
-			if (!res.IsSuccessful() || !IsOk(res.GetHttpResponseCode()))
+			if (res.IsSuccessful() && IsOk(res.GetHttpResponseCode()))
 			{
-				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo returned: %d %s"),
-					res.GetHttpResponseCode(), *res.GetHttpResponse()->GetContentAsString());
+				sessionKeys.BeamSession = FBeamSession(res);
 			}
 			else
 			{
-				sessionKeys.BeamSession = FBeamSession(res);
+				int32 errorCode = (int32)res.GetHttpResponseCode();
+				FString errorMessage = res.GetResponseString();
+				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo returned: %d %s"), errorCode, *errorMessage);
 			}
 		}
 
@@ -636,12 +663,14 @@ TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FStrin
 }
 
 
+// Allows debugging the generated keys for debug and devopment builds. (1 = On, 0 = Off [default])
+#define DEBUG_KEY_GEN 0
 void UBeamClient::GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntityId, bool InRefresh)
 {
+	FString entityStorageKey = FBeamConstants::Storage::BeamSigningKey + InEntityId;
 	if (!InRefresh)
 	{
-		FString entityIdParam = FBeamConstants::Storage::BeamSigningKey + InEntityId;
-		FString privateKey = Storage->Get(entityIdParam);
+		FString privateKey = Storage->Get(entityStorageKey);
 		if (!privateKey.IsEmpty())
 		{
 			OutKeyPair.Initialize(std::string(TCHAR_TO_UTF8(*privateKey)));
@@ -650,7 +679,18 @@ void UBeamClient::GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntit
 	}
 
 	OutKeyPair.Generate();
-	Storage->Set(FBeamConstants::Storage::BeamSigningKey + InEntityId, OutKeyPair.GetPrivateKeyHex().c_str());
+#if !UE_BUILD_SHIPPING && DEBUG_KEY_GEN
+	{
+		FString address = OutKeyPair.GetAddress().c_str();
+		FString publicKey = OutKeyPair.GetPublicKeyHex().c_str();
+		FString privateKey = OutKeyPair.GetPrivateKeyHex().c_str();
+		UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("KeyPair:\n  address:%s\n  public: %s\n  private: %s"), *address, *publicKey, *privateKey);
+	}
+#endif
+
+	Storage->Set(entityStorageKey, OutKeyPair.GetPrivateKeyHex().c_str());
+	Storage->Save();
 }
+#undef DEBUG_KEY_GEN
 
 UE_ENABLE_OPTIMIZATION
