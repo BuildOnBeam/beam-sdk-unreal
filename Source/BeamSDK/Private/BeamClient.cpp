@@ -294,7 +294,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 			SessionsApi->GetSessionRequest(gsRequest, PlayerClientSessionsApi::FGetSessionRequestDelegate::CreateLambda(
 				[&, gsPromise](const PlayerClientSessionsApi::GetSessionRequestResponse& GetSessionResponse)
 			{
-				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: %s"), *GetSessionResponse.GetHttpResponse()->GetContentAsString());
+				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequest: response=%s"), *GetSessionResponse.GetHttpResponse()->GetContentAsString());
 				gsPromise->SetValue(GetSessionResponse);
 			}));
 			return gsPromise->GetFuture();
@@ -304,7 +304,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		auto shouldRetry = [&](const PlayerClientSessionsApi::GetSessionRequestResponse& res) -> bool
 		{
 			FString status = PlayerClientGetSessionRequestResponse::EnumToString(res.Content.Status);
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequestResponse: Status=%s"), *status);
+			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("GetSessionRequest: shouldRetry? (Status [%s] == Pending)"), *status);
 			return res.Content.Status == GetSessionRequestStatusEnum::Pending;
 		};
 
