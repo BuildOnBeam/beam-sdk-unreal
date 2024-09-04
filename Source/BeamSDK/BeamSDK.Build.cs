@@ -17,6 +17,9 @@ public class BeamSDK : ModuleRules
 				// Include Openfort support for KeyPair
 				Path.Combine(ModuleDirectory, "External"),
 				Path.Combine(ModuleDirectory, "External", "Openfort"),
+				Path.Combine(ModuleDirectory, "External", "CalcCrypto"),
+				Path.Combine(ModuleDirectory, "External", "CalcCrypto", "uint128"),
+				Path.Combine(ModuleDirectory, "External", "CalcCrypto", "uint256"),
 
 				// Include the PlayerClient Public headers
 				Path.Combine(PluginDirectory, "Source", "PlayerClient", "Public"),

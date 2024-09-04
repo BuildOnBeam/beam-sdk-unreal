@@ -3,6 +3,7 @@
 #include "Keccak256.h"
 #include <algorithm>
 
+
 std::string Keccak256Helper::ChecksumEncode(std::string addr)
 {
 	// address must be lowercase or hashedAddress will be incorrect
@@ -55,4 +56,64 @@ void Keccak256Helper::HashMessage(std::string messageHex, unsigned char hash[32]
 	std::copy(messageBytesVector.begin(), messageBytesVector.end(), bytes + msgPrefixLength);
 
 	Keccak256::getHash(bytes, msgSize, hash);
+}
+
+
+///// EIP-712 Signing /////
+
+
+std::vector<uint8_t> Keccak256Helper::keccak256(const std::vector<uint8_t>& data)
+{
+    std::vector<uint8_t> hash(32); // 32 bytes for Keccak-256
+    //sha3_256(data.data(), data.size(), hash.data());
+
+	Keccak256::getHash(data.data(), data.size(), hash.data());
+	return hash;
+}
+
+std::vector<uint8_t> Keccak256Helper::keccak256(const std::string& stringtoHash)
+{
+    std::vector<uint8_t> hashBytes(stringtoHash.begin(), stringtoHash.end());
+	return keccak256(hashBytes);
+}
+
+std::vector<uint8_t> Keccak256Helper::hashDomain(const EIP712Domain& domain)
+{
+    // Implement hashing for the domain
+    // For simplicity, we use concatenated string representation. Proper implementation should follow EIP-712 hashing rules
+    std::string domainData = domain.name + domain.version + domain.chainId.str() + domain.verifyingContract;
+    std::vector<uint8_t> domainBytes(domainData.begin(), domainData.end());
+    return keccak256(domainBytes);
+}
+
+std::vector<uint8_t> Keccak256Helper::hashTypedData(const MyTypedData& data)
+{
+    // Implement hashing for the typed data
+    std::string dataStr = data.field1 + data.field2.str();
+    std::vector<uint8_t> dataBytes(dataStr.begin(), dataStr.end());
+    return keccak256(dataBytes);
+}
+
+
+std::vector<uint8_t> Keccak256Helper::createDigest(const std::vector<uint8_t>& domainHash, const std::vector<uint8_t>& dataHash)
+{
+    std::vector<uint8_t> prefix = {0x19, 0x01}; // Standard EIP-712 prefix
+    std::vector<uint8_t> digest = prefix;
+    digest.insert(digest.end(), domainHash.begin(), domainHash.end());
+    digest.insert(digest.end(), dataHash.begin(), dataHash.end());
+    return keccak256(digest);
+}
+
+std::vector<uint8_t> Keccak256Helper::signDigest(const std::vector<uint8_t>& digest, const std::vector<uint8_t>& privateKey)
+{
+    secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+    secp256k1_ecdsa_signature signature;
+
+    secp256k1_ecdsa_sign(ctx, &signature, digest.data(), privateKey.data(), nullptr, nullptr);
+
+    std::vector<uint8_t> signatureData(64); // 64 bytes for the signature
+    secp256k1_ecdsa_signature_serialize_compact(ctx, signatureData.data(), &signature);
+
+    secp256k1_context_destroy(ctx);
+    return signatureData;
 }
