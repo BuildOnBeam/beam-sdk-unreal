@@ -111,16 +111,12 @@ std::string KeyPair::Sign(std::string messageHex)
 std::string KeyPair::SignMarketplaceTransactionHash(std::string hashString)
 {
 	std::vector<unsigned char> hashBytes = HexConverter::FromHexString(hashString);
-	size_t hashSize = hashBytes.size();
-
-	unsigned char hash2[32];
-	Keccak256::getHash(hashBytes.data(), hashSize, hash2);
 
 	// Sign the Hash...
 
 	secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
 	secp256k1_ecdsa_recoverable_signature sig;
-	secp256k1_ecdsa_sign_recoverable(ctx, &sig, hash2, seckey, nullptr, nullptr);
+	secp256k1_ecdsa_sign_recoverable(ctx, &sig, hashBytes.data(), seckey, nullptr, nullptr);
 
 	unsigned char serialized_signature[65] = { 0 };
 	int recoveryId = 0;
@@ -128,8 +124,6 @@ std::string KeyPair::SignMarketplaceTransactionHash(std::string hashString)
 
 	serialized_signature[64] = 27 + recoveryId; 
 	secp256k1_context_destroy(ctx);
-
-	std::string signatureData = "0x" + HexConverter::ToHexString(serialized_signature, 65);
-	return signatureData;
+	return "0x" + HexConverter::ToHexString(serialized_signature, 65);
 }
 
