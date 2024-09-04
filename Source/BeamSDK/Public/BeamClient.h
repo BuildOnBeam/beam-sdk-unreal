@@ -25,18 +25,21 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBeamClient, Log, All);
 
+typedef PlayerClientConfirmOperationRequestTransactionsInner ConfirmOperationRequestTransactionsInner;
+
 typedef PlayerClientCommonOperationResponse CommonOperationResponse;
-typedef PlayerClientCommonOperationResponseTransactionsInner CommonOperationTransactionResponse;
+typedef PlayerClientCommonOperationResponseTransactionsInner CommonOperationResponseTransactionsInner;
 typedef PlayerClientConfirmOperationRequest ConfirmOperationRequest;
 typedef PlayerClientCreateConnectionRequestResponse CreateConnectionRequestResponse;
 typedef PlayerClientGenerateSessionRequestResponse GenerateSessionRequestResponse;
-typedef PlayerClientGetAssetListingsResponseDataInner GetAssetListingsResponse;
+typedef PlayerClientGetAssetListingsResponseDataInner GetAssetListingsResponseDataInner;
 typedef PlayerClientGetConnectionRequestResponse GetConnectionRequestResponse;
 typedef PlayerClientGetSessionRequestResponse GetSessionRequestResponse;
+typedef PlayerClientOperationApi::GetOperationResponse GetOperationResponse;
 
 // Note: use with ::EnumFromString(StatusEnum) on the response types above.
 typedef PlayerClientCommonOperationResponse::StatusEnum CommonOperationStatusEnum;
-typedef PlayerClientCommonOperationResponseTransactionsInner::StatusEnum CommonOperationTransactionStatusEnum;
+typedef PlayerClientCommonOperationResponseTransactionsInner::StatusEnum CommonOperationResponseTransactionsInnerStatusEnum;
 typedef PlayerClientConfirmOperationRequest::StatusEnum ConfirmOperationStatusEnum;
 typedef PlayerClientCreateConnectionRequestResponse::StatusEnum CreateConnectionRequestStatusEnum;
 typedef PlayerClientGenerateSessionRequestResponse::StatusEnum GenerateSessionRequestStatusEnum;
@@ -147,7 +150,8 @@ public:
 	TFuture<BeamConnectionResult> ConnectUserToGameAsync(
 		FString EntityId,
 		int32 ChainId = FBeamConstants::DefaultChainId,
-		int32 SecondsTimeout = DefaultTimeoutInSeconds
+		int32 SecondsTimeout = DefaultTimeoutInSeconds,
+		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
 	/// Retrieves active, valid session.
@@ -156,7 +160,8 @@ public:
 	/// @return TFuture
 	TFuture<BeamSessionResult> GetActiveSessionAsync(
 		FString entityId,
-		int chainId = FBeamConstants::DefaultChainId
+		int chainId = FBeamConstants::DefaultChainId,
+		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
 	/// Revokes given Session Address. Always opens Browser as User has to sign it with his key.
@@ -169,7 +174,8 @@ public:
 		FString entityId,
 		FString sessionAddress,
 		int chainId = FBeamConstants::DefaultChainId,
-		int secondsTimeout = DefaultTimeoutInSeconds
+		int secondsTimeout = DefaultTimeoutInSeconds,
+		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
 public:
@@ -181,7 +187,8 @@ public:
 	TFuture<BeamSessionResult> CreateSessionAsync(
 		FString entityId,
 		int chainId = FBeamConstants::DefaultChainId,
-		int secondsTimeout = DefaultTimeoutInSeconds
+		int secondsTimeout = DefaultTimeoutInSeconds,
+		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
 	/// Opens an external browser to sign a transaction, returns the result via callback arg.
@@ -196,7 +203,8 @@ public:
 		FString operationId,
 		int chainId = FBeamConstants::DefaultChainId,
 		EBeamOperationSigningBy signingBy = EBeamOperationSigningBy::Auto,
-		int secondsTimeout = DefaultTimeoutInSeconds
+		int secondsTimeout = DefaultTimeoutInSeconds,
+		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
 	/// Clears any details of local Session like private key, or Session validity details. Useful when f.e. switching users on the same device.
@@ -205,9 +213,9 @@ public:
 
 private:
 
-	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(PlayerClientCommonOperationResponse operation, int secondsTimeout);
+	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(CommonOperationResponse operation, int secondsTimeout, TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr);
 
-	TFuture<BeamOperationResult> SignOperationUsingSessionAsync(PlayerClientCommonOperationResponse operation, KeyPair activeSessionKeyPair);
+	TFuture<BeamOperationResult> SignOperationUsingSessionAsync(CommonOperationResponse operation, KeyPair activeSessionKeyPair, TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr);
 
 	/// Will retry or return nullptr if received 404.
 	template<typename TResultType>
