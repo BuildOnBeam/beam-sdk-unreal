@@ -1,6 +1,6 @@
 ﻿# Beam Plugin for Unreal Engine
 
-## Status: `Functional, but in Active Development`
+## Status: `Functional, but currently under internal review`
 
 ## Setup
 1. When in the /.openapi-generator/ folder, run `npm run generate-on-windows` or `npm run generate`
