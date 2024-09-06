@@ -33,11 +33,12 @@ public:
 	enum class SymbolEnum
 	{
 		Beam,
-		Wbeam,
-		Usdc,
-		Usdt,
 		Imx,
+		Soph,
+		Wbeam,
 		Wimx,
+		Wsoph,
+		Usdc,
   	};
 
 	static FString EnumToString(const SymbolEnum& EnumValue);

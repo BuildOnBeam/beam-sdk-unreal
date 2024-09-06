@@ -44,19 +44,24 @@ public:
 	class GetUserResponse;
 	class UnlinkUserRequest;
 	class UnlinkUserResponse;
+	class UpdateUserRequest;
+	class UpdateUserResponse;
 	
     DECLARE_DELEGATE_OneParam(FGetAllUsersDelegate, const GetAllUsersResponse&);
     DECLARE_DELEGATE_OneParam(FGetUserDelegate, const GetUserResponse&);
     DECLARE_DELEGATE_OneParam(FUnlinkUserDelegate, const UnlinkUserResponse&);
+    DECLARE_DELEGATE_OneParam(FUpdateUserDelegate, const UpdateUserResponse&);
     
     FHttpRequestPtr GetAllUsers(const GetAllUsersRequest& Request, const FGetAllUsersDelegate& Delegate = FGetAllUsersDelegate()) const;
     FHttpRequestPtr GetUser(const GetUserRequest& Request, const FGetUserDelegate& Delegate = FGetUserDelegate()) const;
     FHttpRequestPtr UnlinkUser(const UnlinkUserRequest& Request, const FUnlinkUserDelegate& Delegate = FUnlinkUserDelegate()) const;
+    FHttpRequestPtr UpdateUser(const UpdateUserRequest& Request, const FUpdateUserDelegate& Delegate = FUpdateUserDelegate()) const;
     
 private:
     void OnGetAllUsersResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetAllUsersDelegate Delegate) const;
     void OnGetUserResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetUserDelegate Delegate) const;
     void OnUnlinkUserResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FUnlinkUserDelegate Delegate) const;
+    void OnUpdateUserResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FUpdateUserDelegate Delegate) const;
     
 	FHttpRequestRef CreateHttpRequest(const Request& Request) const;
 	bool IsValid() const;

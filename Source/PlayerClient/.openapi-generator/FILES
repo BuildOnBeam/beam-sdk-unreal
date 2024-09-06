@@ -117,6 +117,7 @@ Private/PlayerClientTransferAssetRequestInputAssetsInner.cpp
 Private/PlayerClientTransferNativeTokenRequestInput.cpp
 Private/PlayerClientTransferTokenRequestInput.cpp
 Private/PlayerClientUnwrappingTokenInput.cpp
+Private/PlayerClientUpdateUserRequest.cpp
 Private/PlayerClientUsersApi.cpp
 Private/PlayerClientUsersApiOperations.cpp
 Private/PlayerClientWrappingTokenInput.cpp
@@ -235,6 +236,7 @@ Public/PlayerClientTransferAssetRequestInputAssetsInner.h
 Public/PlayerClientTransferNativeTokenRequestInput.h
 Public/PlayerClientTransferTokenRequestInput.h
 Public/PlayerClientUnwrappingTokenInput.h
+Public/PlayerClientUpdateUserRequest.h
 Public/PlayerClientUsersApi.h
 Public/PlayerClientUsersApiOperations.h
 Public/PlayerClientWrappingTokenInput.h

@@ -85,16 +85,18 @@ inline FString ToString(const PlayerClientSellAssetRequestInput::CurrencyEnum& V
 	{
 	case PlayerClientSellAssetRequestInput::CurrencyEnum::Beam:
 		return TEXT("BEAM");
-	case PlayerClientSellAssetRequestInput::CurrencyEnum::Wbeam:
-		return TEXT("WBEAM");
-	case PlayerClientSellAssetRequestInput::CurrencyEnum::Usdc:
-		return TEXT("USDC");
-	case PlayerClientSellAssetRequestInput::CurrencyEnum::Usdt:
-		return TEXT("USDT");
 	case PlayerClientSellAssetRequestInput::CurrencyEnum::Imx:
 		return TEXT("IMX");
+	case PlayerClientSellAssetRequestInput::CurrencyEnum::Soph:
+		return TEXT("SOPH");
+	case PlayerClientSellAssetRequestInput::CurrencyEnum::Wbeam:
+		return TEXT("WBEAM");
 	case PlayerClientSellAssetRequestInput::CurrencyEnum::Wimx:
 		return TEXT("WIMX");
+	case PlayerClientSellAssetRequestInput::CurrencyEnum::Wsoph:
+		return TEXT("WSOPH");
+	case PlayerClientSellAssetRequestInput::CurrencyEnum::Usdc:
+		return TEXT("USDC");
 	}
 
 	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientSellAssetRequestInput::CurrencyEnum Value (%d)"), (int)Value);
@@ -110,11 +112,12 @@ inline bool FromString(const FString& EnumAsString, PlayerClientSellAssetRequest
 {
 	static TMap<FString, PlayerClientSellAssetRequestInput::CurrencyEnum> StringToEnum = { 
 		{ TEXT("BEAM"), PlayerClientSellAssetRequestInput::CurrencyEnum::Beam },
-		{ TEXT("WBEAM"), PlayerClientSellAssetRequestInput::CurrencyEnum::Wbeam },
-		{ TEXT("USDC"), PlayerClientSellAssetRequestInput::CurrencyEnum::Usdc },
-		{ TEXT("USDT"), PlayerClientSellAssetRequestInput::CurrencyEnum::Usdt },
 		{ TEXT("IMX"), PlayerClientSellAssetRequestInput::CurrencyEnum::Imx },
-		{ TEXT("WIMX"), PlayerClientSellAssetRequestInput::CurrencyEnum::Wimx }, };
+		{ TEXT("SOPH"), PlayerClientSellAssetRequestInput::CurrencyEnum::Soph },
+		{ TEXT("WBEAM"), PlayerClientSellAssetRequestInput::CurrencyEnum::Wbeam },
+		{ TEXT("WIMX"), PlayerClientSellAssetRequestInput::CurrencyEnum::Wimx },
+		{ TEXT("WSOPH"), PlayerClientSellAssetRequestInput::CurrencyEnum::Wsoph },
+		{ TEXT("USDC"), PlayerClientSellAssetRequestInput::CurrencyEnum::Usdc }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);
 	if(Found)
