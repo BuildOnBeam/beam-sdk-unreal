@@ -17,6 +17,7 @@
 
 #include "PlayerClientGetAllUsersResponse.h"
 #include "PlayerClientGetUserResponse.h"
+#include "PlayerClientUpdateUserRequest.h"
 
 namespace OpenAPI
 {
@@ -85,6 +86,30 @@ class PLAYERCLIENT_API PlayerClientUsersApi::UnlinkUserResponse : public Respons
 {
 public:
     virtual ~UnlinkUserResponse() {}
+	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
+
+    PlayerClientGetUserResponse Content;
+};
+
+/* Updates entityId for the user
+
+*/
+class PLAYERCLIENT_API PlayerClientUsersApi::UpdateUserRequest : public Request
+{
+public:
+    virtual ~UpdateUserRequest() {}
+	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+	FString ComputePath() const final;
+
+	FString EntityId;
+	PlayerClientUpdateUserRequest PlayerClientUpdateUserRequest;
+};
+
+class PLAYERCLIENT_API PlayerClientUsersApi::UpdateUserResponse : public Response
+{
+public:
+    virtual ~UpdateUserResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 

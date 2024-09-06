@@ -214,4 +214,31 @@ void PlayerClientUsersApi::OnUnlinkUserResponse(FHttpRequestPtr HttpRequest, FHt
 	Delegate.ExecuteIfBound(Response);
 }
 
+FHttpRequestPtr PlayerClientUsersApi::UpdateUser(const UpdateUserRequest& Request, const FUpdateUserDelegate& Delegate /*= FUpdateUserDelegate()*/) const
+{
+	if (!IsValid())
+		return nullptr;
+
+	FHttpRequestRef HttpRequest = CreateHttpRequest(Request);
+	HttpRequest->SetURL(*(Url + Request.ComputePath()));
+
+	for(const auto& It : AdditionalHeaderParams)
+	{
+		HttpRequest->SetHeader(It.Key, It.Value);
+	}
+
+	Request.SetupHttpRequest(HttpRequest);
+
+	HttpRequest->OnProcessRequestComplete().BindRaw(this, &PlayerClientUsersApi::OnUpdateUserResponse, Delegate);
+	HttpRequest->ProcessRequest();
+	return HttpRequest;
+}
+
+void PlayerClientUsersApi::OnUpdateUserResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FUpdateUserDelegate Delegate) const
+{
+	UpdateUserResponse Response;
+	HandleResponse(HttpResponse, bSucceeded, Response);
+	Delegate.ExecuteIfBound(Response);
+}
+
 }

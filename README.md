@@ -3,9 +3,9 @@
 ## Status: `Functional, but currently under internal review`
 
 ## Setup
-1. When in the /.openapi-generator/ folder, run `npm run generate-on-windows` or `npm run generate`
+1. When in the /.openapi-generator/ folder, run `npm run generate`
 2. This will generate the cpp files in the /Source/PlayerClient/ folder. 
-3. Additionally, it will run `generate_unreal_headers.js` if you have node.js installed which will create a header file at /BeamSdk/Public/BeamPlayerClientAPI.h
+3. Additionally, it will run `generate-unreal-header.mjs` if you have node.js installed which will create a header file at /BeamSdk/Public/BeamPlayerClientAPI.h
 
 ## Usage
 

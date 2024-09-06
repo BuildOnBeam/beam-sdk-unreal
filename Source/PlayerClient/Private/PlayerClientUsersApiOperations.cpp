@@ -136,4 +136,64 @@ bool PlayerClientUsersApi::UnlinkUserResponse::FromJson(const TSharedPtr<FJsonVa
 	return TryGetJsonValue(JsonValue, Content);
 }
 
+FString PlayerClientUsersApi::UpdateUserRequest::ComputePath() const
+{
+	TMap<FString, FStringFormatArg> PathParams = { 
+	{ TEXT("entityId"), FStringFormatArg(ToUrlString(EntityId)) } };
+
+	FString Path = FString::Format(TEXT("/v1/player/users/{entityId}"), PathParams);
+
+	return Path;
+}
+
+void PlayerClientUsersApi::UpdateUserRequest::SetupHttpRequest(const FHttpRequestRef& HttpRequest) const
+{
+	static const TArray<FString> Consumes = { TEXT("application/json") };
+	//static const TArray<FString> Produces = { TEXT("application/json") };
+
+	HttpRequest->SetVerb(TEXT("PATCH"));
+
+	// Default to Json Body request
+	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
+	{
+		// Body parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+
+		WriteJsonValue(Writer, PlayerClientUpdateUserRequest);
+		Writer->Close();
+
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
+	}
+	else if (Consumes.Contains(TEXT("multipart/form-data")))
+	{
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientUpdateUserRequest) was ignored, not supported in multipart form"));
+	}
+	else if (Consumes.Contains(TEXT("application/x-www-form-urlencoded")))
+	{
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientUpdateUserRequest) was ignored, not supported in urlencoded requests"));
+	}
+	else
+	{
+		UE_LOG(LogPlayerClient, Error, TEXT("Request ContentType not supported (%s)"), *FString::Join(Consumes, TEXT(",")));
+	}
+}
+
+void PlayerClientUsersApi::UpdateUserResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
+{
+	Response::SetHttpResponseCode(InHttpResponseCode);
+	switch ((int)InHttpResponseCode)
+	{
+	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	}
+}
+
+bool PlayerClientUsersApi::UpdateUserResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
+{
+	return TryGetJsonValue(JsonValue, Content);
+}
+
 }

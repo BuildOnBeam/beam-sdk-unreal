@@ -18,33 +18,18 @@ namespace OpenAPI
 {
 
 /*
- * PlayerClientGetChainCurrenciesResponseDataInner
+ * PlayerClientUpdateUserRequest
  *
  * 
  */
-class PLAYERCLIENT_API PlayerClientGetChainCurrenciesResponseDataInner : public Model
+class PLAYERCLIENT_API PlayerClientUpdateUserRequest : public Model
 {
 public:
-    virtual ~PlayerClientGetChainCurrenciesResponseDataInner() {}
+    virtual ~PlayerClientUpdateUserRequest() {}
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 	void WriteJson(JsonWriter& Writer) const final;
 
-	double Decimals;
-	enum class SymbolEnum
-	{
-		Beam,
-		Imx,
-		Soph,
-		Wbeam,
-		Wimx,
-		Wsoph,
-		Usdc,
-  	};
-
-	static FString EnumToString(const SymbolEnum& EnumValue);
-	static bool EnumFromString(const FString& EnumAsString, SymbolEnum& EnumValue);
-	SymbolEnum Symbol;
-	FString Address;
+	FString NewEntityId;
 };
 
 }

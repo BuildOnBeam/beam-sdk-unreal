@@ -26,16 +26,18 @@ inline FString ToString(const PlayerClientGetAssetListingsResponseDataInnerPrice
 	{
 	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Beam:
 		return TEXT("BEAM");
-	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wbeam:
-		return TEXT("WBEAM");
-	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Usdc:
-		return TEXT("USDC");
-	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Usdt:
-		return TEXT("USDT");
 	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Imx:
 		return TEXT("IMX");
+	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Soph:
+		return TEXT("SOPH");
+	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wbeam:
+		return TEXT("WBEAM");
 	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wimx:
 		return TEXT("WIMX");
+	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wsoph:
+		return TEXT("WSOPH");
+	case PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Usdc:
+		return TEXT("USDC");
 	}
 
 	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum Value (%d)"), (int)Value);
@@ -51,11 +53,12 @@ inline bool FromString(const FString& EnumAsString, PlayerClientGetAssetListings
 {
 	static TMap<FString, PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum> StringToEnum = { 
 		{ TEXT("BEAM"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Beam },
-		{ TEXT("WBEAM"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wbeam },
-		{ TEXT("USDC"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Usdc },
-		{ TEXT("USDT"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Usdt },
 		{ TEXT("IMX"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Imx },
-		{ TEXT("WIMX"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wimx }, };
+		{ TEXT("SOPH"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Soph },
+		{ TEXT("WBEAM"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wbeam },
+		{ TEXT("WIMX"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wimx },
+		{ TEXT("WSOPH"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Wsoph },
+		{ TEXT("USDC"), PlayerClientGetAssetListingsResponseDataInnerPriceCurrency::SymbolEnum::Usdc }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);
 	if(Found)

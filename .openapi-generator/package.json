@@ -1,12 +1,16 @@
 {
   "name": "beam-sdk-unreal",
   "scripts": {
-    "generate": "rm -rf ../Source/PlayerClient && openapi-generator-cli generate && node generate_unreal_header.js",
-    "generate-on-windows": "rmdir /s /q ..\\Source\\PlayerClient & openapi-generator-cli generate && node generate_unreal_header.js",
+    "generate": "rimraf ../Source/PlayerClient && openapi-generator-cli generate && node generate-unreal-header.mjs",
     "generate-templates": "openapi-generator-cli author template -g cpp-ue4 -o templates & TIMEOUT 10",
     "generate-yaml": "openapi-generator-cli generate -i https://api.testnet.onbeam.com/api/player-json -g openapi-yaml -o ./yaml --skip-validate-spec & TIMEOUT 10"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.13.4"
+    "@openapitools/openapi-generator-cli": "^2.13.4",
+    "rimraf": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=8"
   }
 }

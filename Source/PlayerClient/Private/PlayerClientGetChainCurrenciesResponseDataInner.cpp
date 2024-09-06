@@ -26,16 +26,18 @@ inline FString ToString(const PlayerClientGetChainCurrenciesResponseDataInner::S
 	{
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Beam:
 		return TEXT("BEAM");
-	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wbeam:
-		return TEXT("WBEAM");
-	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdc:
-		return TEXT("USDC");
-	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdt:
-		return TEXT("USDT");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Imx:
 		return TEXT("IMX");
+	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Soph:
+		return TEXT("SOPH");
+	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wbeam:
+		return TEXT("WBEAM");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wimx:
 		return TEXT("WIMX");
+	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wsoph:
+		return TEXT("WSOPH");
+	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdc:
+		return TEXT("USDC");
 	}
 
 	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum Value (%d)"), (int)Value);
@@ -51,11 +53,12 @@ inline bool FromString(const FString& EnumAsString, PlayerClientGetChainCurrenci
 {
 	static TMap<FString, PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum> StringToEnum = { 
 		{ TEXT("BEAM"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Beam },
-		{ TEXT("WBEAM"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wbeam },
-		{ TEXT("USDC"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdc },
-		{ TEXT("USDT"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdt },
 		{ TEXT("IMX"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Imx },
-		{ TEXT("WIMX"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wimx }, };
+		{ TEXT("SOPH"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Soph },
+		{ TEXT("WBEAM"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wbeam },
+		{ TEXT("WIMX"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wimx },
+		{ TEXT("WSOPH"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wsoph },
+		{ TEXT("USDC"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdc }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);
 	if(Found)

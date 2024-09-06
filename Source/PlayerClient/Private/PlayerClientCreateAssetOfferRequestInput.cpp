@@ -26,10 +26,12 @@ inline FString ToString(const PlayerClientCreateAssetOfferRequestInput::Currency
 	{
 	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wbeam:
 		return TEXT("WBEAM");
+	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wimx:
+		return TEXT("WIMX");
+	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wsoph:
+		return TEXT("WSOPH");
 	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdc:
 		return TEXT("USDC");
-	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdt:
-		return TEXT("USDT");
 	}
 
 	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientCreateAssetOfferRequestInput::CurrencyEnum Value (%d)"), (int)Value);
@@ -45,8 +47,9 @@ inline bool FromString(const FString& EnumAsString, PlayerClientCreateAssetOffer
 {
 	static TMap<FString, PlayerClientCreateAssetOfferRequestInput::CurrencyEnum> StringToEnum = { 
 		{ TEXT("WBEAM"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wbeam },
-		{ TEXT("USDC"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdc },
-		{ TEXT("USDT"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdt }, };
+		{ TEXT("WIMX"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wimx },
+		{ TEXT("WSOPH"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wsoph },
+		{ TEXT("USDC"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdc }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);
 	if(Found)

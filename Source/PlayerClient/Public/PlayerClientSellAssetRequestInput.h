@@ -51,11 +51,12 @@ public:
 	enum class CurrencyEnum
 	{
 		Beam,
-		Wbeam,
-		Usdc,
-		Usdt,
 		Imx,
+		Soph,
+		Wbeam,
 		Wimx,
+		Wsoph,
+		Usdc,
   	};
 
 	static FString EnumToString(const CurrencyEnum& EnumValue);
