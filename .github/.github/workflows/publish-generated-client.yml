@@ -1,0 +1,58 @@
+name: 'Publish the generated client'
+
+on:
+  workflow_dispatch: # Allow running the workflow manually from the GitHub UI
+  
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  publish-generated-client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./.openapi-generator
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📥 dependency installation
+        uses: ./.github/actions/pnpm-install
+
+      # Generate the new client
+      - name: Generate dependencies
+        run: pnpm generate
+
+      # Update main
+      - name: Update main and fast-foward tag
+        run: |
+          # set credentials to github-actions so we know it's automated
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+          # stage all files and make a release commit
+          git add -A
+          git commit -m "[RELEASE] Update to the generated API client" --allow-empty
+
+      # Check for changes
+      - name: Check if there are changes
+        run: |
+          git diff --quiet || echo "has-changes=true" >> $GITHUB_ENV
+
+      # Push to main if there are any changes
+      - name: 
+        if: env.has-changes == 'true'
+        run: |
+          # push release commit to main
+          git push
+
+          ## override existing tag to point at new commit, with code that we actually package
+          git tag -f ${{ github.event.release.tag_name }}
+          git push --tags --force
