@@ -82,8 +82,9 @@ static int fill_random(unsigned char data[], size_t size) {
     } else {
         return 0;
     }
-#endif
+#else
     return 0;
+#endif
 }
 
 /*static void print_hex(unsigned char* data, size_t size) {
