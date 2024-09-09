@@ -49,3 +49,7 @@ local.sqlite
 local.db
 **/generated
 **/*.generated
+
+# Unreal Engine
+Intermediate/
+Binaries/
