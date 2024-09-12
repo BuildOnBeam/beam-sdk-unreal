@@ -36,6 +36,8 @@ inline FString ToString(const PlayerClientGetChainCurrenciesResponseDataInner::S
 		return TEXT("WIMX");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wsoph:
 		return TEXT("WSOPH");
+	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Rat:
+		return TEXT("RAT");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdc:
 		return TEXT("USDC");
 	}
@@ -58,6 +60,7 @@ inline bool FromString(const FString& EnumAsString, PlayerClientGetChainCurrenci
 		{ TEXT("WBEAM"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wbeam },
 		{ TEXT("WIMX"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wimx },
 		{ TEXT("WSOPH"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wsoph },
+		{ TEXT("RAT"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Rat },
 		{ TEXT("USDC"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdc }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);

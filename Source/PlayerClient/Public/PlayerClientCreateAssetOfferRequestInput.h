@@ -40,6 +40,7 @@ public:
 		Wbeam,
 		Wimx,
 		Wsoph,
+		Rat,
 		Usdc,
   	};
 

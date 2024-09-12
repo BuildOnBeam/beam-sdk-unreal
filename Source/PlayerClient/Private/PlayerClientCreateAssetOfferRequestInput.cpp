@@ -30,6 +30,8 @@ inline FString ToString(const PlayerClientCreateAssetOfferRequestInput::Currency
 		return TEXT("WIMX");
 	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wsoph:
 		return TEXT("WSOPH");
+	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Rat:
+		return TEXT("RAT");
 	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdc:
 		return TEXT("USDC");
 	}
@@ -49,6 +51,7 @@ inline bool FromString(const FString& EnumAsString, PlayerClientCreateAssetOffer
 		{ TEXT("WBEAM"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wbeam },
 		{ TEXT("WIMX"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wimx },
 		{ TEXT("WSOPH"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wsoph },
+		{ TEXT("RAT"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Rat },
 		{ TEXT("USDC"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdc }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);
