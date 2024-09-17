@@ -1,7 +1,6 @@
 #include "BeamSaveGameStorage.h"
 
 #if PLATFORM_WINDOWS
-	...
 // Clear the Microsoft GetObject Macro so it doesn't cause annoying build errors regarding GetObjectW.
 #include "Microsoft/PreWindowsApi.h"
 #include "Microsoft/PostWindowsApi.h"
