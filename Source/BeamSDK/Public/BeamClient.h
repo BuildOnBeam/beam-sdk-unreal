@@ -19,7 +19,6 @@
 #include "BeamOperationSigningBy.h"
 
 #include "Async/Async.h"
-#include "Engine/TimerHandle.h"
 
 #include "BeamClient.generated.h"
 

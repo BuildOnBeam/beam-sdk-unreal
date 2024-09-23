@@ -15,6 +15,5 @@ struct FBeamConstants
 	struct Storage
 	{
 		static const FString BeamSigningKey;
-		static const FString BeamSession;
 	};
 };
