@@ -46,7 +46,7 @@ public:
 
 	FString AssetAddress;
 	FString AssetId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	/* If true, will always return 'owners' record for this User if he owns the asset */
 	TOptional<FString> EntityId;
 	/* If true, will return all owners of the asset */
@@ -98,7 +98,7 @@ public:
 	FString ComputePath() const final;
 
 	FString AssetAddress;
-	double ChainId;
+	int64 ChainId = 0;
 };
 
 class PLAYERCLIENT_API PlayerClientAssetsApi::GetAttributesResponse : public Response
@@ -147,7 +147,7 @@ public:
 	FString ComputePath() const final;
 
 	FString AssetAddress;
-	double ChainId;
+	int64 ChainId = 0;
 	TOptional<double> Limit;
 	TOptional<double> Offset;
 };
@@ -197,7 +197,7 @@ public:
 	FString ComputePath() const final;
 
 	FString EntityId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 class PLAYERCLIENT_API PlayerClientAssetsApi::GetUserCurrenciesResponse : public Response
@@ -221,7 +221,7 @@ public:
 	FString ComputePath() const final;
 
 	FString EntityId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 class PLAYERCLIENT_API PlayerClientAssetsApi::GetUserNativeCurrencyResponse : public Response

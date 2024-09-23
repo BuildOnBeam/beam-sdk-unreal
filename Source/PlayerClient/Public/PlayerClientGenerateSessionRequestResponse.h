@@ -42,7 +42,7 @@ public:
 	FString Id;
 	FDateTime CreatedAt;
 	TOptional<FDateTime> UpdatedAt;
-	int32 ChainId = 0;
+	int64 ChainId = 0;
 	TOptional<FString> OpenfortId;
 	FString Address;
 	FString Url;

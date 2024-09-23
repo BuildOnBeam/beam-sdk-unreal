@@ -42,7 +42,7 @@ public:
 	static bool EnumFromString(const FString& EnumAsString, OperationProcessingEnum& EnumValue);
 	TOptional<OperationProcessingEnum> OperationProcessing;
 	TOptional<FString> OperationId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 }

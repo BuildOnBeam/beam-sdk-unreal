@@ -36,7 +36,7 @@ public:
 	FString Id;
 	FDateTime CreatedAt;
 	FDateTime UpdatedAt;
-	double ChainId;
+	int64 ChainId = 0;
 	PlayerClientGetTransactionsResponseDataInnerIntent Intent;
 	TOptional<PlayerClientGetTransactionsResponseDataInnerTransaction> Transaction;
 	PlayerClientGetTransactionResponsePolicy Policy;

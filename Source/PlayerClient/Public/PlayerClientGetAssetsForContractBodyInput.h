@@ -31,7 +31,7 @@ public:
 	void WriteJson(JsonWriter& Writer) const final;
 
 	TOptional<FString> Continuation;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	TOptional<int32> MinRarityRank;
 	TOptional<int32> MaxRarityRank;
 	TOptional<double> MinFloorAskPrice;

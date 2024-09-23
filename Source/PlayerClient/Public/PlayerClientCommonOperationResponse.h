@@ -56,7 +56,7 @@ public:
 	TOptional<FDateTime> UpdatedAt;
 	FString GameId;
 	FString UserId;
-	int32 ChainId = 0;
+	int64 ChainId = 0;
 	FString Url;
 	TArray<PlayerClientCommonOperationResponseTransactionsInner> Transactions;
 };

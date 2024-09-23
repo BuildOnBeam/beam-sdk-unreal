@@ -52,7 +52,7 @@ public:
 	TOptional<RarityEnum> Rarity;
 	TOptional<double> RarityScore;
 	TOptional<TArray<PlayerClientGetAssetsForUserResponseDataInnerAttributesInner>> Attributes;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 }

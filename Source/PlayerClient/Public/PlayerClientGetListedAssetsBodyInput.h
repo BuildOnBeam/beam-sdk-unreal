@@ -51,7 +51,7 @@ public:
 	/* If using `createdAt` for sorting, only `desc` is allowed. */
 	TOptional<SortDirectionEnum> SortDirection;
 	TOptional<int32> Limit;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	TOptional<FString> Continuation;
 };
 

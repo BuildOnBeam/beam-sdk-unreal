@@ -32,7 +32,7 @@ public:
 
 	FString EntityId;
 	TOptional<TArray<PlayerClientCreateOperationRequestInputTransactionsInner>> Transactions;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	enum class OperationProcessingEnum
 	{
 		SignOnly,

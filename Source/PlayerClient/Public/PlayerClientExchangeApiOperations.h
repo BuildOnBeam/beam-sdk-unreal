@@ -85,7 +85,7 @@ public:
 	FString TokenIn;
 	FString TokenOut;
 	FString AmountOut;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 class PLAYERCLIENT_API PlayerClientExchangeApi::GetQuoteForInputResponse : public Response
@@ -111,7 +111,7 @@ public:
 	FString TokenIn;
 	FString TokenOut;
 	FString AmountIn;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 class PLAYERCLIENT_API PlayerClientExchangeApi::GetQuoteForOutputResponse : public Response

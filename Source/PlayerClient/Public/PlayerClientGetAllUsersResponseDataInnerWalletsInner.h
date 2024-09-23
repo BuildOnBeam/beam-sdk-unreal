@@ -34,7 +34,7 @@ public:
 	FDateTime UpdatedAt;
 	FString ExternalId;
 	FString Address;
-	int32 ChainId = 0;
+	int64 ChainId = 0;
 	TOptional<FString> ProfileId;
 	TOptional<FString> UserId;
 };

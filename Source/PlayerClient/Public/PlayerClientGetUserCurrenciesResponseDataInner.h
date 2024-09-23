@@ -34,7 +34,7 @@ public:
 	FString Symbol;
 	double Decimals;
 	TOptional<FString> LogoUri;
-	double ChainId;
+	int64 ChainId = 0;
 	FString Balance;
 };
 

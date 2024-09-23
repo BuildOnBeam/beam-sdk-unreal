@@ -50,7 +50,7 @@ public:
 	TOptional<FString> Contract;
 	TOptional<bool> IncludeAttributes;
 	TOptional<FString> Continuation;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	TOptional<double> Limit;
 };
 

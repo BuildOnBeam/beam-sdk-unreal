@@ -44,7 +44,7 @@ public:
 	static FString EnumToString(const TypesEnum& EnumValue);
 	static bool EnumFromString(const FString& EnumAsString, TypesEnum& EnumValue);
 	TOptional<TArray<TypesEnum>> Types;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	TOptional<FString> Continuation;
 };
 

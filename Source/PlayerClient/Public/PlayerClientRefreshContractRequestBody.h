@@ -30,7 +30,7 @@ public:
 	void WriteJson(JsonWriter& Writer) const final;
 
 	FString AssetAddress;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 }

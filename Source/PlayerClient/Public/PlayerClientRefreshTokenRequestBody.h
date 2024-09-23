@@ -31,7 +31,7 @@ public:
 
 	FString AssetAddress;
 	FString TokenId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 }

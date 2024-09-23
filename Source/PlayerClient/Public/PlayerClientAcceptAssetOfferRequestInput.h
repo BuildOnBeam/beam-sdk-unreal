@@ -33,7 +33,7 @@ public:
 	TOptional<bool> Optimistic;
 	TOptional<bool> Sponsor;
 	TOptional<FString> PolicyId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	enum class OperationProcessingEnum
 	{
 		SignOnly,

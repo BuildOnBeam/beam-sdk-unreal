@@ -31,7 +31,7 @@ public:
 	void WriteJson(JsonWriter& Writer) const final;
 
 	TOptional<TArray<PlayerClientGetAssetsForContractBodyInputAttributesInner>> Attributes;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 }

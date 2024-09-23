@@ -119,7 +119,7 @@ public:
 	FString EntityId;
 	FString OrderId;
 	PlayerClientCancelAssetListingRequestInput PlayerClientCancelAssetListingRequestInput;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 class PLAYERCLIENT_API PlayerClientMarketplaceApi::CancelListingResponse : public Response
@@ -168,7 +168,7 @@ public:
 
 	FString AssetAddress;
 	FString AssetId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	TOptional<FString> Continuation;
 };
 
@@ -192,7 +192,7 @@ public:
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
 
-	double ChainId;
+	int64 ChainId = 0;
 };
 
 class PLAYERCLIENT_API PlayerClientMarketplaceApi::GetChainCurrenciesResponse : public Response
@@ -265,7 +265,7 @@ public:
 	FString EntityId;
 	FString AssetAddress;
 	FString AssetId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	TOptional<FString> Continuation;
 };
 
@@ -290,7 +290,7 @@ public:
 	FString ComputePath() const final;
 
 	FString EntityId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	TOptional<FString> Continuation;
 };
 

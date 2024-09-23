@@ -47,7 +47,7 @@ public:
 	static FString EnumToString(const CurrencyEnum& EnumValue);
 	static bool EnumFromString(const FString& EnumAsString, CurrencyEnum& EnumValue);
 	TOptional<CurrencyEnum> Currency;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 	enum class OperationProcessingEnum
 	{
 		SignOnly,

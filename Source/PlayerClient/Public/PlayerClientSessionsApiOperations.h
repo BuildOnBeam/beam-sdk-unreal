@@ -62,7 +62,7 @@ public:
 
 	FString EntityId;
 	FString AccountAddress;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 class PLAYERCLIENT_API PlayerClientSessionsApi::GetActiveSessionResponse : public Response
@@ -86,7 +86,7 @@ public:
 	FString ComputePath() const final;
 
 	FString EntityId;
-	TOptional<double> ChainId;
+	TOptional<int64> ChainId;
 };
 
 class PLAYERCLIENT_API PlayerClientSessionsApi::GetAllActiveSessionsResponse : public Response
