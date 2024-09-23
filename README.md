@@ -1,7 +1,5 @@
 ﻿# Beam Plugin for Unreal Engine
 
-## Status: `Functional, but currently under internal review`
-
 ## Setup
 1. When in the /.openapi-generator/ folder, run `npm run generate`
 2. This will generate the cpp files in the /Source/PlayerClient/ folder. 
