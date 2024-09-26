@@ -8,7 +8,7 @@
 ## Usage
 
 An example implementation compatible with versions of Unreal newer than 5.2.1 is provided at:
-[beam-sdk-unreal-example](https://github.com/Merit-Circle/beam-sdk-unreal-example)
+[beam-sdk-unreal-example](https://github.com/BuildOnBeam/beam-sdk-unreal-example)
 
 ### Initialize a Beam Client
 Initialize a BeamClient to interact with the Beam API.
