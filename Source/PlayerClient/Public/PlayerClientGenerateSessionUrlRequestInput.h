@@ -30,6 +30,7 @@ public:
 	void WriteJson(JsonWriter& Writer) const final;
 
 	FString Address;
+	TOptional<FDateTime> SuggestedExpiry;
 	TOptional<int64> ChainId;
 };
 

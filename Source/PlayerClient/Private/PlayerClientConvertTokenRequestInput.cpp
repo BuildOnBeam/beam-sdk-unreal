@@ -84,6 +84,10 @@ void PlayerClientConvertTokenRequestInput::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("receiverEntityId")); WriteJsonValue(Writer, ReceiverEntityId.GetValue());
 	}
+	if (ReceiverWalletAddress.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("receiverWalletAddress")); WriteJsonValue(Writer, ReceiverWalletAddress.GetValue());
+	}
 	if (Optimistic.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("optimistic")); WriteJsonValue(Writer, Optimistic.GetValue());
@@ -124,6 +128,7 @@ bool PlayerClientConvertTokenRequestInput::FromJson(const TSharedPtr<FJsonValue>
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("amountIn"), AmountIn);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("amountOut"), AmountOut);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("receiverEntityId"), ReceiverEntityId);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("receiverWalletAddress"), ReceiverWalletAddress);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("optimistic"), Optimistic);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("sponsor"), Sponsor);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("policyId"), PolicyId);

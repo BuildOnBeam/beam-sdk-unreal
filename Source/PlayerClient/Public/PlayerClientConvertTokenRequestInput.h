@@ -34,6 +34,7 @@ public:
 	FString AmountIn;
 	FString AmountOut;
 	TOptional<FString> ReceiverEntityId;
+	TOptional<FString> ReceiverWalletAddress;
 	TOptional<bool> Optimistic;
 	TOptional<bool> Sponsor;
 	TOptional<FString> PolicyId;
