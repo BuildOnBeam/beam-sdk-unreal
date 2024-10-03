@@ -106,12 +106,6 @@ public:
 public:
 	/// Launches a URL in a browser. (optionally override if needed)
 	///  @param[in]		InUrl		The url to browse to.
-	///  @param[in]		InParams	Optional input parameters.
-	///  @param[out]	OutError	Error result from launch request.
-	virtual void LaunchURL(const FString& InUrl, FString& InParams, FString& OutError);
-
-	/// Launches a URL in a browser. (optionally override if needed)
-	///  @param[in]		InUrl		The url to browse to.
 	/// @return Error result from launch request.
 	virtual FString LaunchURL(const FString& Url);
 

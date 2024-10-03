@@ -27,20 +27,12 @@ UBeamClient::UBeamClient()
 	SetEnvironment(EBeamEnvironment::Testnet);
 }
 
-
-void UBeamClient::LaunchURL(const FString& Url, FString& Params, FString& OutError)
-{
-	FPlatformProcess::LaunchURL(*Url, *Params, &OutError);
-}
-
-
 FString UBeamClient::LaunchURL(const FString& Url)
 {
 	FString Params, LaunchUrlError;
 	FPlatformProcess::LaunchURL(*Url, *Params, &LaunchUrlError);
 	return LaunchUrlError;
 }
-
 
 //
 // --- Config ---
@@ -62,7 +54,7 @@ UBeamClient* UBeamClient::SetEnvironment(EBeamEnvironment InEnvironment)
 		apiUrl = "https://api.onbeam.com";
 		break;
 	default:
-		apiUrl = "https://api.testnet.onbeam.com";
+		apiUrl = "https://api.preview.onbeam.com";
 		break;
 	}
 
