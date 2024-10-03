@@ -54,7 +54,7 @@ UBeamClient* UBeamClient::SetEnvironment(EBeamEnvironment InEnvironment)
 		apiUrl = "https://api.onbeam.com";
 		break;
 	default:
-		apiUrl = "https://api.preview.onbeam.com";
+		apiUrl = "https://api.testnet.onbeam.com";
 		break;
 	}
 
@@ -323,6 +323,7 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 
 
 TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int chainId, int secondsTimeout,
+                                                           TOptional<FDateTime> suggestedExpiry,
                                                            TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
@@ -332,7 +333,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
 	auto resultFuture = Async(EAsyncExecution::Thread,
-	                          [&, Promise, entityId, chainId, secondsTimeout, OutCancellationToken]()
+	                          [&, Promise, entityId, chainId, secondsTimeout, suggestedExpiry, OutCancellationToken]()
 	                          {
 		                          UE_CLOG(DebugLog, LogBeamClient, Log,
 		                                  TEXT("CreateSessionAsync: Retrieving active session: "
@@ -365,6 +366,11 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		                          request.PlayerClientGenerateSessionUrlRequestInput.Address = newKeyPair.GetAddress().
 			                          c_str();
 		                          request.PlayerClientGenerateSessionUrlRequestInput.ChainId = chainId;
+
+		                          if (suggestedExpiry.IsSet())
+		                          {
+			                          request.PlayerClientGenerateSessionUrlRequestInput.SuggestedExpiry = suggestedExpiry.GetValue();
+		                          }
 
 		                          const auto resPromise = MakeShared<
 			                          TPromise<PlayerClientSessionsApi::CreateSessionRequestResponse>,
@@ -517,7 +523,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		{
 			if (calledFromGameThread)
 			{
-				// Resolve the promise on the game thread for convienence.
+				// Resolve the promise on the game thread for convenience.
 				AsyncTask(ENamedThreads::GameThread, [Promise, result]()
 				{
 					Promise->SetValue(result);
@@ -952,7 +958,8 @@ TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FStrin
 
 		GetOrCreateSigningKeyPair(keyPair, entityId);
 
-		// If session is no longer valid, check if we have one saved in the API.
+		// user might've revoked the session outside the game so
+		// get active session for current keyPair from the API
 		PlayerClientSessionsApi::GetActiveSessionRequest request;
 		request.EntityId = entityId;
 		request.AccountAddress = keyPair.GetAddress().c_str();

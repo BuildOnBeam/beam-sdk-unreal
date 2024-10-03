@@ -7,6 +7,7 @@
 struct FBeamConstants
 {
 	static const int DefaultChainId = 13337;
+	static const int DefaultTimeoutInSeconds = 240;
 
 	static const FString BeamAPIKeyHeader;
 	static const FString BeamSDKHeader;
