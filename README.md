@@ -46,3 +46,9 @@ BeamClient->RevokeSessionAsync(EntityId, SessionAddress)
     // Do something with response
 });
 ```
+
+
+#### Overriding LaunchURL method
+Beam sometimes has to open a browser in order for the user to sign in to a Beam account and sign transactions/sessions. By default we call `FPlatformProcess::LaunchURL()`.
+
+In some cases you might want to implement your own way of opening URLs, f.e. using a built-in WebView. To do so, you need to override `FString UBeamClient::LaunchURL(const FString& Url)` in your implementation.

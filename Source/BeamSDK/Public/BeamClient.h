@@ -38,7 +38,8 @@ typedef PlayerClientOperationApi::GetOperationResponse GetOperationResponse;
 
 // Note: use with ::EnumFromString(StatusEnum) on the response types above.
 typedef PlayerClientCommonOperationResponse::StatusEnum CommonOperationStatusEnum;
-typedef PlayerClientCommonOperationResponseTransactionsInner::StatusEnum CommonOperationResponseTransactionsInnerStatusEnum;
+typedef PlayerClientCommonOperationResponseTransactionsInner::StatusEnum
+CommonOperationResponseTransactionsInnerStatusEnum;
 typedef PlayerClientConfirmOperationRequest::StatusEnum ConfirmOperationStatusEnum;
 typedef PlayerClientCreateConnectionRequestResponse::StatusEnum CreateConnectionRequestStatusEnum;
 typedef PlayerClientGenerateSessionRequestResponse::StatusEnum GenerateSessionRequestStatusEnum;
@@ -51,8 +52,6 @@ typedef TBeamResult<CommonOperationStatusEnum> BeamOperationResult;
 typedef TBeamResult<GetConnectionRequestStatusEnum> BeamConnectionResult;
 
 
-constexpr int DefaultTimeoutInSeconds = 240;
-
 /**
  * 
  */
@@ -62,7 +61,7 @@ class BEAMSDK_API UBeamClient : public UObject
 	GENERATED_BODY()
 
 protected:
-	template<typename TTargetApi>
+	template <typename TTargetApi>
 	TSharedPtr<TTargetApi>& ConfigureApi(TSharedPtr<TTargetApi>& targetApi)
 	{
 		targetApi->SetURL(BeamApiUrl);
@@ -77,7 +76,8 @@ public:
 	public:
 		FBeamCancellationToken()
 			: bCancel(false)
-		{}
+		{
+		}
 
 		bool ShouldCancel() { return bCancel.load(); }
 		void Cancel() { bCancel.store(true); }
@@ -102,22 +102,15 @@ public:
 	UBeamClient();
 
 
-// Virtual methods
+	// Virtual methods
 public:
-	/// Launches a URL in a browser. (optionally override if needed)
-	///  @param[in]		InUrl		The url to browse to.
-	///  @param[in]		InParams	Optional input parameters.
-	///  @param[out]	OutError	Error result from launch request.
-	virtual void LaunchURL(const FString& InUrl, FString& InParams, FString& OutError);
-
 	/// Launches a URL in a browser. (optionally override if needed)
 	///  @param[in]		InUrl		The url to browse to.
 	/// @return Error result from launch request.
 	virtual FString LaunchURL(const FString& Url);
 
-// Config
+	// Config
 public:
-
 	/// Sets Publishable Beam API key on the client. WARNING: Do not use keys other than Publishable, they're meant to be private, server-side only!
 	///  @param[in]		PublishableApiKey	Publishable Beam API key
 	/// @return BeamClient
@@ -139,7 +132,6 @@ public:
 	UBeamClient* SetDebugLogging(bool enable);
 
 public:
-
 	/// Will connect given EntityId for your game to a User.
 	/// This will also happen on first possible action signed by user in the browser.
 	///  @param[in]		EntityId		Entity Id of the User performing signing
@@ -149,7 +141,7 @@ public:
 	TFuture<BeamConnectionResult> ConnectUserToGameAsync(
 		FString EntityId,
 		int32 ChainId = FBeamConstants::DefaultChainId,
-		int32 SecondsTimeout = DefaultTimeoutInSeconds,
+		int32 SecondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
@@ -173,7 +165,7 @@ public:
 		FString entityId,
 		FString sessionAddress,
 		int chainId = FBeamConstants::DefaultChainId,
-		int secondsTimeout = DefaultTimeoutInSeconds,
+		int secondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
@@ -182,11 +174,13 @@ public:
 	///  @param[in]		entityId		Entity Id of the User performing signing
 	///  @param[in]		chainId			ChainId to perform operation on. Defaults to 13337.
 	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
+	///  @param[in]     suggestedExpiry Suggested Expiry date that will be pre-selected for the User
 	/// @return TFuture
 	TFuture<BeamSessionResult> CreateSessionAsync(
 		FString entityId,
 		int chainId = FBeamConstants::DefaultChainId,
-		int secondsTimeout = DefaultTimeoutInSeconds,
+		int secondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
+		TOptional<FDateTime> suggestedExpiry = TOptional<FDateTime>(),
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
@@ -202,7 +196,7 @@ public:
 		FString operationId,
 		int chainId = FBeamConstants::DefaultChainId,
 		EBeamOperationSigningBy signingBy = EBeamOperationSigningBy::Auto,
-		int secondsTimeout = DefaultTimeoutInSeconds,
+		int secondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
@@ -211,73 +205,78 @@ public:
 	void ClearLocalSession(FString EntityId);
 
 private:
+	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(CommonOperationResponse operation, int secondsTimeout,
+	                                                            TSharedPtr<FBeamCancellationToken>* OutCancellationToken
+		                                                            = nullptr);
 
-	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(CommonOperationResponse operation, int secondsTimeout, TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr);
-
-	TFuture<BeamOperationResult> SignOperationUsingSessionAsync(CommonOperationResponse operation, KeyPair activeSessionKeyPair, TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr);
+	TFuture<BeamOperationResult> SignOperationUsingSessionAsync(CommonOperationResponse operation,
+	                                                            KeyPair activeSessionKeyPair,
+	                                                            TSharedPtr<FBeamCancellationToken>* OutCancellationToken
+		                                                            = nullptr);
 
 	/// Will retry or return nullptr if received 404.
-	template<typename TResultType>
+	template <typename TResultType>
 	static TFuture<TOptional<TResultType>> PollForResult(
 		TFunction<TFuture<TResultType>()> actionToPerform,
 		TFunction<bool(const TResultType&)> shouldRetry,
-		int secondsTimeout = DefaultTimeoutInSeconds,
+		int secondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
 		int secondsBetweenPolls = 1,
 		TSharedPtr<FBeamCancellationToken> cancellationToken = nullptr
 	)
 	{
 		const auto Promise = MakeShared<TPromise<TOptional<TResultType>>, ESPMode::ThreadSafe>();
-		AsyncTask(ENamedThreads::AnyThread, [&, Promise, secondsTimeout, secondsBetweenPolls, actionToPerform, shouldRetry, cancellationToken]()
-		{
-			// This code will run asynchronously, without freezing the game thread
-			FPlatformProcess::Sleep(2.0f);
+		AsyncTask(ENamedThreads::AnyThread,
+		          [&, Promise, secondsTimeout, secondsBetweenPolls, actionToPerform, shouldRetry, cancellationToken]()
+		          {
+			          // This code will run asynchronously, without freezing the game thread
+			          FPlatformProcess::Sleep(2.0f);
 
-			TOptional<TResultType> result;
-			FDateTime endTime = FDateTime::Now() + FTimespan(0, 0, secondsTimeout);
-			while ((endTime - FDateTime::Now()).GetTotalSeconds() > 0.0)
-			{
-				TFuture<TResultType> actionFuture = actionToPerform();
-				while (!actionFuture.IsReady())
-				{
-					if (actionFuture.WaitFor(FTimespan::FromMilliseconds(100.0)))
-					{
-						result = actionFuture.Get();
-						if (result.IsSet())
-						{
-							if (result.GetValue().GetHttpResponseCode() == 404)
-							{
-								result.Reset();
-							}
-						}
-						break;
-					}
-					else if (cancellationToken.IsValid() && cancellationToken->ShouldCancel())
-					{
-						cancellationToken->Reset();
-						result.Reset();
-						break;
-					}
-				}
+			          TOptional<TResultType> result;
+			          FDateTime endTime = FDateTime::Now() + FTimespan(0, 0, secondsTimeout);
+			          while ((endTime - FDateTime::Now()).GetTotalSeconds() > 0.0)
+			          {
+				          TFuture<TResultType> actionFuture = actionToPerform();
+				          while (!actionFuture.IsReady())
+				          {
+					          if (actionFuture.WaitFor(FTimespan::FromMilliseconds(100.0)))
+					          {
+						          result = actionFuture.Get();
+						          if (result.IsSet())
+						          {
+							          if (result.GetValue().GetHttpResponseCode() == 404)
+							          {
+								          result.Reset();
+							          }
+						          }
+						          break;
+					          }
+					          else if (cancellationToken.IsValid() && cancellationToken->ShouldCancel())
+					          {
+						          cancellationToken->Reset();
+						          result.Reset();
+						          break;
+					          }
+				          }
 
-				if (result.IsSet())
-				{
-					auto temp = result.GetValue();
-					bool test = shouldRetry(temp);
-					if (!test)
-					{
-						break;
-					}
-				}
+				          if (result.IsSet())
+				          {
+					          auto temp = result.GetValue();
+					          bool test = shouldRetry(temp);
+					          if (!test)
+					          {
+						          break;
+					          }
+				          }
 
-				FPlatformProcess::Sleep(secondsBetweenPolls);
-			}
+				          FPlatformProcess::Sleep(secondsBetweenPolls);
+			          }
 
-			AsyncTask(ENamedThreads::GameThread, [Promise, result]()
-			{
-				// This code will be executed on the game thread
-				Promise->SetValue(result);
-			});
-		});
+			          AsyncTask(ENamedThreads::GameThread, [Promise, result]()
+			          {
+				          // This code will be executed on the game thread
+				          Promise->SetValue(result);
+			          });
+		          });
 		return Promise->GetFuture();
 	}
 
