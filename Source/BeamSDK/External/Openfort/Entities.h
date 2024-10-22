@@ -49,7 +49,7 @@ struct BEAMSDK_API FTransactionIntentResponse
 	FString updated_at;
 	
 	UPROPERTY(BlueprintReadOnly)
-	int chain_id;
+	int chain_id = 13337;
 	
 	UPROPERTY(BlueprintReadOnly)
 	FString user_operation_hash;
