@@ -70,6 +70,7 @@ UBeamClient* UBeamClient::SetEnvironment(EBeamEnvironment InEnvironment)
 	ConfigureApi(UsersApi);
 	ConfigureApi(OperationApi);
 	ConfigureApi(ConnectorApi);
+	ConfigureApi(RampApi);
 
 	return this;
 }
@@ -793,29 +794,29 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
 	auto resultFuture = Async(EAsyncExecution::Thread, [&, Promise, operation, OutCancellationToken]()
 	                          {
-		                          if (operation.Transactions.IsEmpty())
+		                          if (operation.Actions.IsEmpty())
 		                          {
 			                          BeamOperationResult result;
 			                          result.Result = PlayerOperationStatusEnum::Error;
 			                          result.Status = EBeamResultType::Error;
-			                          result.Error = TEXT("Operation has no transactions to sign");
+			                          result.Error = TEXT("Operation has no actions to sign");
 			                          UE_CLOG(DebugLog, LogBeamClient, Log,
-			                                  TEXT("Operation(%s) has no transactions to sign, ending"),
+			                                  TEXT("Operation(%s) has no actions to sign, ending"),
 			                                  *operation.Id);
 			                          return result;
 		                          }
 
 		                          ConfirmOperationRequest confirmationModel;
 		                          confirmationModel.Status = ConfirmOperationStatusEnum::Pending;
-		                          confirmationModel.Transactions = TArray<
+		                          confirmationModel.Actions = TArray<
 			                          PlayerClientConfirmOperationRequestTransactionsInner>();
 
 		                          for (auto& action : operation.Actions)
 		                          {
 			                          UE_CLOG(DebugLog, LogBeamClient, Log,
-			                                  TEXT("Signing operation(%s) transaction(%s), externalId=(%s)..."),
+			                                  TEXT("Signing operation(%s) actions(%s)..."),
 			                                  *operation.Id,
-			                                  *action.Id, *action.Id);
+			                                  *action.Id);
 
 			                          FString signature;
 			                          if (action.Type == PlayerOperationResponseAction::TypeEnum::SessionRevoke)
@@ -853,7 +854,7 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(
 				                          }
 			                          case PlayerClientPlayerOperationActionSignature::TypeEnum::TypedData:
 				                          {
-					                          auto hash = std::string(TCHAR_TO_UTF8(*signatureObj.Hash.GetValue));
+					                          auto hash = std::string(TCHAR_TO_UTF8(*signatureObj.Hash.GetValue()));
 					                          signature = activeSessionKeyPair.SignMarketplaceTransactionHash(hash).
 					                                                           c_str();
 					                          break;
@@ -874,7 +875,7 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(
 
 			                          ConfirmOperationRequestAction inner;
 			                          inner.Id = action.Id;
-			                          inner.Signature = signatureObj;
+			                          inner.Signature = signature;
 
 			                          confirmationModel.Actions.GetValue().Add(inner);
 		                          }

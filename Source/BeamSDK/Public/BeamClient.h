@@ -97,6 +97,7 @@ public:
 	TSharedPtr<PlayerClientUsersApi> UsersApi = MakeShared<PlayerClientUsersApi>();
 	TSharedPtr<PlayerClientOperationApi> OperationApi = MakeShared<PlayerClientOperationApi>();
 	TSharedPtr<PlayerClientConnectorApi> ConnectorApi = MakeShared<PlayerClientConnectorApi>();
+	TSharedPtr<PlayerClientRampApi> RampApi = MakeShared<PlayerClientRampApi>();
 
 public:
 	UBeamClient();
