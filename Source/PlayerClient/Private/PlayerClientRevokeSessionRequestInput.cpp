@@ -77,17 +77,25 @@ void PlayerClientRevokeSessionRequestInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
 	Writer->WriteIdentifierPrefix(TEXT("address")); WriteJsonValue(Writer, Address);
-	if (OperationId.IsSet())
+	if (Sponsor.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("operationId")); WriteJsonValue(Writer, OperationId.GetValue());
+		Writer->WriteIdentifierPrefix(TEXT("sponsor")); WriteJsonValue(Writer, Sponsor.GetValue());
+	}
+	if (PolicyId.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("policyId")); WriteJsonValue(Writer, PolicyId.GetValue());
+	}
+	if (ChainId.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId.GetValue());
 	}
 	if (OperationProcessing.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("operationProcessing")); WriteJsonValue(Writer, OperationProcessing.GetValue());
 	}
-	if (ChainId.IsSet())
+	if (OperationId.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId.GetValue());
+		Writer->WriteIdentifierPrefix(TEXT("operationId")); WriteJsonValue(Writer, OperationId.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }
@@ -101,9 +109,11 @@ bool PlayerClientRevokeSessionRequestInput::FromJson(const TSharedPtr<FJsonValue
 	bool ParseSuccess = true;
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("address"), Address);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationId"), OperationId);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationProcessing"), OperationProcessing);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("sponsor"), Sponsor);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("policyId"), PolicyId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationProcessing"), OperationProcessing);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationId"), OperationId);
 
 	return ParseSuccess;
 }

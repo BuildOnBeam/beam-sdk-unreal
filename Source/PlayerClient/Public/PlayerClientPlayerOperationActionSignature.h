@@ -18,28 +18,31 @@ namespace OpenAPI
 {
 
 /*
- * PlayerClientCreateOperationRequestInputTransactionsInner
+ * PlayerClientPlayerOperationActionSignature
  *
  * 
  */
-class PLAYERCLIENT_API PlayerClientCreateOperationRequestInputTransactionsInner : public Model
+class PLAYERCLIENT_API PlayerClientPlayerOperationActionSignature : public Model
 {
 public:
-    virtual ~PlayerClientCreateOperationRequestInputTransactionsInner() {}
+    virtual ~PlayerClientPlayerOperationActionSignature() {}
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 	void WriteJson(JsonWriter& Writer) const final;
 
-	TOptional<TSharedPtr<FJsonValue>> Data;
 	enum class TypeEnum
 	{
-		OpenfortTransaction,
-		OpenfortReservoirOrder,
-		OpenfortRevokeSession,
+		Message,
+		TypedData,
   	};
 
 	static FString EnumToString(const TypeEnum& EnumValue);
 	static bool EnumFromString(const FString& EnumAsString, TypeEnum& EnumValue);
 	TypeEnum Type;
+	FString Id;
+	TOptional<TSharedPtr<FJsonValue>> Data;
+	TOptional<FString> Signature;
+	TOptional<FString> ActionId;
+	TOptional<FString> Hash;
 };
 
 }

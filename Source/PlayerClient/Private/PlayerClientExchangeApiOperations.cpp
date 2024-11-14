@@ -147,13 +147,13 @@ FString PlayerClientExchangeApi::GetQuoteForInputRequest::ComputePath() const
 {
 	FString Path(TEXT("/v1/player/exchange/quote/input"));
 	TArray<FString> QueryParams;
-	QueryParams.Add(FString(TEXT("tokenIn=")) + ToUrlString(TokenIn));
-	QueryParams.Add(FString(TEXT("tokenOut=")) + ToUrlString(TokenOut));
 	QueryParams.Add(FString(TEXT("amountOut=")) + ToUrlString(AmountOut));
 	if(ChainId.IsSet())
 	{
 		QueryParams.Add(FString(TEXT("chainId=")) + ToUrlString(ChainId.GetValue()));
 	}
+	QueryParams.Add(FString(TEXT("tokenOut=")) + ToUrlString(TokenOut));
+	QueryParams.Add(FString(TEXT("tokenIn=")) + ToUrlString(TokenIn));
 	Path += TCHAR('?');
 	Path += FString::Join(QueryParams, TEXT("&"));
 
@@ -189,13 +189,13 @@ FString PlayerClientExchangeApi::GetQuoteForOutputRequest::ComputePath() const
 {
 	FString Path(TEXT("/v1/player/exchange/quote/output"));
 	TArray<FString> QueryParams;
-	QueryParams.Add(FString(TEXT("tokenIn=")) + ToUrlString(TokenIn));
-	QueryParams.Add(FString(TEXT("tokenOut=")) + ToUrlString(TokenOut));
 	QueryParams.Add(FString(TEXT("amountIn=")) + ToUrlString(AmountIn));
 	if(ChainId.IsSet())
 	{
 		QueryParams.Add(FString(TEXT("chainId=")) + ToUrlString(ChainId.GetValue()));
 	}
+	QueryParams.Add(FString(TEXT("tokenOut=")) + ToUrlString(TokenOut));
+	QueryParams.Add(FString(TEXT("tokenIn=")) + ToUrlString(TokenIn));
 	Path += TCHAR('?');
 	Path += FString::Join(QueryParams, TEXT("&"));
 

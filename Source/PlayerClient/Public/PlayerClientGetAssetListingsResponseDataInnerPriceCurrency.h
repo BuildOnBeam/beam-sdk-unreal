@@ -33,10 +33,8 @@ public:
 	enum class SymbolEnum
 	{
 		Beam,
-		Imx,
 		Soph,
 		Wbeam,
-		Wimx,
 		Wsoph,
 		Rat,
 		Usdc,

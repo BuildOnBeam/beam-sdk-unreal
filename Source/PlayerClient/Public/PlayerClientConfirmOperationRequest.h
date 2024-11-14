@@ -32,8 +32,8 @@ public:
 
 	enum class StatusEnum
 	{
-		_Signed,
 		Pending,
+		_Signed,
 		Rejected,
 		Executed,
 		Error,
@@ -43,6 +43,7 @@ public:
 	static bool EnumFromString(const FString& EnumAsString, StatusEnum& EnumValue);
 	StatusEnum Status;
 	TOptional<TArray<PlayerClientConfirmOperationRequestTransactionsInner>> Transactions;
+	TOptional<TArray<PlayerClientConfirmOperationRequestTransactionsInner>> Actions;
 };
 
 }

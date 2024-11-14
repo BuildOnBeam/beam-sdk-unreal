@@ -15,7 +15,6 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientAssetsApi.h"
 
-#include "PlayerClientCommonOperationResponse.h"
 #include "PlayerClientGetAssetResponse.h"
 #include "PlayerClientGetAssetsForContractBodyInput.h"
 #include "PlayerClientGetAssetsForContractResponse.h"
@@ -27,6 +26,7 @@
 #include "PlayerClientGetOwnersResponse.h"
 #include "PlayerClientGetUserCurrenciesResponse.h"
 #include "PlayerClientGetUserNativeCurrencyResponse.h"
+#include "PlayerClientPlayerOperationResponse.h"
 #include "PlayerClientTransferAssetRequestInput.h"
 #include "PlayerClientTransferNativeTokenRequestInput.h"
 #include "PlayerClientTransferTokenRequestInput.h"
@@ -255,7 +255,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Transfer the native token
@@ -279,7 +279,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Transfer a token (token assets, ERC20)
@@ -303,7 +303,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 }

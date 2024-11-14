@@ -15,12 +15,12 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientSessionsApi.h"
 
-#include "PlayerClientCommonOperationResponse.h"
 #include "PlayerClientGenerateSessionRequestResponse.h"
 #include "PlayerClientGenerateSessionUrlRequestInput.h"
 #include "PlayerClientGetActiveSessionResponse.h"
 #include "PlayerClientGetActiveSessionsResponse.h"
 #include "PlayerClientGetSessionRequestResponse.h"
+#include "PlayerClientPlayerOperationResponse.h"
 #include "PlayerClientRevokeSessionRequestInput.h"
 
 namespace OpenAPI
@@ -143,7 +143,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 }

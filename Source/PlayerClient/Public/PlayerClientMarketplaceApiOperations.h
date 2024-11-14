@@ -19,11 +19,11 @@
 #include "PlayerClientBuyAssetRequestInput.h"
 #include "PlayerClientCancelAssetListingRequestInput.h"
 #include "PlayerClientCancelAssetOfferRequestInput.h"
-#include "PlayerClientCommonOperationResponse.h"
 #include "PlayerClientCreateAssetOfferRequestInput.h"
 #include "PlayerClientGetAssetListingsResponse.h"
 #include "PlayerClientGetChainCurrenciesResponse.h"
 #include "PlayerClientGetListedAssetsBodyInput.h"
+#include "PlayerClientPlayerOperationResponse.h"
 #include "PlayerClientRefreshContractRequestBody.h"
 #include "PlayerClientRefreshTokenRequestBody.h"
 #include "PlayerClientSellAssetRequestInput.h"
@@ -53,7 +53,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Buy listed asset
@@ -78,7 +78,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Cancel an offer for an asset
@@ -103,7 +103,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Cancel asset listing
@@ -129,7 +129,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Make an offer for an asset
@@ -153,7 +153,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Get all offers for an asset
@@ -325,7 +325,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Schedule a contract refresh in the indexer

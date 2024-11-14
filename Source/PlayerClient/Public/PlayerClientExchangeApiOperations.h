@@ -15,9 +15,9 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientExchangeApi.h"
 
-#include "PlayerClientCommonOperationResponse.h"
 #include "PlayerClientConvertTokenRequestInput.h"
 #include "PlayerClientGetQuoteResponse.h"
+#include "PlayerClientPlayerOperationResponse.h"
 #include "PlayerClientUnwrappingTokenInput.h"
 #include "PlayerClientWrappingTokenInput.h"
 
@@ -45,7 +45,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Swap a maximum amount of &#x60;tokenIn&#x60; for an exact amount of &#x60;tokenOut&#x60;
@@ -69,7 +69,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Returns the maximum necessary input amount for a token trade, given a desired output amount
@@ -82,9 +82,9 @@ public:
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
 
-	FString TokenIn;
-	FString TokenOut;
 	FString AmountOut;
+	FString TokenOut;
+	FString TokenIn;
 	TOptional<int64> ChainId;
 };
 
@@ -108,9 +108,9 @@ public:
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
 
-	FString TokenIn;
-	FString TokenOut;
 	FString AmountIn;
+	FString TokenOut;
+	FString TokenIn;
 	TOptional<int64> ChainId;
 };
 
@@ -145,7 +145,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Wrap an amount of native token to wrapped native token
@@ -169,7 +169,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 }

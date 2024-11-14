@@ -15,10 +15,10 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientTransactionsApi.h"
 
-#include "PlayerClientCommonOperationResponse.h"
 #include "PlayerClientCreateTransactionRequestInput.h"
 #include "PlayerClientGetTransactionResponse.h"
 #include "PlayerClientGetTransactionsResponse.h"
+#include "PlayerClientPlayerOperationResponse.h"
 
 namespace OpenAPI
 {
@@ -44,7 +44,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Getting a transaction

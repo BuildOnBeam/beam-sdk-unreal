@@ -38,8 +38,6 @@ public:
 	void SetHttpRetryManager(FHttpRetrySystem::FManager& RetryManager);
 	FHttpRetrySystem::FManager& GetHttpRetryManager();
 
-	class CreateOperationRequest;
-	class CreateOperationResponse;
 	class DeleteOperationRequest;
 	class DeleteOperationResponse;
 	class ExecuteSignedOperationRequest;
@@ -49,20 +47,17 @@ public:
 	class ProcessOperationRequest;
 	class ProcessOperationResponse;
 	
-    DECLARE_DELEGATE_OneParam(FCreateOperationDelegate, const CreateOperationResponse&);
     DECLARE_DELEGATE_OneParam(FDeleteOperationDelegate, const DeleteOperationResponse&);
     DECLARE_DELEGATE_OneParam(FExecuteSignedOperationDelegate, const ExecuteSignedOperationResponse&);
     DECLARE_DELEGATE_OneParam(FGetOperationDelegate, const GetOperationResponse&);
     DECLARE_DELEGATE_OneParam(FProcessOperationDelegate, const ProcessOperationResponse&);
     
-    FHttpRequestPtr CreateOperation(const CreateOperationRequest& Request, const FCreateOperationDelegate& Delegate = FCreateOperationDelegate()) const;
     FHttpRequestPtr DeleteOperation(const DeleteOperationRequest& Request, const FDeleteOperationDelegate& Delegate = FDeleteOperationDelegate()) const;
     FHttpRequestPtr ExecuteSignedOperation(const ExecuteSignedOperationRequest& Request, const FExecuteSignedOperationDelegate& Delegate = FExecuteSignedOperationDelegate()) const;
     FHttpRequestPtr GetOperation(const GetOperationRequest& Request, const FGetOperationDelegate& Delegate = FGetOperationDelegate()) const;
     FHttpRequestPtr ProcessOperation(const ProcessOperationRequest& Request, const FProcessOperationDelegate& Delegate = FProcessOperationDelegate()) const;
     
 private:
-    void OnCreateOperationResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FCreateOperationDelegate Delegate) const;
     void OnDeleteOperationResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FDeleteOperationDelegate Delegate) const;
     void OnExecuteSignedOperationResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FExecuteSignedOperationDelegate Delegate) const;
     void OnGetOperationResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetOperationDelegate Delegate) const;
