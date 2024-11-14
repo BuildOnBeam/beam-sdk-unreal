@@ -279,11 +279,11 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 		                          auto res = resFuture.Get();
 
 		                          BeamOperationResult result;
-		                          CommonOperationResponse commonOpRes = res.Content;
+		                          PlayerOperationResponse playerOpRes = res.Content;
 		                          if (res.IsSuccessful() && IsOk(res.GetHttpResponseCode()))
 		                          {
 			                          result = SignOperationUsingBrowserAsync(
-				                          commonOpRes, secondsTimeout, OutCancellationToken).Get();
+				                          playerOpRes, secondsTimeout, OutCancellationToken).Get();
 		                          }
 		                          else
 		                          {
@@ -296,7 +296,7 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 		                          }
 
 		                          // Clear the session key information out of local storage for any result other than rejected.
-		                          if (commonOpRes.Status != CommonOperationStatusEnum::Rejected)
+		                          if (playerOpRes.Status != PlayerOperationStatusEnum::Rejected)
 		                          {
 			                          ClearLocalSession(entityId);
 		                          }
@@ -369,7 +369,8 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 
 		                          if (suggestedExpiry.IsSet())
 		                          {
-			                          request.PlayerClientGenerateSessionUrlRequestInput.SuggestedExpiry = suggestedExpiry.GetValue();
+			                          request.PlayerClientGenerateSessionUrlRequestInput.SuggestedExpiry =
+				                          suggestedExpiry.GetValue();
 		                          }
 
 		                          const auto resPromise = MakeShared<
@@ -592,7 +593,7 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId, F
 			                          return BeamOperationResult(EBeamResultType::Error, errorMessage);
 		                          }
 
-		                          CommonOperationResponse operation = res.Content;
+		                          PlayerOperationResponse operation = res.Content;
 		                          if (signingBy == EBeamOperationSigningBy::Auto || signingBy ==
 			                          EBeamOperationSigningBy::Session)
 		                          {
@@ -617,7 +618,7 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId, F
 		                          }
 
 		                          BeamOperationResult result;
-		                          result.Result = CommonOperationStatusEnum::Error;
+		                          result.Result = PlayerOperationStatusEnum::Error;
 		                          result.Status = EBeamResultType::Error;
 		                          result.Error = FString::Printf(
 			                          TEXT("No active session found, signingBy set to %s"),
@@ -656,7 +657,7 @@ void UBeamClient::ClearLocalSession(FString EntityId)
 
 
 TFuture<BeamOperationResult> UBeamClient::SignOperationUsingBrowserAsync(
-	CommonOperationResponse operation, int secondsTimeout, TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
+	PlayerOperationResponse operation, int secondsTimeout, TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
 	bool calledFromGameThread = IsInGameThread();
@@ -700,36 +701,20 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingBrowserAsync(
 			FDateTime now = FDateTime::UtcNow();
 			auto shouldRetry = [&, now](const GetOperationResponse& res) -> bool
 			{
-				CommonOperationResponse commonOpRes = res.Content;
-				FString status = CommonOperationResponse::EnumToString(commonOpRes.Status);
+				PlayerOperationResponse commonOpRes = res.Content;
+				FString status = PlayerOperationResponse::EnumToString(commonOpRes.Status);
 				FString resBody = res.GetHttpResponse()->GetContentAsString();
 				UE_CLOG(DebugLog, LogBeamClient, Log,
 				        TEXT("GetOperation: shouldRetry? (Status [%s] == Pending OR != (Executed OR Rejected))\n%s"),
 				        *status, *resBody);
 
 				// Always 
-				if (commonOpRes.Status == CommonOperationStatusEnum::Pending)
+				if (commonOpRes.Status == PlayerOperationStatusEnum::Pending)
 				{
 					return true;
 				}
 
-				if (commonOpRes.Status == CommonOperationStatusEnum::Executed || commonOpRes.Status ==
-					CommonOperationStatusEnum::Rejected)
-				{
-					return false;
-				}
-
-				// If the operation status is Error, then check the status us the inner transaction.
-				if (commonOpRes.Transactions.IsValidIndex(0))
-				{
-					auto transaction = commonOpRes.Transactions[0];
-					if (transaction.Status == CommonOperationResponseTransactionsInnerStatusEnum::Pending)
-					{
-						return true;
-					}
-				}
-
-				// If the inner transaction was not found and the status is not Pending, Executed, or Rejected then some other error may have ocurred.
+				// stop retrying in all other cases
 				return false;
 			};
 
@@ -750,24 +735,24 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingBrowserAsync(
 
 			auto pollingStatus = pollingResult
 				                     ? pollingResult.GetValue().Content.Status
-				                     : CommonOperationStatusEnum::Error;
-			FString status = CommonOperationResponse::EnumToString(pollingStatus);
+				                     : PlayerOperationStatusEnum::Error;
+			FString status = PlayerOperationResponse::EnumToString(pollingStatus);
 
 			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Got operation(%s) result: %s"), *operation.Id, *status);
 			auto beamResult = BeamOperationResult(pollingStatus);
 
 			switch (pollingStatus)
 			{
-			case CommonOperationStatusEnum::Executed:
-			case CommonOperationStatusEnum::Rejected:
-			case CommonOperationStatusEnum::_Signed:
+			case PlayerOperationStatusEnum::Executed:
+			case PlayerOperationStatusEnum::Rejected:
+			case PlayerOperationStatusEnum::_Signed:
 				beamResult.Status = EBeamResultType::Success;
 				break;
-			case CommonOperationStatusEnum::Error:
+			case PlayerOperationStatusEnum::Error:
 				beamResult.Status = EBeamResultType::Error;
 				beamResult.Error = TEXT("Operation encountered an error");
 				break;
-			case CommonOperationStatusEnum::Pending:
+			case PlayerOperationStatusEnum::Pending:
 			default:
 				beamResult.Status = EBeamResultType::Error;
 				beamResult.Error = TEXT("Polling for operation encountered an error or timed out");
@@ -797,7 +782,7 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingBrowserAsync(
 
 
 TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(
-	CommonOperationResponse operation, KeyPair activeSessionKeyPair,
+	PlayerOperationResponse operation, KeyPair activeSessionKeyPair,
 	TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
@@ -807,145 +792,172 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
 	auto resultFuture = Async(EAsyncExecution::Thread, [&, Promise, operation, OutCancellationToken]()
-		{
-			if (operation.Transactions.IsEmpty())
-			{
-				BeamOperationResult result;
-				result.Result = CommonOperationStatusEnum::Error;
-				result.Status = EBeamResultType::Error;
-				result.Error = TEXT("Operation has no transactions to sign");
-				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Operation(%s) has no transactions to sign, ending"),
-				        *operation.Id);
-				return result;
-			}
+	                          {
+		                          if (operation.Transactions.IsEmpty())
+		                          {
+			                          BeamOperationResult result;
+			                          result.Result = PlayerOperationStatusEnum::Error;
+			                          result.Status = EBeamResultType::Error;
+			                          result.Error = TEXT("Operation has no transactions to sign");
+			                          UE_CLOG(DebugLog, LogBeamClient, Log,
+			                                  TEXT("Operation(%s) has no transactions to sign, ending"),
+			                                  *operation.Id);
+			                          return result;
+		                          }
 
-			ConfirmOperationRequest confirmationModel;
-			confirmationModel.Status = ConfirmOperationStatusEnum::Pending;
-			confirmationModel.Transactions = TArray<PlayerClientConfirmOperationRequestTransactionsInner>();
+		                          ConfirmOperationRequest confirmationModel;
+		                          confirmationModel.Status = ConfirmOperationStatusEnum::Pending;
+		                          confirmationModel.Transactions = TArray<
+			                          PlayerClientConfirmOperationRequestTransactionsInner>();
 
-			for (auto& transaction : operation.Transactions)
+		                          for (auto& action : operation.Actions)
+		                          {
+			                          UE_CLOG(DebugLog, LogBeamClient, Log,
+			                                  TEXT("Signing operation(%s) transaction(%s), externalId=(%s)..."),
+			                                  *operation.Id,
+			                                  *action.Id, *action.Id);
+
+			                          FString signature;
+			                          if (action.Type == PlayerOperationResponseAction::TypeEnum::SessionRevoke)
+			                          {
+				                          FString errorLogMessage = TEXT(
+					                          "Revoke Session Operation has to be performed via RevokeSessionAsync() method only");
+				                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("%s"), *errorLogMessage);
+				                          FString errorMessage = FString::Printf(
+					                          TEXT("Encountered an exception while signing %s"),
+					                          *PlayerOperationResponseAction::EnumToString(action.Type));
+				                          return BeamOperationResult(EBeamResultType::Error, errorMessage);
+			                          }
+
+			                          if (!action.Signature.IsSet())
+			                          {
+				                          FString errorLogMessage = TEXT(
+					                          "Operation action has no Signature object, was probably not meant to be signed");
+				                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("%s"), *errorLogMessage);
+				                          FString errorMessage = FString::Printf(
+					                          TEXT("Encountered an exception while signing %s"),
+					                          *PlayerOperationResponseAction::EnumToString(action.Type));
+				                          return BeamOperationResult(EBeamResultType::Error, errorMessage);
+			                          }
+
+			                          PlayerClientPlayerOperationActionSignature signatureObj = action.Signature.
+				                          GetValue();
+			                          switch (signatureObj.Type)
+			                          {
+			                          case PlayerClientPlayerOperationActionSignature::TypeEnum::Message:
+				                          {
+					                          auto message = std::string(
+						                          TCHAR_TO_UTF8(*signatureObj.Data.GetValue().Get()->AsString()));
+					                          signature = activeSessionKeyPair.Sign(message).c_str();
+					                          break;
+				                          }
+			                          case PlayerClientPlayerOperationActionSignature::TypeEnum::TypedData:
+				                          {
+					                          auto hash = std::string(TCHAR_TO_UTF8(*signatureObj.Hash.GetValue));
+					                          signature = activeSessionKeyPair.SignMarketplaceTransactionHash(hash).
+					                                                           c_str();
+					                          break;
+				                          }
+			                          default:
+				                          {
+					                          UE_CLOG(DebugLog, LogBeamClient, Log,
+					                                  TEXT(
+						                                  "Encountered an error when signing action(%s): Unhandled Type"
+					                                  ),
+					                                  *action.Id);
+					                          FString errorMessage = FString::Printf(
+						                          TEXT("Encountered an exception while approving %s"),
+						                          *PlayerOperationResponseAction::EnumToString(action.Type));
+					                          return BeamOperationResult(EBeamResultType::Error, errorMessage);
+				                          }
+			                          }
+
+			                          ConfirmOperationRequestAction inner;
+			                          inner.Id = action.Id;
+			                          inner.Signature = signatureObj;
+
+			                          confirmationModel.Actions.GetValue().Add(inner);
+		                          }
+
+		                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Confirming operation(%s)..."),
+		                                  *operation.Id);
+
+		                          PlayerClientOperationApi::ProcessOperationRequest request;
+		                          request.OpId = operation.Id;
+		                          request.PlayerClientConfirmOperationRequest = confirmationModel;
+
+		                          const auto resPromise = MakeShared<
+			                          TPromise<PlayerClientOperationApi::ProcessOperationResponse>,
+			                          ESPMode::ThreadSafe>();
+		                          auto resFuture = resPromise->GetFuture();
+		                          auto httpReq = OperationApi->ProcessOperation(request,
+			                          PlayerClientOperationApi::FProcessOperationDelegate::CreateLambda(
+				                          [&, resPromise, request](
+				                          const PlayerClientOperationApi::ProcessOperationResponse&
+				                          res)
+				                          {
+					                          FString resBody = res.GetHttpResponse()->
+					                                                GetContentAsString();
+					                          UE_CLOG(DebugLog, LogBeamClient, Log,
+					                                  TEXT("ProcessOperation(%s): response=%s"),
+					                                  *request.OpId, *resBody);
+					                          resPromise->SetValue(res);
+				                          }));
+
+		                          auto res = resFuture.Get();
+		                          if (!res.IsSuccessful() || !IsOk(res.GetHttpResponseCode()))
+		                          {
+			                          FString errorMessage = FString::Printf(
+				                          TEXT("Encountered unknown error when confirming operation %s"),
+				                          *operation.Id);
+			                          FString resBody = res.GetHttpResponse()->GetContentAsString();
+			                          UE_CLOG(DebugLog, LogBeamClient, Log,
+			                                  TEXT("Confirming operation(%s) encountered an error: %s"),
+			                                  *operation.Id, *resBody);
+			                          return BeamOperationResult(EBeamResultType::Error, errorMessage);
+		                          }
+
+		                          PlayerOperationResponse commonOpRes = res.Content;
+		                          auto didFail = commonOpRes.Status != PlayerOperationStatusEnum::Executed &&
+			                          commonOpRes.Status != PlayerOperationStatusEnum::_Signed &&
+			                          commonOpRes.Status != PlayerOperationStatusEnum::Pending;
+
+		                          FString status = PlayerOperationResponse::EnumToString(commonOpRes.Status);
+		                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Confirmed operation(%s), status: %s"),
+		                                  *commonOpRes.Id,
+		                                  *status);
+		                          BeamOperationResult beamResult;
+		                          beamResult.Status = didFail ? EBeamResultType::Error : EBeamResultType::Success;
+		                          beamResult.Result = commonOpRes.Status;
+
+		                          return beamResult;
+	                          }
+
+		)
+		.
+		Next([Promise, calledFromGameThread]
+		(
+			const BeamOperationResult& result
+		)
 			{
-				if (transaction.ExternalId.IsSet())
+				if (calledFromGameThread)
 				{
-					UE_CLOG(DebugLog, LogBeamClient, Log,
-					        TEXT("Signing operation(%s) transaction(%s), externalId=(%s)..."), *operation.Id,
-					        *transaction.Id, *transaction.ExternalId.GetValue());
+					// Resolve the promise on the game thread for convienence.
+					AsyncTask(ENamedThreads::GameThread, [Promise, result]()
+					{
+						Promise->SetValue(result);
+					});
 				}
 				else
 				{
-					UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Signing operation(%s) transaction(%s)..."),
-					        *operation.Id, *transaction.Id);
-				}
-
-				FString signature;
-				switch (transaction.Type)
-				{
-				case CommonOperationResponseTransactionsInner::TypeEnum::OpenfortRevokeSession:
-					{
-						FString errorLogMessage = TEXT(
-							"Revoke Session Operation has to be performed via RevokeSessionAsync() method only");
-						UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("%s"), *errorLogMessage);
-						FString errorMessage = FString::Printf(
-							TEXT("Encountered an exception while approving %s"),
-							*CommonOperationResponseTransactionsInner::EnumToString(transaction.Type));
-						return BeamOperationResult(EBeamResultType::Error, errorMessage);
-					}
-				case CommonOperationResponseTransactionsInner::TypeEnum::OpenfortTransaction:
-					{
-						auto message = std::string(TCHAR_TO_UTF8(*transaction.Data.GetValue().Get()->AsString()));
-						signature = activeSessionKeyPair.Sign(message).c_str();
-						break;
-					}
-				case CommonOperationResponseTransactionsInner::TypeEnum::OpenfortReservoirOrder:
-					{
-						auto hash = std::string(TCHAR_TO_UTF8(*transaction.Hash));
-						signature = activeSessionKeyPair.SignMarketplaceTransactionHash(hash).c_str();
-						break;
-					}
-				default:
-					{
-						UE_CLOG(DebugLog, LogBeamClient, Log,
-						        TEXT("Encountered an error when signing transaction(%s): Unhandled Type"),
-						        *transaction.Id);
-						FString errorMessage = FString::Printf(
-							TEXT("Encountered an exception while approving %s"),
-							*CommonOperationResponseTransactionsInner::EnumToString(transaction.Type));
-						return BeamOperationResult(EBeamResultType::Error, errorMessage);
-					}
-				}
-
-				ConfirmOperationRequestTransactionsInner inner;
-				inner.Id = transaction.Id;
-				inner.Signature = signature;
-
-				confirmationModel.Transactions.GetValue().Add(inner);
-			}
-
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Confirming operation(%s)..."), *operation.Id);
-
-			PlayerClientOperationApi::ProcessOperationRequest request;
-			request.OpId = operation.Id;
-			request.PlayerClientConfirmOperationRequest = confirmationModel;
-
-			const auto resPromise = MakeShared<TPromise<PlayerClientOperationApi::ProcessOperationResponse>,
-			                                   ESPMode::ThreadSafe>();
-			auto resFuture = resPromise->GetFuture();
-			auto httpReq = OperationApi->ProcessOperation(request,
-			                                              PlayerClientOperationApi::FProcessOperationDelegate::CreateLambda(
-				                                              [&, resPromise, request](
-				                                              const PlayerClientOperationApi::ProcessOperationResponse&
-				                                              res)
-				                                              {
-					                                              FString resBody = res.GetHttpResponse()->
-						                                              GetContentAsString();
-					                                              UE_CLOG(DebugLog, LogBeamClient, Log,
-					                                                      TEXT("ProcessOperation(%s): response=%s"),
-					                                                      *request.OpId, *resBody);
-					                                              resPromise->SetValue(res);
-				                                              }));
-
-			auto res = resFuture.Get();
-			if (!res.IsSuccessful() || !IsOk(res.GetHttpResponseCode()))
-			{
-				FString errorMessage = FString::Printf(
-					TEXT("Encountered unknown error when confirming operation %s"), *operation.Id);
-				FString resBody = res.GetHttpResponse()->GetContentAsString();
-				UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Confirming operation(%s) encountered an error: %s"),
-				        *operation.Id, *resBody);
-				return BeamOperationResult(EBeamResultType::Error, errorMessage);
-			}
-
-			CommonOperationResponse commonOpRes = res.Content;
-			auto didFail = commonOpRes.Status != CommonOperationStatusEnum::Executed &&
-				commonOpRes.Status != CommonOperationStatusEnum::_Signed &&
-				commonOpRes.Status != CommonOperationStatusEnum::Pending;
-
-			FString status = CommonOperationResponse::EnumToString(commonOpRes.Status);
-			UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Confirmed operation(%s), status: %s"), *commonOpRes.Id,
-			        *status);
-			BeamOperationResult beamResult;
-			beamResult.Status = didFail ? EBeamResultType::Error : EBeamResultType::Success;
-			beamResult.Result = commonOpRes.Status;
-
-			return beamResult;
-		})
-		.Next([Promise, calledFromGameThread](const BeamOperationResult& result)
-		{
-			if (calledFromGameThread)
-			{
-				// Resolve the promise on the game thread for convienence.
-				AsyncTask(ENamedThreads::GameThread, [Promise, result]()
-				{
 					Promise->SetValue(result);
-				});
-			}
-			else
-			{
-				Promise->SetValue(result);
-			}
-		});
+				}
+			});
 
-	return Promise->GetFuture();
+	return
+		Promise
+		->
+		GetFuture();
 }
 
 

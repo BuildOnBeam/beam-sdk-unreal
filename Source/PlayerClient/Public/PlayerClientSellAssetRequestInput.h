@@ -51,10 +51,8 @@ public:
 	enum class CurrencyEnum
 	{
 		Beam,
-		Imx,
 		Soph,
 		Wbeam,
-		Wimx,
 		Wsoph,
 		Rat,
 		Usdc,

@@ -38,7 +38,6 @@ public:
 	enum class CurrencyEnum
 	{
 		Wbeam,
-		Wimx,
 		Wsoph,
 		Rat,
 		Usdc,

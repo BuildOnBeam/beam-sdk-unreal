@@ -15,35 +15,11 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientOperationApi.h"
 
-#include "PlayerClientCommonOperationResponse.h"
 #include "PlayerClientConfirmOperationRequest.h"
-#include "PlayerClientCreateOperationRequestInput.h"
+#include "PlayerClientPlayerOperationResponse.h"
 
 namespace OpenAPI
 {
-
-/* Initializes an operation. Used by Game SDKs to get transaction results.
-
-*/
-class PLAYERCLIENT_API PlayerClientOperationApi::CreateOperationRequest : public Request
-{
-public:
-    virtual ~CreateOperationRequest() {}
-	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
-	FString ComputePath() const final;
-
-	PlayerClientCreateOperationRequestInput PlayerClientCreateOperationRequestInput;
-};
-
-class PLAYERCLIENT_API PlayerClientOperationApi::CreateOperationResponse : public Response
-{
-public:
-    virtual ~CreateOperationResponse() {}
-	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-
-    PlayerClientCommonOperationResponse Content;
-};
 
 /* Delete an operation
 
@@ -65,7 +41,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Executes operation for given id
@@ -88,7 +64,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Returns operation data for given id. Used by Game SDKs to get transaction results.
@@ -111,7 +87,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 /* Updates operation result for given id
@@ -135,7 +111,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientCommonOperationResponse Content;
+    PlayerClientPlayerOperationResponse Content;
 };
 
 }

@@ -26,14 +26,10 @@ inline FString ToString(const PlayerClientGetChainCurrenciesResponseDataInner::S
 	{
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Beam:
 		return TEXT("BEAM");
-	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Imx:
-		return TEXT("IMX");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Soph:
 		return TEXT("SOPH");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wbeam:
 		return TEXT("WBEAM");
-	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wimx:
-		return TEXT("WIMX");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wsoph:
 		return TEXT("WSOPH");
 	case PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Rat:
@@ -55,10 +51,8 @@ inline bool FromString(const FString& EnumAsString, PlayerClientGetChainCurrenci
 {
 	static TMap<FString, PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum> StringToEnum = { 
 		{ TEXT("BEAM"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Beam },
-		{ TEXT("IMX"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Imx },
 		{ TEXT("SOPH"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Soph },
 		{ TEXT("WBEAM"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wbeam },
-		{ TEXT("WIMX"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wimx },
 		{ TEXT("WSOPH"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Wsoph },
 		{ TEXT("RAT"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Rat },
 		{ TEXT("USDC"), PlayerClientGetChainCurrenciesResponseDataInner::SymbolEnum::Usdc }, };

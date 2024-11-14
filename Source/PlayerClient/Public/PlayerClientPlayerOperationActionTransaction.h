@@ -13,27 +13,26 @@
 #pragma once
 
 #include "PlayerClientBaseModel.h"
-#include "PlayerClientCommonOperationResponseTransactionsInner.h"
 
 namespace OpenAPI
 {
 
 /*
- * PlayerClientCommonOperationResponse
+ * PlayerClientPlayerOperationActionTransaction
  *
  * 
  */
-class PLAYERCLIENT_API PlayerClientCommonOperationResponse : public Model
+class PLAYERCLIENT_API PlayerClientPlayerOperationActionTransaction : public Model
 {
 public:
-    virtual ~PlayerClientCommonOperationResponse() {}
+    virtual ~PlayerClientPlayerOperationActionTransaction() {}
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 	void WriteJson(JsonWriter& Writer) const final;
 
 	enum class StatusEnum
 	{
-		_Signed,
 		Pending,
+		_Signed,
 		Rejected,
 		Executed,
 		Error,
@@ -42,23 +41,11 @@ public:
 	static FString EnumToString(const StatusEnum& EnumValue);
 	static bool EnumFromString(const FString& EnumAsString, StatusEnum& EnumValue);
 	StatusEnum Status;
-	enum class ProcessingEnum
-	{
-		SignOnly,
-		Execute,
-  	};
-
-	static FString EnumToString(const ProcessingEnum& EnumValue);
-	static bool EnumFromString(const FString& EnumAsString, ProcessingEnum& EnumValue);
-	ProcessingEnum Processing;
 	FString Id;
-	FDateTime CreatedAt;
-	TOptional<FDateTime> UpdatedAt;
-	FString GameId;
-	FString UserId;
-	int64 ChainId = 0;
-	FString Url;
-	TArray<PlayerClientCommonOperationResponseTransactionsInner> Transactions;
+	TOptional<FString> OpenfortId;
+	bool Sponsored = false;
+	TOptional<FString> ActionId;
+	TOptional<FString> Hash;
 };
 
 }

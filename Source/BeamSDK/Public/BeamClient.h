@@ -24,10 +24,10 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBeamClient, Log, All);
 
-typedef PlayerClientConfirmOperationRequestTransactionsInner ConfirmOperationRequestTransactionsInner;
+typedef PlayerClientConfirmOperationRequestTransactionsInner ConfirmOperationRequestAction;
 
-typedef PlayerClientCommonOperationResponse CommonOperationResponse;
-typedef PlayerClientCommonOperationResponseTransactionsInner CommonOperationResponseTransactionsInner;
+typedef PlayerClientPlayerOperationResponse PlayerOperationResponse;
+typedef PlayerClientPlayerOperationAction PlayerOperationResponseAction;
 typedef PlayerClientConfirmOperationRequest ConfirmOperationRequest;
 typedef PlayerClientCreateConnectionRequestResponse CreateConnectionRequestResponse;
 typedef PlayerClientGenerateSessionRequestResponse GenerateSessionRequestResponse;
@@ -37,9 +37,9 @@ typedef PlayerClientGetSessionRequestResponse GetSessionRequestResponse;
 typedef PlayerClientOperationApi::GetOperationResponse GetOperationResponse;
 
 // Note: use with ::EnumFromString(StatusEnum) on the response types above.
-typedef PlayerClientCommonOperationResponse::StatusEnum CommonOperationStatusEnum;
-typedef PlayerClientCommonOperationResponseTransactionsInner::StatusEnum
-CommonOperationResponseTransactionsInnerStatusEnum;
+typedef PlayerClientPlayerOperationResponse::StatusEnum PlayerOperationStatusEnum;
+typedef PlayerClientPlayerOperationAction::TypeEnum
+PlayerOperationResponseActionTypeEnum;
 typedef PlayerClientConfirmOperationRequest::StatusEnum ConfirmOperationStatusEnum;
 typedef PlayerClientCreateConnectionRequestResponse::StatusEnum CreateConnectionRequestStatusEnum;
 typedef PlayerClientGenerateSessionRequestResponse::StatusEnum GenerateSessionRequestStatusEnum;
@@ -48,7 +48,7 @@ typedef PlayerClientGetConnectionRequestResponse::StatusEnum GetConnectionReques
 typedef PlayerClientGetSessionRequestResponse::StatusEnum GetSessionRequestStatusEnum;
 
 typedef TBeamResult<FBeamSession> BeamSessionResult;
-typedef TBeamResult<CommonOperationStatusEnum> BeamOperationResult;
+typedef TBeamResult<PlayerOperationStatusEnum> BeamOperationResult;
 typedef TBeamResult<GetConnectionRequestStatusEnum> BeamConnectionResult;
 
 
@@ -205,11 +205,11 @@ public:
 	void ClearLocalSession(FString EntityId);
 
 private:
-	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(CommonOperationResponse operation, int secondsTimeout,
+	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(PlayerOperationResponse operation, int secondsTimeout,
 	                                                            TSharedPtr<FBeamCancellationToken>* OutCancellationToken
 		                                                            = nullptr);
 
-	TFuture<BeamOperationResult> SignOperationUsingSessionAsync(CommonOperationResponse operation,
+	TFuture<BeamOperationResult> SignOperationUsingSessionAsync(PlayerOperationResponse operation,
 	                                                            KeyPair activeSessionKeyPair,
 	                                                            TSharedPtr<FBeamCancellationToken>* OutCancellationToken
 		                                                            = nullptr);

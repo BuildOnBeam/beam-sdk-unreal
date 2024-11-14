@@ -24,10 +24,10 @@ inline FString ToString(const PlayerClientConfirmOperationRequest::StatusEnum& V
 {
 	switch (Value)
 	{
-	case PlayerClientConfirmOperationRequest::StatusEnum::_Signed:
-		return TEXT("Signed");
 	case PlayerClientConfirmOperationRequest::StatusEnum::Pending:
 		return TEXT("Pending");
+	case PlayerClientConfirmOperationRequest::StatusEnum::_Signed:
+		return TEXT("Signed");
 	case PlayerClientConfirmOperationRequest::StatusEnum::Rejected:
 		return TEXT("Rejected");
 	case PlayerClientConfirmOperationRequest::StatusEnum::Executed:
@@ -48,8 +48,8 @@ FString PlayerClientConfirmOperationRequest::EnumToString(const PlayerClientConf
 inline bool FromString(const FString& EnumAsString, PlayerClientConfirmOperationRequest::StatusEnum& Value)
 {
 	static TMap<FString, PlayerClientConfirmOperationRequest::StatusEnum> StringToEnum = { 
-		{ TEXT("Signed"), PlayerClientConfirmOperationRequest::StatusEnum::_Signed },
 		{ TEXT("Pending"), PlayerClientConfirmOperationRequest::StatusEnum::Pending },
+		{ TEXT("Signed"), PlayerClientConfirmOperationRequest::StatusEnum::_Signed },
 		{ TEXT("Rejected"), PlayerClientConfirmOperationRequest::StatusEnum::Rejected },
 		{ TEXT("Executed"), PlayerClientConfirmOperationRequest::StatusEnum::Executed },
 		{ TEXT("Error"), PlayerClientConfirmOperationRequest::StatusEnum::Error }, };
@@ -90,6 +90,10 @@ void PlayerClientConfirmOperationRequest::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("transactions")); WriteJsonValue(Writer, Transactions.GetValue());
 	}
+	if (Actions.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("actions")); WriteJsonValue(Writer, Actions.GetValue());
+	}
 	Writer->WriteObjectEnd();
 }
 
@@ -103,6 +107,7 @@ bool PlayerClientConfirmOperationRequest::FromJson(const TSharedPtr<FJsonValue>&
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("status"), Status);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("transactions"), Transactions);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("actions"), Actions);
 
 	return ParseSuccess;
 }

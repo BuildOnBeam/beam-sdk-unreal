@@ -26,8 +26,6 @@ inline FString ToString(const PlayerClientCreateAssetOfferRequestInput::Currency
 	{
 	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wbeam:
 		return TEXT("WBEAM");
-	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wimx:
-		return TEXT("WIMX");
 	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wsoph:
 		return TEXT("WSOPH");
 	case PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Rat:
@@ -49,7 +47,6 @@ inline bool FromString(const FString& EnumAsString, PlayerClientCreateAssetOffer
 {
 	static TMap<FString, PlayerClientCreateAssetOfferRequestInput::CurrencyEnum> StringToEnum = { 
 		{ TEXT("WBEAM"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wbeam },
-		{ TEXT("WIMX"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wimx },
 		{ TEXT("WSOPH"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Wsoph },
 		{ TEXT("RAT"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Rat },
 		{ TEXT("USDC"), PlayerClientCreateAssetOfferRequestInput::CurrencyEnum::Usdc }, };
