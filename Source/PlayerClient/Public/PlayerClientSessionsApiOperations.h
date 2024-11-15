@@ -18,6 +18,7 @@
 #include "PlayerClientGenerateSessionRequestResponse.h"
 #include "PlayerClientGenerateSessionUrlRequestInput.h"
 #include "PlayerClientGetActiveSessionResponse.h"
+#include "PlayerClientGetActiveSessionResponseV2.h"
 #include "PlayerClientGetActiveSessionsResponse.h"
 #include "PlayerClientGetSessionRequestResponse.h"
 #include "PlayerClientPlayerOperationResponse.h"
@@ -73,6 +74,31 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetActiveSessionResponse Content;
+};
+
+/* 
+
+*/
+class PLAYERCLIENT_API PlayerClientSessionsApi::GetActiveSessionV2Request : public Request
+{
+public:
+    virtual ~GetActiveSessionV2Request() {}
+	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+	FString ComputePath() const final;
+
+	FString EntityId;
+	FString AccountAddress;
+	TOptional<int64> ChainId;
+};
+
+class PLAYERCLIENT_API PlayerClientSessionsApi::GetActiveSessionV2Response : public Response
+{
+public:
+    virtual ~GetActiveSessionV2Response() {}
+	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
+
+    PlayerClientGetActiveSessionResponseV2 Content;
 };
 
 /* 

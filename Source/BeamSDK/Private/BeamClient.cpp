@@ -973,27 +973,33 @@ TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FStrin
 
 		// user might've revoked the session outside the game so
 		// get active session for current keyPair from the API
-		PlayerClientSessionsApi::GetActiveSessionRequest request;
+		PlayerClientSessionsApi::GetActiveSessionV2Request request;
 		request.EntityId = entityId;
 		request.AccountAddress = keyPair.GetAddress().c_str();
 		request.ChainId = chainId;
 
-		const auto resPromise = MakeShared<TPromise<PlayerClientSessionsApi::GetActiveSessionResponse>,
+		const auto resPromise = MakeShared<TPromise<PlayerClientSessionsApi::GetActiveSessionV2Response>,
 		                                   ESPMode::ThreadSafe>();
 		auto resFuture = resPromise->GetFuture();
-		auto httpReq = SessionsApi->GetActiveSession(request,
-		                                             PlayerClientSessionsApi::FGetActiveSessionDelegate::CreateLambda(
-			                                             [&, resPromise](
-			                                             const PlayerClientSessionsApi::GetActiveSessionResponse&
-			                                             response)
-			                                             {
-				                                             resPromise->SetValue(response);
-			                                             }));
+		auto httpReq = SessionsApi->GetActiveSessionV2(request,
+		                                               PlayerClientSessionsApi::FGetActiveSessionV2Delegate::CreateLambda(
+			                                               [&, resPromise](
+			                                               const PlayerClientSessionsApi::GetActiveSessionV2Response&
+			                                               response)
+			                                               {
+				                                               resPromise->SetValue(response);
+			                                               }));
 
 		auto res = resFuture.Get();
 		if (res.IsSuccessful() && IsOk(res.GetHttpResponseCode()))
 		{
-			sessionKeys.BeamSession = FBeamSession(res);
+			if (res.Content.Session.IsSet())
+			{
+				sessionKeys.BeamSession = FBeamSession(res);
+			} else
+			{
+				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo did not return an active session"));	
+			}
 		}
 		else
 		{

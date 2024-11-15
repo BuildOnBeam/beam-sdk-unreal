@@ -19,6 +19,14 @@ FBeamSession::FBeamSession(PlayerClientSessionsApi::GetActiveSessionResponse& Ap
 	EndTime = ApiResponse.Content.EndTime;
 }
 
+FBeamSession::FBeamSession(PlayerClientSessionsApi::GetActiveSessionV2Response& ApiV2Response)
+{
+	Id = ApiV2Response.Content.Session.GetValue().Id;
+	SessionAddress = ApiV2Response.Content.Session.GetValue().SessionAddress;
+	StartTime = ApiV2Response.Content.Session.GetValue().StartTime;
+	EndTime = ApiV2Response.Content.Session.GetValue().EndTime;
+}
+
 bool FBeamSession::FromJson(const FString& InJsonString, FBeamSession& OutBeamSession)
 {
 	TSharedPtr<FJsonObject> JsonObject;

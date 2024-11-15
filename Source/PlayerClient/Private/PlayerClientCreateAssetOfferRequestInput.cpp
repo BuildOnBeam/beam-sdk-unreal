@@ -159,10 +159,6 @@ void PlayerClientCreateAssetOfferRequestInput::WriteJson(JsonWriter& Writer) con
 	{
 		Writer->WriteIdentifierPrefix(TEXT("operationProcessing")); WriteJsonValue(Writer, OperationProcessing.GetValue());
 	}
-	if (OperationId.IsSet())
-	{
-		Writer->WriteIdentifierPrefix(TEXT("operationId")); WriteJsonValue(Writer, OperationId.GetValue());
-	}
 	Writer->WriteObjectEnd();
 }
 
@@ -183,7 +179,6 @@ bool PlayerClientCreateAssetOfferRequestInput::FromJson(const TSharedPtr<FJsonVa
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("currency"), Currency);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationProcessing"), OperationProcessing);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationId"), OperationId);
 
 	return ParseSuccess;
 }

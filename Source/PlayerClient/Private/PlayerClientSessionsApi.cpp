@@ -187,6 +187,33 @@ void PlayerClientSessionsApi::OnGetActiveSessionResponse(FHttpRequestPtr HttpReq
 	Delegate.ExecuteIfBound(Response);
 }
 
+FHttpRequestPtr PlayerClientSessionsApi::GetActiveSessionV2(const GetActiveSessionV2Request& Request, const FGetActiveSessionV2Delegate& Delegate /*= FGetActiveSessionV2Delegate()*/) const
+{
+	if (!IsValid())
+		return nullptr;
+
+	FHttpRequestRef HttpRequest = CreateHttpRequest(Request);
+	HttpRequest->SetURL(*(Url + Request.ComputePath()));
+
+	for(const auto& It : AdditionalHeaderParams)
+	{
+		HttpRequest->SetHeader(It.Key, It.Value);
+	}
+
+	Request.SetupHttpRequest(HttpRequest);
+
+	HttpRequest->OnProcessRequestComplete().BindRaw(this, &PlayerClientSessionsApi::OnGetActiveSessionV2Response, Delegate);
+	HttpRequest->ProcessRequest();
+	return HttpRequest;
+}
+
+void PlayerClientSessionsApi::OnGetActiveSessionV2Response(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetActiveSessionV2Delegate Delegate) const
+{
+	GetActiveSessionV2Response Response;
+	HandleResponse(HttpResponse, bSucceeded, Response);
+	Delegate.ExecuteIfBound(Response);
+}
+
 FHttpRequestPtr PlayerClientSessionsApi::GetAllActiveSessions(const GetAllActiveSessionsRequest& Request, const FGetAllActiveSessionsDelegate& Delegate /*= FGetAllActiveSessionsDelegate()*/) const
 {
 	if (!IsValid())
