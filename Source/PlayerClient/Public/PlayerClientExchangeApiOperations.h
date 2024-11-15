@@ -82,9 +82,9 @@ public:
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
 
-	FString AmountOut;
-	FString TokenOut;
 	FString TokenIn;
+	FString TokenOut;
+	FString AmountOut;
 	TOptional<int64> ChainId;
 };
 
@@ -108,9 +108,9 @@ public:
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
 
-	FString AmountIn;
-	FString TokenOut;
 	FString TokenIn;
+	FString TokenOut;
+	FString AmountIn;
 	TOptional<int64> ChainId;
 };
 

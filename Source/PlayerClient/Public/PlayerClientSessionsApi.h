@@ -42,6 +42,8 @@ public:
 	class CreateSessionRequestResponse;
 	class GetActiveSessionRequest;
 	class GetActiveSessionResponse;
+	class GetActiveSessionV2Request;
+	class GetActiveSessionV2Response;
 	class GetAllActiveSessionsRequest;
 	class GetAllActiveSessionsResponse;
 	class GetSessionRequestRequest;
@@ -51,12 +53,14 @@ public:
 	
     DECLARE_DELEGATE_OneParam(FCreateSessionRequestDelegate, const CreateSessionRequestResponse&);
     DECLARE_DELEGATE_OneParam(FGetActiveSessionDelegate, const GetActiveSessionResponse&);
+    DECLARE_DELEGATE_OneParam(FGetActiveSessionV2Delegate, const GetActiveSessionV2Response&);
     DECLARE_DELEGATE_OneParam(FGetAllActiveSessionsDelegate, const GetAllActiveSessionsResponse&);
     DECLARE_DELEGATE_OneParam(FGetSessionRequestDelegate, const GetSessionRequestResponse&);
     DECLARE_DELEGATE_OneParam(FRevokeSessionDelegate, const RevokeSessionResponse&);
     
     FHttpRequestPtr CreateSessionRequest(const CreateSessionRequestRequest& Request, const FCreateSessionRequestDelegate& Delegate = FCreateSessionRequestDelegate()) const;
     FHttpRequestPtr GetActiveSession(const GetActiveSessionRequest& Request, const FGetActiveSessionDelegate& Delegate = FGetActiveSessionDelegate()) const;
+    FHttpRequestPtr GetActiveSessionV2(const GetActiveSessionV2Request& Request, const FGetActiveSessionV2Delegate& Delegate = FGetActiveSessionV2Delegate()) const;
     FHttpRequestPtr GetAllActiveSessions(const GetAllActiveSessionsRequest& Request, const FGetAllActiveSessionsDelegate& Delegate = FGetAllActiveSessionsDelegate()) const;
     FHttpRequestPtr GetSessionRequest(const GetSessionRequestRequest& Request, const FGetSessionRequestDelegate& Delegate = FGetSessionRequestDelegate()) const;
     FHttpRequestPtr RevokeSession(const RevokeSessionRequest& Request, const FRevokeSessionDelegate& Delegate = FRevokeSessionDelegate()) const;
@@ -64,6 +68,7 @@ public:
 private:
     void OnCreateSessionRequestResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FCreateSessionRequestDelegate Delegate) const;
     void OnGetActiveSessionResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetActiveSessionDelegate Delegate) const;
+    void OnGetActiveSessionV2Response(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetActiveSessionV2Delegate Delegate) const;
     void OnGetAllActiveSessionsResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetAllActiveSessionsDelegate Delegate) const;
     void OnGetSessionRequestResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetSessionRequestDelegate Delegate) const;
     void OnRevokeSessionResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FRevokeSessionDelegate Delegate) const;

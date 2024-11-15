@@ -97,10 +97,6 @@ void PlayerClientWrappingTokenInput::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("operationProcessing")); WriteJsonValue(Writer, OperationProcessing.GetValue());
 	}
-	if (OperationId.IsSet())
-	{
-		Writer->WriteIdentifierPrefix(TEXT("operationId")); WriteJsonValue(Writer, OperationId.GetValue());
-	}
 	Writer->WriteObjectEnd();
 }
 
@@ -118,7 +114,6 @@ bool PlayerClientWrappingTokenInput::FromJson(const TSharedPtr<FJsonValue>& Json
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("policyId"), PolicyId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationProcessing"), OperationProcessing);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationId"), OperationId);
 
 	return ParseSuccess;
 }

@@ -28,6 +28,7 @@ public:
 	FBeamSession();
 	FBeamSession(FString& InJsonString);
 	FBeamSession(class PlayerClientSessionsApi::GetActiveSessionResponse& ApiResponse);
+	FBeamSession(class PlayerClientSessionsApi::GetActiveSessionV2Response& ApiV2Response);
 
 public:
 	static bool FromJson(const FString& InJsonString, FBeamSession& OutBeamSession);

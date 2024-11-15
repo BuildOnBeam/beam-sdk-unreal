@@ -56,7 +56,6 @@ public:
 	static FString EnumToString(const OperationProcessingEnum& EnumValue);
 	static bool EnumFromString(const FString& EnumAsString, OperationProcessingEnum& EnumValue);
 	TOptional<OperationProcessingEnum> OperationProcessing;
-	TOptional<FString> OperationId;
 };
 
 }

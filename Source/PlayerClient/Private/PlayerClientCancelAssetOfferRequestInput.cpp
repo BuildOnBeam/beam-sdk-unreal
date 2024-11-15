@@ -92,10 +92,6 @@ void PlayerClientCancelAssetOfferRequestInput::WriteJson(JsonWriter& Writer) con
 	{
 		Writer->WriteIdentifierPrefix(TEXT("operationProcessing")); WriteJsonValue(Writer, OperationProcessing.GetValue());
 	}
-	if (OperationId.IsSet())
-	{
-		Writer->WriteIdentifierPrefix(TEXT("operationId")); WriteJsonValue(Writer, OperationId.GetValue());
-	}
 	if (ChainId.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId.GetValue());
@@ -115,7 +111,6 @@ bool PlayerClientCancelAssetOfferRequestInput::FromJson(const TSharedPtr<FJsonVa
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("sponsor"), Sponsor);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("policyId"), PolicyId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationProcessing"), OperationProcessing);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationId"), OperationId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 
 	return ParseSuccess;
