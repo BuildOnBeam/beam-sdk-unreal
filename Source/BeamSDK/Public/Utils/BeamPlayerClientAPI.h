@@ -44,6 +44,8 @@
 #include "PlayerClientGenerateSessionRequestResponse.h"
 #include "PlayerClientGenerateSessionUrlRequestInput.h"
 #include "PlayerClientGetActiveSessionResponse.h"
+#include "PlayerClientGetActiveSessionResponseV2.h"
+#include "PlayerClientGetActiveSessionResponseV2Session.h"
 #include "PlayerClientGetActiveSessionsResponse.h"
 #include "PlayerClientGetActiveSessionsResponseSessionsInner.h"
 #include "PlayerClientGetAllUsersResponse.h"

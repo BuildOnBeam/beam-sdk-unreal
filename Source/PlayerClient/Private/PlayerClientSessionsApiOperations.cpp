@@ -127,6 +127,50 @@ bool PlayerClientSessionsApi::GetActiveSessionResponse::FromJson(const TSharedPt
 	return TryGetJsonValue(JsonValue, Content);
 }
 
+FString PlayerClientSessionsApi::GetActiveSessionV2Request::ComputePath() const
+{
+	TMap<FString, FStringFormatArg> PathParams = { 
+	{ TEXT("entityId"), FStringFormatArg(ToUrlString(EntityId)) },
+	{ TEXT("accountAddress"), FStringFormatArg(ToUrlString(AccountAddress)) } };
+
+	FString Path = FString::Format(TEXT("/v2/player/sessions/users/{entityId}/{accountAddress}/active"), PathParams);
+
+	TArray<FString> QueryParams;
+	if(ChainId.IsSet())
+	{
+		QueryParams.Add(FString(TEXT("chainId=")) + ToUrlString(ChainId.GetValue()));
+	}
+	Path += TCHAR('?');
+	Path += FString::Join(QueryParams, TEXT("&"));
+
+	return Path;
+}
+
+void PlayerClientSessionsApi::GetActiveSessionV2Request::SetupHttpRequest(const FHttpRequestRef& HttpRequest) const
+{
+	static const TArray<FString> Consumes = {  };
+	//static const TArray<FString> Produces = { TEXT("application/json") };
+
+	HttpRequest->SetVerb(TEXT("GET"));
+
+}
+
+void PlayerClientSessionsApi::GetActiveSessionV2Response::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
+{
+	Response::SetHttpResponseCode(InHttpResponseCode);
+	switch ((int)InHttpResponseCode)
+	{
+	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	}
+}
+
+bool PlayerClientSessionsApi::GetActiveSessionV2Response::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
+{
+	return TryGetJsonValue(JsonValue, Content);
+}
+
 FString PlayerClientSessionsApi::GetAllActiveSessionsRequest::ComputePath() const
 {
 	TMap<FString, FStringFormatArg> PathParams = { 
