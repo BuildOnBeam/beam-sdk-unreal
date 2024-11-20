@@ -77,23 +77,6 @@ std::vector<uint8_t> Keccak256Helper::keccak256(const std::string& stringtoHash)
 	return keccak256(hashBytes);
 }
 
-std::vector<uint8_t> Keccak256Helper::hashDomain(const EIP712Domain& domain)
-{
-    // Implement hashing for the domain
-    // For simplicity, we use concatenated string representation. Proper implementation should follow EIP-712 hashing rules
-    std::string domainData = domain.name + domain.version + domain.chainId.str() + domain.verifyingContract;
-    std::vector<uint8_t> domainBytes(domainData.begin(), domainData.end());
-    return keccak256(domainBytes);
-}
-
-std::vector<uint8_t> Keccak256Helper::hashTypedData(const MyTypedData& data)
-{
-    // Implement hashing for the typed data
-    std::string dataStr = data.field1 + data.field2.str();
-    std::vector<uint8_t> dataBytes(dataStr.begin(), dataStr.end());
-    return keccak256(dataBytes);
-}
-
 
 std::vector<uint8_t> Keccak256Helper::createDigest(const std::vector<uint8_t>& domainHash, const std::vector<uint8_t>& dataHash)
 {

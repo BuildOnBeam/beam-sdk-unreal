@@ -1,6 +1,5 @@
 #include "BeamClient.h"
 
-#include "BeamApiError.h"
 #include "BeamEnvironment.h"
 #include "BeamOperationSigningBy.h"
 #include "BeamResult.h"
@@ -8,8 +7,6 @@
 #include "BeamSaveGameStorage.h"
 #include "BeamUtils.h"
 
-#include "Interfaces/IHttpRequest.h"
-#include "PlatformHttp.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
 #include "Misc/FileHelper.h"

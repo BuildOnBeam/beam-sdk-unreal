@@ -14,12 +14,7 @@ public class BeamSDK : ModuleRules
 				Path.Combine(ModuleDirectory, "Public", "Storage"),
 				Path.Combine(ModuleDirectory, "Public", "Utils"),
 
-				// Include Openfort support for KeyPair
 				Path.Combine(ModuleDirectory, "External"),
-				Path.Combine(ModuleDirectory, "External", "Openfort"),
-				Path.Combine(ModuleDirectory, "External", "CalcCrypto"),
-				Path.Combine(ModuleDirectory, "External", "CalcCrypto", "uint128"),
-				Path.Combine(ModuleDirectory, "External", "CalcCrypto", "uint256"),
 
 				// Include the PlayerClient Public headers
 				Path.Combine(PluginDirectory, "Source", "PlayerClient", "Public"),
@@ -56,7 +51,7 @@ public class BeamSDK : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"PlayerClient",
+				"PlayerClient", "MetalCPP",
 			}
 		);
 		
@@ -69,7 +64,6 @@ public class BeamSDK : ModuleRules
 		);
 
 
-		// Required for Openfort support for KeyPair
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "External/libsecp256k1.lib"));

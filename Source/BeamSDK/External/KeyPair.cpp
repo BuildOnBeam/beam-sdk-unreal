@@ -1,12 +1,12 @@
 #include "KeyPair.h"
 #include "HexConverter.h"
 #include "Keccak256Helper.h"
-#include <algorithm>
 #include <iostream>
 #include "Keccak256.h"
 #include "secp256k1_recovery.h"
 #include "secp256k1.h"
-#include "Random.h"
+#include "SecureRandom.h"
+#include "Math/RandomStream.h"
 
 bool KeyPair::Generate()
 {
@@ -14,22 +14,23 @@ bool KeyPair::Generate()
 	secp256k1_context* ctx = secp256k1_context_create(SECP256K1_CONTEXT_NONE);
 
 	unsigned char randomize[32] = { 0 };
-	if (!fill_random(randomize, 32))
+	GenerateSecureRandomBytes(randomize, 32);
+
+	if (!secp256k1_context_randomize(ctx, randomize))
 	{
 		return false;
 	}
 
-	secp256k1_context_randomize(ctx, randomize);
-
 	do
 	{
-		if (!fill_random(seckey, 32))
-		{
-			return false;
-		}
+		GenerateSecureRandomBytes(seckey, 32);
 	}
 	while (!secp256k1_ec_seckey_verify(ctx, seckey));
-	secp256k1_ec_pubkey_create(ctx, &pubkey, seckey);
+
+	if (!secp256k1_ec_pubkey_create(ctx, &pubkey, seckey))
+	{
+		return false;
+	}
 
 	secp256k1_context_destroy(ctx);
 	isInitialized = true;
@@ -45,7 +46,11 @@ bool KeyPair::Initialize(std::string seckeyHex)
 	if (!secp256k1_ec_seckey_verify(ctx, seckey)) {
 		return false;
 	}
-	secp256k1_ec_pubkey_create(ctx, &pubkey, seckey);
+
+	if (!secp256k1_ec_pubkey_create(ctx, &pubkey, seckey))
+	{
+		return false;
+	}
 
 	secp256k1_context_destroy(ctx);
 	isInitialized = true;
@@ -126,4 +131,3 @@ std::string KeyPair::SignMarketplaceTransactionHash(std::string hashString)
 	secp256k1_context_destroy(ctx);
 	return "0x" + HexConverter::ToHexString(serialized_signature, 65);
 }
-
