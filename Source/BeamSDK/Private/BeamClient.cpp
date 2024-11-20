@@ -1040,7 +1040,7 @@ void UBeamClient::GetOrCreateSigningKeyPair(KeyPair& OutKeyPair, FString InEntit
 
 	OutKeyPair.Generate();
 
-	// Allows debugging the generated keys for debug and devopment builds. (1 = On, 0 = Off [default])
+	// Allows debugging the generated keys for debug and development builds. (1 = On, 0 = Off [default])
 #define DEBUG_KEY_GEN 0
 #if !UE_BUILD_SHIPPING && DEBUG_KEY_GEN
 	{
