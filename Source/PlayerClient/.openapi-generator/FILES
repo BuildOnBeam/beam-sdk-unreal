@@ -6,6 +6,7 @@ Private/PlayerClientActivityApiOperations.cpp
 Private/PlayerClientAssetsApi.cpp
 Private/PlayerClientAssetsApiOperations.cpp
 Private/PlayerClientBaseModel.cpp
+Private/PlayerClientBeamErrorResponse.cpp
 Private/PlayerClientBuyAssetRequestInput.cpp
 Private/PlayerClientCancelAssetListingRequestInput.cpp
 Private/PlayerClientCancelAssetOfferRequestInput.cpp
@@ -33,7 +34,6 @@ Private/PlayerClientCreateAssetOfferRequestInput.cpp
 Private/PlayerClientCreateConnectionRequestInput.cpp
 Private/PlayerClientCreateConnectionRequestResponse.cpp
 Private/PlayerClientCreateOnrampRequestInput.cpp
-Private/PlayerClientCreateOnrampRequestResponse.cpp
 Private/PlayerClientCreateTransactionRequestInput.cpp
 Private/PlayerClientCreateTransactionRequestInputInteractionsInner.cpp
 Private/PlayerClientExchangeApi.cpp
@@ -134,6 +134,7 @@ Public/PlayerClientActivityApiOperations.h
 Public/PlayerClientAssetsApi.h
 Public/PlayerClientAssetsApiOperations.h
 Public/PlayerClientBaseModel.h
+Public/PlayerClientBeamErrorResponse.h
 Public/PlayerClientBuyAssetRequestInput.h
 Public/PlayerClientCancelAssetListingRequestInput.h
 Public/PlayerClientCancelAssetOfferRequestInput.h
@@ -161,7 +162,6 @@ Public/PlayerClientCreateAssetOfferRequestInput.h
 Public/PlayerClientCreateConnectionRequestInput.h
 Public/PlayerClientCreateConnectionRequestResponse.h
 Public/PlayerClientCreateOnrampRequestInput.h
-Public/PlayerClientCreateOnrampRequestResponse.h
 Public/PlayerClientCreateTransactionRequestInput.h
 Public/PlayerClientCreateTransactionRequestInputInteractionsInner.h
 Public/PlayerClientExchangeApi.h

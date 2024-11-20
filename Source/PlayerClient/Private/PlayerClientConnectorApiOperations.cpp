@@ -71,6 +71,12 @@ void PlayerClientConnectorApi::CreateConnectionRequestResponse::SetHttpResponseC
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -104,6 +110,12 @@ void PlayerClientConnectorApi::GetConnectionRequestResponse::SetHttpResponseCode
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

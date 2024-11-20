@@ -75,6 +75,12 @@ void PlayerClientTransactionsApi::CreateUserTransactionResponse::SetHttpResponse
 	case 201:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -108,6 +114,12 @@ void PlayerClientTransactionsApi::GetTransactionResponse::SetHttpResponseCode(EH
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -151,6 +163,12 @@ void PlayerClientTransactionsApi::GetTransactionsResponse::SetHttpResponseCode(E
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -198,6 +216,12 @@ void PlayerClientTransactionsApi::GetUserTransactionsResponse::SetHttpResponseCo
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

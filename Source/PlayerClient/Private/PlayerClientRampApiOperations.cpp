@@ -75,6 +75,12 @@ void PlayerClientRampApi::CreateOnrampRequestResponse::SetHttpResponseCode(EHttp
 	case 201:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 

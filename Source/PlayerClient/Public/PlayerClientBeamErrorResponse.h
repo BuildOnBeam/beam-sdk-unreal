@@ -18,14 +18,14 @@ namespace OpenAPI
 {
 
 /*
- * PlayerClientErrorResponseDto
+ * PlayerClientBeamErrorResponse
  *
  * 
  */
-class PLAYERCLIENT_API PlayerClientErrorResponseDto : public Model
+class PLAYERCLIENT_API PlayerClientBeamErrorResponse : public Model
 {
 public:
-    virtual ~PlayerClientErrorResponseDto() {}
+    virtual ~PlayerClientBeamErrorResponse() {}
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 	void WriteJson(JsonWriter& Writer) const final;
 

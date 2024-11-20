@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 
-#include "PlayerClientErrorResponseDto.h"
+#include "PlayerClientBeamErrorResponse.h"
 
 #include "PlayerClientModule.h"
 #include "PlayerClientHelpers.h"
@@ -20,7 +20,7 @@
 namespace OpenAPI
 {
 
-void PlayerClientErrorResponseDto::WriteJson(JsonWriter& Writer) const
+void PlayerClientBeamErrorResponse::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
 	Writer->WriteIdentifierPrefix(TEXT("path")); WriteJsonValue(Writer, Path);
@@ -49,7 +49,7 @@ void PlayerClientErrorResponseDto::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectEnd();
 }
 
-bool PlayerClientErrorResponseDto::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
+bool PlayerClientBeamErrorResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
 {
 	const TSharedPtr<FJsonObject>* Object;
 	if (!JsonValue->TryGetObject(Object))

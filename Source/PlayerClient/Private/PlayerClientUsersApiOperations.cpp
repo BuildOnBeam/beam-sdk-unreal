@@ -58,6 +58,12 @@ void PlayerClientUsersApi::GetAllUsersResponse::SetHttpResponseCode(EHttpRespons
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -93,6 +99,12 @@ void PlayerClientUsersApi::GetUserResponse::SetHttpResponseCode(EHttpResponseCod
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -126,6 +138,12 @@ void PlayerClientUsersApi::UnlinkUserResponse::SetHttpResponseCode(EHttpResponse
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -186,6 +204,12 @@ void PlayerClientUsersApi::UpdateUserResponse::SetHttpResponseCode(EHttpResponse
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

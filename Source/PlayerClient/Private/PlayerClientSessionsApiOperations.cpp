@@ -75,6 +75,12 @@ void PlayerClientSessionsApi::CreateSessionRequestResponse::SetHttpResponseCode(
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -117,6 +123,12 @@ void PlayerClientSessionsApi::GetActiveSessionResponse::SetHttpResponseCode(EHtt
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -163,6 +175,12 @@ void PlayerClientSessionsApi::GetActiveSessionV2Response::SetHttpResponseCode(EH
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -206,6 +224,12 @@ void PlayerClientSessionsApi::GetAllActiveSessionsResponse::SetHttpResponseCode(
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -239,6 +263,12 @@ void PlayerClientSessionsApi::GetSessionRequestResponse::SetHttpResponseCode(EHt
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -299,6 +329,12 @@ void PlayerClientSessionsApi::RevokeSessionResponse::SetHttpResponseCode(EHttpRe
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

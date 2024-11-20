@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientHealthApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCheck200Response.h"
 #include "PlayerClientCheck503Response.h"
 

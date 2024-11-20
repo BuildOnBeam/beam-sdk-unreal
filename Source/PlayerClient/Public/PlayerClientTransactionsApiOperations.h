@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientTransactionsApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCreateTransactionRequestInput.h"
 #include "PlayerClientGetTransactionResponse.h"
 #include "PlayerClientGetTransactionsResponse.h"

@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientExchangeApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientConvertTokenRequestInput.h"
 #include "PlayerClientGetQuoteResponse.h"
 #include "PlayerClientPlayerOperationResponse.h"

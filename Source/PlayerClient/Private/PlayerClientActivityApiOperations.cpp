@@ -76,6 +76,12 @@ void PlayerClientActivityApi::GetAssetActivityResponse::SetHttpResponseCode(EHtt
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -136,6 +142,12 @@ void PlayerClientActivityApi::GetContractActivityResponse::SetHttpResponseCode(E
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
+		SetResponseString(TEXT(""));
+		break;
 	}
 }
 
@@ -194,6 +206,12 @@ void PlayerClientActivityApi::GetUserActivityResponse::SetHttpResponseCode(EHttp
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
+		SetResponseString(TEXT(""));
+		break;
+	case 4XX:
+		SetResponseString(TEXT(""));
+		break;
+	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

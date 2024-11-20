@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientSessionsApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientGenerateSessionRequestResponse.h"
 #include "PlayerClientGenerateSessionUrlRequestInput.h"
 #include "PlayerClientGetActiveSessionResponse.h"
