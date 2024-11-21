@@ -15,7 +15,6 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientUsersApi.h"
 
-#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientGetAllUsersResponse.h"
 #include "PlayerClientGetUserResponse.h"
 #include "PlayerClientUpdateUserRequest.h"

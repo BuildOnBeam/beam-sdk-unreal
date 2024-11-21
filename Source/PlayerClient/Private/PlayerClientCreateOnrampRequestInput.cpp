@@ -70,6 +70,59 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 	return false;
 }
 
+inline FString ToString(const PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum::Usd:
+		return TEXT("USD");
+	case PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum::Eur:
+		return TEXT("EUR");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientCreateOnrampRequestInput::EnumToString(const PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum& Value)
+{
+	static TMap<FString, PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum> StringToEnum = { 
+		{ TEXT("USD"), PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum::Usd },
+		{ TEXT("EUR"), PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum::Eur }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientCreateOnrampRequestInput::EnumFromString(const FString& EnumAsString, PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientCreateOnrampRequestInput::PaymentCurrencyEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientCreateOnrampRequestInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();

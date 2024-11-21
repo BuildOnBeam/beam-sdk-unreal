@@ -67,12 +67,6 @@ void PlayerClientAssetsApi::GetAssetResponse::SetHttpResponseCode(EHttpResponseC
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -133,12 +127,6 @@ void PlayerClientAssetsApi::GetAssetsForContractResponse::SetHttpResponseCode(EH
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -177,12 +165,6 @@ void PlayerClientAssetsApi::GetAttributesResponse::SetHttpResponseCode(EHttpResp
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -246,12 +228,6 @@ void PlayerClientAssetsApi::GetOwnerAssetsResponse::SetHttpResponseCode(EHttpRes
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -298,12 +274,6 @@ void PlayerClientAssetsApi::GetOwnersResponse::SetHttpResponseCode(EHttpResponse
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -366,12 +336,6 @@ void PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::SetHttpResponseCod
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -415,12 +379,6 @@ void PlayerClientAssetsApi::GetUserCurrenciesResponse::SetHttpResponseCode(EHttp
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -462,12 +420,6 @@ void PlayerClientAssetsApi::GetUserNativeCurrencyResponse::SetHttpResponseCode(E
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -530,12 +482,6 @@ void PlayerClientAssetsApi::TransferAssetResponse::SetHttpResponseCode(EHttpResp
 	case 201:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -596,12 +542,6 @@ void PlayerClientAssetsApi::TransferNativeTokenResponse::SetHttpResponseCode(EHt
 	case 201:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -660,12 +600,6 @@ void PlayerClientAssetsApi::TransferTokenResponse::SetHttpResponseCode(EHttpResp
 	switch ((int)InHttpResponseCode)
 	{
 	case 201:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

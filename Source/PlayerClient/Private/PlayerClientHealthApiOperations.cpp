@@ -49,12 +49,6 @@ void PlayerClientHealthApi::CheckResponse::SetHttpResponseCode(EHttpResponseCode
 	case 503:
 		SetResponseString(TEXT("The Health Check is not successful"));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 

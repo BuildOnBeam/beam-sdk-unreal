@@ -15,9 +15,8 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientRampApi.h"
 
-#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCreateOnrampRequestInput.h"
-#include "PlayerClientPlayerOperationResponse.h"
+#include "PlayerClientCreateOnrampRequestResponse.h"
 
 namespace OpenAPI
 {
@@ -43,7 +42,7 @@ public:
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-    PlayerClientPlayerOperationResponse Content;
+    PlayerClientCreateOnrampRequestResponse Content;
 };
 
 }

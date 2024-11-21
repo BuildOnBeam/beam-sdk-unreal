@@ -24,8 +24,6 @@ inline FString ToString(const PlayerClientPlayerOperationAction::TypeEnum& Value
 {
 	switch (Value)
 	{
-	case PlayerClientPlayerOperationAction::TypeEnum::FiatOnRamp:
-		return TEXT("FiatOnRamp");
 	case PlayerClientPlayerOperationAction::TypeEnum::Sign:
 		return TEXT("Sign");
 	case PlayerClientPlayerOperationAction::TypeEnum::SessionRevoke:
@@ -68,7 +66,6 @@ FString PlayerClientPlayerOperationAction::EnumToString(const PlayerClientPlayer
 inline bool FromString(const FString& EnumAsString, PlayerClientPlayerOperationAction::TypeEnum& Value)
 {
 	static TMap<FString, PlayerClientPlayerOperationAction::TypeEnum> StringToEnum = { 
-		{ TEXT("FiatOnRamp"), PlayerClientPlayerOperationAction::TypeEnum::FiatOnRamp },
 		{ TEXT("Sign"), PlayerClientPlayerOperationAction::TypeEnum::Sign },
 		{ TEXT("SessionRevoke"), PlayerClientPlayerOperationAction::TypeEnum::SessionRevoke },
 		{ TEXT("MarketplaceCreateOffer"), PlayerClientPlayerOperationAction::TypeEnum::MarketplaceCreateOffer },

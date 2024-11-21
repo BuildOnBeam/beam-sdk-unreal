@@ -16,7 +16,6 @@
 #include "PlayerClientMarketplaceApi.h"
 
 #include "PlayerClientAcceptAssetOfferRequestInput.h"
-#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientBuyAssetRequestInput.h"
 #include "PlayerClientCancelAssetListingRequestInput.h"
 #include "PlayerClientCancelAssetOfferRequestInput.h"

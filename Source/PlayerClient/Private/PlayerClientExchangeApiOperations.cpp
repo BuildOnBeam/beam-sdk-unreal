@@ -75,12 +75,6 @@ void PlayerClientExchangeApi::ConvertInputResponse::SetHttpResponseCode(EHttpRes
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -141,12 +135,6 @@ void PlayerClientExchangeApi::ConvertToOutputResponse::SetHttpResponseCode(EHttp
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -189,12 +177,6 @@ void PlayerClientExchangeApi::GetQuoteForInputResponse::SetHttpResponseCode(EHtt
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -235,12 +217,6 @@ void PlayerClientExchangeApi::GetQuoteForOutputResponse::SetHttpResponseCode(EHt
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -303,12 +279,6 @@ void PlayerClientExchangeApi::UnwrapNativeResponse::SetHttpResponseCode(EHttpRes
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -367,12 +337,6 @@ void PlayerClientExchangeApi::WrapNativeResponse::SetHttpResponseCode(EHttpRespo
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

@@ -76,12 +76,6 @@ void PlayerClientStatsApi::GetAssetStatsResponse::SetHttpResponseCode(EHttpRespo
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -140,12 +134,6 @@ void PlayerClientStatsApi::GetContractStatsResponse::SetHttpResponseCode(EHttpRe
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

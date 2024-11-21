@@ -33,7 +33,6 @@ public:
 
 	enum class TypeEnum
 	{
-		FiatOnRamp,
 		Sign,
 		SessionRevoke,
 		MarketplaceCreateOffer,

@@ -85,8 +85,6 @@ inline FString ToString(const PlayerClientGetAssetsForContractBodyInput::SortByE
 		return TEXT("rarity");
 	case PlayerClientGetAssetsForContractBodyInput::SortByEnum::UpdatedAt:
 		return TEXT("updatedAt");
-	case PlayerClientGetAssetsForContractBodyInput::SortByEnum::MintedAt:
-		return TEXT("mintedAt");
 	}
 
 	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientGetAssetsForContractBodyInput::SortByEnum Value (%d)"), (int)Value);
@@ -104,8 +102,7 @@ inline bool FromString(const FString& EnumAsString, PlayerClientGetAssetsForCont
 		{ TEXT("floorAskPrice"), PlayerClientGetAssetsForContractBodyInput::SortByEnum::FloorAskPrice },
 		{ TEXT("tokenId"), PlayerClientGetAssetsForContractBodyInput::SortByEnum::TokenId },
 		{ TEXT("rarity"), PlayerClientGetAssetsForContractBodyInput::SortByEnum::Rarity },
-		{ TEXT("updatedAt"), PlayerClientGetAssetsForContractBodyInput::SortByEnum::UpdatedAt },
-		{ TEXT("mintedAt"), PlayerClientGetAssetsForContractBodyInput::SortByEnum::MintedAt }, };
+		{ TEXT("updatedAt"), PlayerClientGetAssetsForContractBodyInput::SortByEnum::UpdatedAt }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);
 	if(Found)

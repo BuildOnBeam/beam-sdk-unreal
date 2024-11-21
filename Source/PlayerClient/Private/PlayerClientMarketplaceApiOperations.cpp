@@ -76,12 +76,6 @@ void PlayerClientMarketplaceApi::AcceptAssetOfferResponse::SetHttpResponseCode(E
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -143,12 +137,6 @@ void PlayerClientMarketplaceApi::BuyListedAssetResponse::SetHttpResponseCode(EHt
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -183,12 +171,6 @@ void PlayerClientMarketplaceApi::CancelAssetOfferResponse::SetHttpResponseCode(E
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -233,12 +215,6 @@ void PlayerClientMarketplaceApi::CancelListingResponse::SetHttpResponseCode(EHtt
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -301,12 +277,6 @@ void PlayerClientMarketplaceApi::CreateAssetOfferResponse::SetHttpResponseCode(E
 	case 201:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -355,12 +325,6 @@ void PlayerClientMarketplaceApi::GetAssetOffersResponse::SetHttpResponseCode(EHt
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -394,12 +358,6 @@ void PlayerClientMarketplaceApi::GetChainCurrenciesResponse::SetHttpResponseCode
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -456,12 +414,6 @@ void PlayerClientMarketplaceApi::GetListedAssetsResponse::SetHttpResponseCode(EH
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -524,12 +476,6 @@ void PlayerClientMarketplaceApi::GetListedAssetsForUserResponse::SetHttpResponse
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -579,12 +525,6 @@ void PlayerClientMarketplaceApi::GetUserAssetOffersResponse::SetHttpResponseCode
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -630,12 +570,6 @@ void PlayerClientMarketplaceApi::GetUserOffersResponse::SetHttpResponseCode(EHtt
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -698,12 +632,6 @@ void PlayerClientMarketplaceApi::ListAssetResponse::SetHttpResponseCode(EHttpRes
 	case 201:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -721,7 +649,7 @@ FString PlayerClientMarketplaceApi::RefreshContractRequest::ComputePath() const
 void PlayerClientMarketplaceApi::RefreshContractRequest::SetupHttpRequest(const FHttpRequestRef& HttpRequest) const
 {
 	static const TArray<FString> Consumes = { TEXT("application/json") };
-	//static const TArray<FString> Produces = { TEXT("application/json") };
+	//static const TArray<FString> Produces = {  };
 
 	HttpRequest->SetVerb(TEXT("POST"));
 
@@ -760,12 +688,6 @@ void PlayerClientMarketplaceApi::RefreshContractResponse::SetHttpResponseCode(EH
 	case 201:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -783,7 +705,7 @@ FString PlayerClientMarketplaceApi::RefreshTokenRequest::ComputePath() const
 void PlayerClientMarketplaceApi::RefreshTokenRequest::SetupHttpRequest(const FHttpRequestRef& HttpRequest) const
 {
 	static const TArray<FString> Consumes = { TEXT("application/json") };
-	//static const TArray<FString> Produces = { TEXT("application/json") };
+	//static const TArray<FString> Produces = {  };
 
 	HttpRequest->SetVerb(TEXT("POST"));
 
@@ -820,12 +742,6 @@ void PlayerClientMarketplaceApi::RefreshTokenResponse::SetHttpResponseCode(EHttp
 	switch ((int)InHttpResponseCode)
 	{
 	case 201:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

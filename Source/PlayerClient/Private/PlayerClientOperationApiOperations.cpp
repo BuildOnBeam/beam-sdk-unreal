@@ -50,12 +50,6 @@ void PlayerClientOperationApi::DeleteOperationResponse::SetHttpResponseCode(EHtt
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -105,12 +99,6 @@ void PlayerClientOperationApi::ExecuteSignedOperationResponse::SetHttpResponseCo
 	case 200:
 		SetResponseString(TEXT(""));
 		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
-		SetResponseString(TEXT(""));
-		break;
 	}
 }
 
@@ -144,12 +132,6 @@ void PlayerClientOperationApi::GetOperationResponse::SetHttpResponseCode(EHttpRe
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}
@@ -210,12 +192,6 @@ void PlayerClientOperationApi::ProcessOperationResponse::SetHttpResponseCode(EHt
 	switch ((int)InHttpResponseCode)
 	{
 	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	case 4XX:
-		SetResponseString(TEXT(""));
-		break;
-	case 5XX:
 		SetResponseString(TEXT(""));
 		break;
 	}

@@ -28,6 +28,5 @@ public class PlayerClient : ModuleRules
         );
 
         PCHUsage = PCHUsageMode.NoPCHs;
-        bEnableExceptions = true;
     }
 }

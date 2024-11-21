@@ -15,7 +15,6 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientAssetsApi.h"
 
-#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientGetAssetResponse.h"
 #include "PlayerClientGetAssetsForContractBodyInput.h"
 #include "PlayerClientGetAssetsForContractResponse.h"
