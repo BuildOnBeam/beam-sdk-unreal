@@ -1,12 +1,27 @@
 #include "SecureRandom.h"
 
+#ifdef TEXT
+#undef TEXT // Delete macro UE4
+#endif
+
 #if PLATFORM_WINDOWS
+
+#include <windows.h>// Define macro Win32
 #include <bcrypt.h> // For BCryptGenRandom (Windows)
 #pragma comment(lib, "bcrypt.lib")
+
 #elif PLATFORM_LINUX || PLATFORM_MAC
+
 #include <fcntl.h>  // For open()
 #include <unistd.h> // For read() and close()
+
 #endif
+
+#ifdef TEXT
+#undef TEXT // Delete macro Win32
+#endif
+
+#define TEXT(x) TEXT_PASTE(x)// Define macro UE4
 
 DEFINE_LOG_CATEGORY(LogSecureRandom);
 
