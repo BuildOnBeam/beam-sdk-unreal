@@ -51,7 +51,7 @@ public class BeamSDK : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"PlayerClient", "MetalCPP",
+				"PlayerClient"
 			}
 		);
 		
