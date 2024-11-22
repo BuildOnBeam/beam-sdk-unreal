@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientConnectorApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCreateConnectionRequestInput.h"
 #include "PlayerClientCreateConnectionRequestResponse.h"
 #include "PlayerClientGetConnectionRequestResponse.h"
@@ -43,6 +44,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientCreateConnectionRequestResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -66,6 +69,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetConnectionRequestResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

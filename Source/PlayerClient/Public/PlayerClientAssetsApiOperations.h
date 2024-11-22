@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientAssetsApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientGetAssetResponse.h"
 #include "PlayerClientGetAssetsForContractBodyInput.h"
 #include "PlayerClientGetAssetsForContractResponse.h"
@@ -61,6 +62,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetAssetResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all the assets of contract (NFT assets, e.g. ERC721 / ERC1155)
@@ -85,6 +88,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetAssetsForContractResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -109,6 +114,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetAttributesResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -134,6 +141,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetOwnerAssetsResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -160,6 +169,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetOwnersResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all the assets of a profile (NFT assets, e.g. ERC721 / ERC1155)
@@ -184,6 +195,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetAssetsForUserResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all the currencies owned by an account (ERC20)
@@ -208,6 +221,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetUserCurrenciesResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get the native token balance
@@ -232,6 +247,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetUserNativeCurrencyResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Transfer an asset (NFT assets, ERC721 / ERC1155)
@@ -256,6 +273,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientPlayerOperationResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Transfer the native token
@@ -280,6 +299,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientPlayerOperationResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Transfer a token (token assets, ERC20)
@@ -304,6 +325,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientPlayerOperationResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

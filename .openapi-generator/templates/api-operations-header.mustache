@@ -58,6 +58,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     {{#returnType}}{{{.}}} Content;{{/returnType}}
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 {{/operation}}

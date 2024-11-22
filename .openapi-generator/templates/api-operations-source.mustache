@@ -4,6 +4,7 @@
 #include "{{unrealModuleName}}Module.h"
 #include "{{modelNamePrefix}}Helpers.h"
 
+#include <string>
 #include "Dom/JsonObject.h"
 #include "Templates/SharedPointer.h"
 #include "HttpModule.h"
@@ -301,19 +302,38 @@ void {{classname}}::{{operationIdCamelCase}}Request::SetupHttpRequest(const FHtt
 void {{classname}}::{{operationIdCamelCase}}Response::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	{{#responses}}
-	case {{code}}:
-	{{#isDefault}}
-	default:
-	{{/isDefault}}
-		SetResponseString(TEXT("{{message}}"));
-		break;
-	{{/responses}}
-	}
+
+    {{#responses}}
+    {{^range}}
+        if ((int)InHttpResponseCode == {{code}})
+        {
+            SetResponseString(TEXT("{{message}}"));
+            return;
+        }
+    {{/range}}
+    {{#range}}
+        if (GetHttpStatusCategory(InHttpResponseCode) == "{{code}}")
+        {
+            SetResponseString(TEXT("{{message}}"));
+            return;
+        }
+    {{/range}}
+    {{/responses}}
 }
 {{/responses.0}}
+
+std::string {{classname}}::{{operationIdCamelCase}}Response::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
+}
 
 bool {{classname}}::{{operationIdCamelCase}}Response::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
 {

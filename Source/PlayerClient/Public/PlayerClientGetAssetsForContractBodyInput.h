@@ -53,6 +53,7 @@ public:
 		TokenId,
 		Rarity,
 		UpdatedAt,
+		MintedAt,
   	};
 
 	static FString EnumToString(const SortByEnum& EnumValue);

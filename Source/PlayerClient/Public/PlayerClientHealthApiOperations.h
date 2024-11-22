@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientHealthApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCheck200Response.h"
 #include "PlayerClientCheck503Response.h"
 
@@ -41,6 +42,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientCheck200Response Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

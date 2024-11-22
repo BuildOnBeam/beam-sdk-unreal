@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientTransactionsApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCreateTransactionRequestInput.h"
 #include "PlayerClientGetTransactionResponse.h"
 #include "PlayerClientGetTransactionsResponse.h"
@@ -45,6 +46,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientPlayerOperationResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Getting a transaction
@@ -68,6 +71,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetTransactionResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get a paginated list of transactions from your game
@@ -92,6 +97,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetTransactionsResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get a paginated list of transactions created on behalf of a user
@@ -117,6 +124,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientGetTransactionsResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

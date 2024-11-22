@@ -15,6 +15,7 @@
 #include "PlayerClientModule.h"
 #include "PlayerClientHelpers.h"
 
+#include <string>
 #include "Dom/JsonObject.h"
 #include "Templates/SharedPointer.h"
 #include "HttpModule.h"
@@ -70,12 +71,35 @@ void PlayerClientExchangeApi::ConvertInputRequest::SetupHttpRequest(const FHttpR
 void PlayerClientExchangeApi::ConvertInputResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientExchangeApi::ConvertInputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientExchangeApi::ConvertInputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -130,12 +154,35 @@ void PlayerClientExchangeApi::ConvertToOutputRequest::SetupHttpRequest(const FHt
 void PlayerClientExchangeApi::ConvertToOutputResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientExchangeApi::ConvertToOutputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientExchangeApi::ConvertToOutputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -172,12 +219,35 @@ void PlayerClientExchangeApi::GetQuoteForInputRequest::SetupHttpRequest(const FH
 void PlayerClientExchangeApi::GetQuoteForInputResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientExchangeApi::GetQuoteForInputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientExchangeApi::GetQuoteForInputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -214,12 +284,35 @@ void PlayerClientExchangeApi::GetQuoteForOutputRequest::SetupHttpRequest(const F
 void PlayerClientExchangeApi::GetQuoteForOutputResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientExchangeApi::GetQuoteForOutputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientExchangeApi::GetQuoteForOutputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -274,12 +367,35 @@ void PlayerClientExchangeApi::UnwrapNativeRequest::SetupHttpRequest(const FHttpR
 void PlayerClientExchangeApi::UnwrapNativeResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientExchangeApi::UnwrapNativeResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientExchangeApi::UnwrapNativeResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -334,12 +450,35 @@ void PlayerClientExchangeApi::WrapNativeRequest::SetupHttpRequest(const FHttpReq
 void PlayerClientExchangeApi::WrapNativeResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientExchangeApi::WrapNativeResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientExchangeApi::WrapNativeResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientStatsApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCommonStatsRequestInput.h"
 #include "PlayerClientCommonStatsResponse.h"
 
@@ -44,6 +45,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientCommonStatsResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get contract stats
@@ -68,6 +71,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientCommonStatsResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

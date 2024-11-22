@@ -15,6 +15,7 @@
 #include "PlayerClientModule.h"
 #include "PlayerClientHelpers.h"
 
+#include <string>
 #include "Dom/JsonObject.h"
 #include "Templates/SharedPointer.h"
 #include "HttpModule.h"
@@ -62,12 +63,35 @@ void PlayerClientAssetsApi::GetAssetRequest::SetupHttpRequest(const FHttpRequest
 void PlayerClientAssetsApi::GetAssetResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetAssetResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -122,12 +146,35 @@ void PlayerClientAssetsApi::GetAssetsForContractRequest::SetupHttpRequest(const 
 void PlayerClientAssetsApi::GetAssetsForContractResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetAssetsForContractResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetAssetsForContractResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -162,12 +209,35 @@ void PlayerClientAssetsApi::GetAttributesRequest::SetupHttpRequest(const FHttpRe
 void PlayerClientAssetsApi::GetAttributesResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetAttributesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetAttributesResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -223,12 +293,35 @@ void PlayerClientAssetsApi::GetOwnerAssetsRequest::SetupHttpRequest(const FHttpR
 void PlayerClientAssetsApi::GetOwnerAssetsResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetOwnerAssetsResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetOwnerAssetsResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -271,12 +364,35 @@ void PlayerClientAssetsApi::GetOwnersRequest::SetupHttpRequest(const FHttpReques
 void PlayerClientAssetsApi::GetOwnersResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetOwnersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetOwnersResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -331,12 +447,35 @@ void PlayerClientAssetsApi::GetUserAssetsForGamePostRequest::SetupHttpRequest(co
 void PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -374,12 +513,35 @@ void PlayerClientAssetsApi::GetUserCurrenciesRequest::SetupHttpRequest(const FHt
 void PlayerClientAssetsApi::GetUserCurrenciesResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetUserCurrenciesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetUserCurrenciesResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -417,12 +579,35 @@ void PlayerClientAssetsApi::GetUserNativeCurrencyRequest::SetupHttpRequest(const
 void PlayerClientAssetsApi::GetUserNativeCurrencyResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 200:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::GetUserNativeCurrencyResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::GetUserNativeCurrencyResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -477,12 +662,35 @@ void PlayerClientAssetsApi::TransferAssetRequest::SetupHttpRequest(const FHttpRe
 void PlayerClientAssetsApi::TransferAssetResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 201:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 201)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::TransferAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::TransferAssetResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -537,12 +745,35 @@ void PlayerClientAssetsApi::TransferNativeTokenRequest::SetupHttpRequest(const F
 void PlayerClientAssetsApi::TransferNativeTokenResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 201:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 201)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::TransferNativeTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::TransferNativeTokenResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -597,12 +828,35 @@ void PlayerClientAssetsApi::TransferTokenRequest::SetupHttpRequest(const FHttpRe
 void PlayerClientAssetsApi::TransferTokenResponse::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
 {
 	Response::SetHttpResponseCode(InHttpResponseCode);
-	switch ((int)InHttpResponseCode)
-	{
-	case 201:
-		SetResponseString(TEXT(""));
-		break;
-	}
+
+        if ((int)InHttpResponseCode == 201)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+std::string PlayerClientAssetsApi::TransferTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return std::to_string(firstDigit) + "XX";
 }
 
 bool PlayerClientAssetsApi::TransferTokenResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

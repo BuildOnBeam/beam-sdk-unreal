@@ -15,6 +15,7 @@
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientActivityApi.h"
 
+#include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCommonActivityResponse.h"
 #include "PlayerClientCommonAssetActivityRequestInput.h"
 #include "PlayerClientCommonContractActivityRequestInput.h"
@@ -46,6 +47,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientCommonActivityResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get contract activity
@@ -70,6 +73,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientCommonActivityResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get user activity
@@ -94,6 +99,8 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientCommonActivityResponse Content;
+private:
+    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

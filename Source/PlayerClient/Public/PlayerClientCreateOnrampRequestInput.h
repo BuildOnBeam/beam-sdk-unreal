@@ -39,15 +39,7 @@ public:
 	TOptional<TokenEnum> Token;
 	TOptional<FString> TokenAmount;
 	TOptional<FString> FiatAmount;
-	enum class PaymentCurrencyEnum
-	{
-		Usd,
-		Eur,
-  	};
-
-	static FString EnumToString(const PaymentCurrencyEnum& EnumValue);
-	static bool EnumFromString(const FString& EnumAsString, PaymentCurrencyEnum& EnumValue);
-	TOptional<PaymentCurrencyEnum> PaymentCurrency;
+	TOptional<FString> PaymentCurrency;
 	TOptional<int64> ChainId;
 };
 

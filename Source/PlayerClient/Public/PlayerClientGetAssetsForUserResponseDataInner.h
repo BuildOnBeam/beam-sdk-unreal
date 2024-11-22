@@ -49,6 +49,8 @@ public:
 	static bool EnumFromString(const FString& EnumAsString, RarityEnum& EnumValue);
 	TOptional<RarityEnum> Rarity;
 	TOptional<double> RarityScore;
+	TOptional<FDateTime> UpdatedAt;
+	TOptional<FDateTime> MintedAt;
 	TOptional<TArray<PlayerClientGetAssetsForUserResponseDataInnerAttributesInner>> Attributes;
 	TOptional<int64> ChainId;
 	double OwnedQuantity;

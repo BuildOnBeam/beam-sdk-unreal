@@ -99,6 +99,14 @@ void PlayerClientGetAssetsForUserResponseDataInner::WriteJson(JsonWriter& Writer
 	{
 		Writer->WriteIdentifierPrefix(TEXT("rarityScore")); WriteJsonValue(Writer, RarityScore.GetValue());
 	}
+	if (UpdatedAt.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("updatedAt")); WriteJsonValue(Writer, UpdatedAt.GetValue());
+	}
+	if (MintedAt.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("mintedAt")); WriteJsonValue(Writer, MintedAt.GetValue());
+	}
 	if (Attributes.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("attributes")); WriteJsonValue(Writer, Attributes.GetValue());
@@ -127,6 +135,8 @@ bool PlayerClientGetAssetsForUserResponseDataInner::FromJson(const TSharedPtr<FJ
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("supply"), Supply);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("rarity"), Rarity);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("rarityScore"), RarityScore);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("updatedAt"), UpdatedAt);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("mintedAt"), MintedAt);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("attributes"), Attributes);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("ownedQuantity"), OwnedQuantity);
