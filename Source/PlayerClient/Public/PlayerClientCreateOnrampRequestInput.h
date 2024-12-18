@@ -40,6 +40,7 @@ public:
 	TOptional<FString> TokenAmount;
 	TOptional<FString> FiatAmount;
 	TOptional<FString> PaymentCurrency;
+	TOptional<bool> CanChangeAmount;
 	TOptional<int64> ChainId;
 };
 

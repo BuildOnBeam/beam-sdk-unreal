@@ -89,6 +89,10 @@ void PlayerClientCreateOnrampRequestInput::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("paymentCurrency")); WriteJsonValue(Writer, PaymentCurrency.GetValue());
 	}
+	if (CanChangeAmount.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("canChangeAmount")); WriteJsonValue(Writer, CanChangeAmount.GetValue());
+	}
 	if (ChainId.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId.GetValue());
@@ -108,6 +112,7 @@ bool PlayerClientCreateOnrampRequestInput::FromJson(const TSharedPtr<FJsonValue>
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("tokenAmount"), TokenAmount);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("fiatAmount"), FiatAmount);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("paymentCurrency"), PaymentCurrency);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("canChangeAmount"), CanChangeAmount);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 
 	return ParseSuccess;

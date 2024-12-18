@@ -152,7 +152,10 @@ void PlayerClientPlayerOperationResponseTransactionsInner::WriteJson(JsonWriter&
 	{
 		Writer->WriteIdentifierPrefix(TEXT("actionId")); WriteJsonValue(Writer, ActionId.GetValue());
 	}
-	Writer->WriteIdentifierPrefix(TEXT("hash")); WriteJsonValue(Writer, Hash);
+	if (Hash.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("hash")); WriteJsonValue(Writer, Hash.GetValue());
+	}
 	if (Type.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("type")); WriteJsonValue(Writer, Type.GetValue());

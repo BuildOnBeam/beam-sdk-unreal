@@ -45,7 +45,7 @@ public:
 	TOptional<FString> OpenfortId;
 	bool Sponsored = false;
 	TOptional<FString> ActionId;
-	FString Hash;
+	TOptional<FString> Hash;
 	enum class TypeEnum
 	{
 		OpenfortTransaction,
