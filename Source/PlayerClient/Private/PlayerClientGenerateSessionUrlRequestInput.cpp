@@ -20,6 +20,65 @@
 namespace OpenAPI
 {
 
+inline FString ToString(const PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Any:
+		return TEXT("Any");
+	case PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Google:
+		return TEXT("Google");
+	case PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Discord:
+		return TEXT("Discord");
+	case PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Apple:
+		return TEXT("Apple");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientGenerateSessionUrlRequestInput::EnumToString(const PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum& Value)
+{
+	static TMap<FString, PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum> StringToEnum = { 
+		{ TEXT("Any"), PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Any },
+		{ TEXT("Google"), PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Google },
+		{ TEXT("Discord"), PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Discord },
+		{ TEXT("Apple"), PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Apple }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientGenerateSessionUrlRequestInput::EnumFromString(const FString& EnumAsString, PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientGenerateSessionUrlRequestInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
@@ -27,6 +86,10 @@ void PlayerClientGenerateSessionUrlRequestInput::WriteJson(JsonWriter& Writer) c
 	if (SuggestedExpiry.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("suggestedExpiry")); WriteJsonValue(Writer, SuggestedExpiry.GetValue());
+	}
+	if (AuthProvider.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider.GetValue());
 	}
 	if (ChainId.IsSet())
 	{
@@ -45,6 +108,7 @@ bool PlayerClientGenerateSessionUrlRequestInput::FromJson(const TSharedPtr<FJson
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("address"), Address);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("suggestedExpiry"), SuggestedExpiry);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 
 	return ParseSuccess;

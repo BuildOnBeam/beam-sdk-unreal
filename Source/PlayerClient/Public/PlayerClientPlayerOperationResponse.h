@@ -52,6 +52,17 @@ public:
 	static FString EnumToString(const ProcessingEnum& EnumValue);
 	static bool EnumFromString(const FString& EnumAsString, ProcessingEnum& EnumValue);
 	ProcessingEnum Processing;
+	enum class AuthProviderEnum
+	{
+		Any,
+		Google,
+		Discord,
+		Apple,
+  	};
+
+	static FString EnumToString(const AuthProviderEnum& EnumValue);
+	static bool EnumFromString(const FString& EnumAsString, AuthProviderEnum& EnumValue);
+	AuthProviderEnum AuthProvider;
 	FString Id;
 	FDateTime CreatedAt;
 	TOptional<FDateTime> UpdatedAt;

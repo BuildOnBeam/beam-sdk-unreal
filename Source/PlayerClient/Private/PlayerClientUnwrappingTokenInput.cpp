@@ -73,6 +73,65 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 	return false;
 }
 
+inline FString ToString(const PlayerClientUnwrappingTokenInput::AuthProviderEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientUnwrappingTokenInput::AuthProviderEnum::Any:
+		return TEXT("Any");
+	case PlayerClientUnwrappingTokenInput::AuthProviderEnum::Google:
+		return TEXT("Google");
+	case PlayerClientUnwrappingTokenInput::AuthProviderEnum::Discord:
+		return TEXT("Discord");
+	case PlayerClientUnwrappingTokenInput::AuthProviderEnum::Apple:
+		return TEXT("Apple");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientUnwrappingTokenInput::AuthProviderEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientUnwrappingTokenInput::EnumToString(const PlayerClientUnwrappingTokenInput::AuthProviderEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientUnwrappingTokenInput::AuthProviderEnum& Value)
+{
+	static TMap<FString, PlayerClientUnwrappingTokenInput::AuthProviderEnum> StringToEnum = { 
+		{ TEXT("Any"), PlayerClientUnwrappingTokenInput::AuthProviderEnum::Any },
+		{ TEXT("Google"), PlayerClientUnwrappingTokenInput::AuthProviderEnum::Google },
+		{ TEXT("Discord"), PlayerClientUnwrappingTokenInput::AuthProviderEnum::Discord },
+		{ TEXT("Apple"), PlayerClientUnwrappingTokenInput::AuthProviderEnum::Apple }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientUnwrappingTokenInput::EnumFromString(const FString& EnumAsString, PlayerClientUnwrappingTokenInput::AuthProviderEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientUnwrappingTokenInput::AuthProviderEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientUnwrappingTokenInput::AuthProviderEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientUnwrappingTokenInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
@@ -97,6 +156,10 @@ void PlayerClientUnwrappingTokenInput::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("operationProcessing")); WriteJsonValue(Writer, OperationProcessing.GetValue());
 	}
+	if (AuthProvider.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider.GetValue());
+	}
 	Writer->WriteObjectEnd();
 }
 
@@ -114,6 +177,7 @@ bool PlayerClientUnwrappingTokenInput::FromJson(const TSharedPtr<FJsonValue>& Js
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("policyId"), PolicyId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationProcessing"), OperationProcessing);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 
 	return ParseSuccess;
 }

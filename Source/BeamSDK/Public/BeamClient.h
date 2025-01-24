@@ -135,14 +135,17 @@ public:
 public:
 	/// Will connect given EntityId for your game to a User.
 	/// This will also happen on first possible action signed by user in the browser.
-	///  @param[in]		EntityId		Entity Id of the User performing signing
-	///  @param[in]		ChainId			ChainId to perform operation on. Defaults to 13337.
-	///  @param[in]		SecondsTimeout	Optional timeout in seconds, defaults to 240
+	///  @param[in]		entityId		Entity Id of the User performing signing
+	///  @param[in]		chainId			ChainId to perform operation on. Defaults to 13337.
+	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
+	///  @param[in]		authProvider    Optional authProvider, if set to Any(default), User will be able to choose social login provider. Useful if you want to present Google/Discord/Apple/etc options within your UI.
 	/// @return TFuture
 	TFuture<BeamConnectionResult> ConnectUserToGameAsync(
-		FString EntityId,
-		int32 ChainId = FBeamConstants::DefaultChainId,
-		int32 SecondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
+		FString entityId,
+		int32 chainId = FBeamConstants::DefaultChainId,
+		int32 secondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
+		TOptional<PlayerClientCreateConnectionRequestInput::AuthProviderEnum> authProvider =
+			PlayerClientCreateConnectionRequestInput::AuthProviderEnum::Any,
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
@@ -161,12 +164,15 @@ public:
 	///  @param[in]		sessionAddress	address of a Session to revoke
 	///  @param[in]		chainId			ChainId to perform operation on. Defaults to 13337.
 	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
+	///  @param[in]		authProvider    Optional authProvider, if set to Any(default), User will be able to choose social login provider. Useful if you want to present Google/Discord/Apple/etc options within your UI.
 	/// @return TFuture
 	TFuture<BeamOperationResult> RevokeSessionAsync(
 		FString entityId,
 		FString sessionAddress,
 		int chainId = FBeamConstants::DefaultChainId,
 		int secondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
+		TOptional<PlayerClientRevokeSessionRequestInput::AuthProviderEnum> authProvider =
+			PlayerClientRevokeSessionRequestInput::AuthProviderEnum::Any,
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
@@ -176,12 +182,15 @@ public:
 	///  @param[in]		chainId			ChainId to perform operation on. Defaults to 13337.
 	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
 	///  @param[in]     suggestedExpiry Suggested Expiry date that will be pre-selected for the User
+	///  @param[in]		authProvider    Optional authProvider, if set to Any(default), User will be able to choose social login provider. Useful if you want to present Google/Discord/Apple/etc options within your UI.
 	/// @return TFuture
 	TFuture<BeamSessionResult> CreateSessionAsync(
 		FString entityId,
 		int chainId = FBeamConstants::DefaultChainId,
 		int secondsTimeout = FBeamConstants::DefaultTimeoutInSeconds,
 		TOptional<FDateTime> suggestedExpiry = TOptional<FDateTime>(),
+		TOptional<PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum> authProvider =
+			PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Any,
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
@@ -203,7 +212,7 @@ public:
 
 	/// Clears any details of local Session like private key, or Session validity details. Useful when f.e. switching users on the same device.
 	///  @param[in]		entityId		EntityId
-	void ClearLocalSession(FString EntityId);
+	void ClearLocalSession(FString entityId);
 
 private:
 	TFuture<BeamOperationResult> SignOperationUsingBrowserAsync(PlayerOperationResponse operation, int secondsTimeout,

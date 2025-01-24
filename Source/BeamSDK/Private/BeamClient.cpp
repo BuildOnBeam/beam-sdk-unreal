@@ -92,7 +92,12 @@ UBeamClient* UBeamClient::SetDebugLogging(bool InEnable)
 //
 
 
-TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString entityId, int32 chainId, int32 secondsTimeout,
+TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString entityId,
+                                                                  int32 chainId,
+                                                                  int32 secondsTimeout,
+                                                                  TOptional<
+	                                                                  PlayerClientCreateConnectionRequestInput::AuthProviderEnum>
+                                                                  authProvider,
                                                                   TSharedPtr<FBeamCancellationToken>*
                                                                   OutCancellationToken)
 {
@@ -103,13 +108,18 @@ TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString entity
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
 	auto resultFuture = Async(EAsyncExecution::Thread,
-	                          [&, Promise, entityId, chainId, secondsTimeout, OutCancellationToken]()
+	                          [&, Promise, entityId, chainId, secondsTimeout, OutCancellationToken]
 	                          {
 		                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving connection request"));
 
 		                          PlayerClientConnectorApi::CreateConnectionRequestRequest request;
 		                          request.PlayerClientCreateConnectionRequestInput.EntityId = entityId;
 		                          request.PlayerClientCreateConnectionRequestInput.ChainId = chainId;
+
+		                          if (authProvider.IsSet())
+		                          {
+			                          request.PlayerClientCreateConnectionRequestInput.AuthProvider = authProvider;
+		                          }
 
 		                          const auto resPromise = MakeShared<
 			                          TPromise<PlayerClientConnectorApi::CreateConnectionRequestResponse>,
@@ -242,6 +252,9 @@ TFuture<BeamSessionResult> UBeamClient::GetActiveSessionAsync(FString entityId, 
 
 TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, FString sessionAddress, int chainId,
                                                              int secondsTimeout,
+                                                             TOptional<
+	                                                             PlayerClientRevokeSessionRequestInput::AuthProviderEnum>
+                                                             authProvider,
                                                              TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
@@ -259,6 +272,10 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 		                          request.EntityId = entityId;
 		                          request.PlayerClientRevokeSessionRequestInput.Address = sessionAddress;
 		                          request.PlayerClientRevokeSessionRequestInput.ChainId = chainId;
+		                          if (authProvider.IsSet())
+		                          {
+			                          request.PlayerClientRevokeSessionRequestInput.AuthProvider = authProvider;
+		                          }
 
 		                          const auto resPromise = MakeShared<
 			                          TPromise<PlayerClientSessionsApi::RevokeSessionResponse>, ESPMode::ThreadSafe>();
@@ -285,7 +302,7 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 		                          }
 		                          else
 		                          {
-			                          int32 errorCode = (int32)res.GetHttpResponseCode();
+			                          int32 errorCode = res.GetHttpResponseCode();
 			                          FString resBody = res.GetHttpResponse()->GetContentAsString();
 			                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Failed RevokeSessionAsync: %d: %s"),
 			                                  errorCode, *resBody);
@@ -305,7 +322,7 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 		{
 			if (calledFromGameThread)
 			{
-				// Resolve the promise on the game thread for convienence.
+				// Resolve the promise on the game thread for convenience.
 				AsyncTask(ENamedThreads::GameThread, [Promise, result]()
 				{
 					Promise->SetValue(result);
@@ -322,6 +339,9 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 
 TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int chainId, int secondsTimeout,
                                                            TOptional<FDateTime> suggestedExpiry,
+                                                           TOptional<
+	                                                           PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum>
+                                                           authProvider,
                                                            TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
@@ -364,6 +384,11 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		                          request.PlayerClientGenerateSessionUrlRequestInput.Address = newKeyPair.GetAddress().
 			                          c_str();
 		                          request.PlayerClientGenerateSessionUrlRequestInput.ChainId = chainId;
+
+		                          if (authProvider.IsSet())
+		                          {
+			                          request.PlayerClientGenerateSessionUrlRequestInput.AuthProvider = authProvider;
+		                          }
 
 		                          if (suggestedExpiry.IsSet())
 		                          {
@@ -537,8 +562,11 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 }
 
 
-TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId, FString operationId, int chainId,
-                                                             EBeamOperationSigningBy signingBy, int secondsTimeout,
+TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId,
+                                                             FString operationId,
+                                                             int chainId,
+                                                             EBeamOperationSigningBy signingBy,
+                                                             int secondsTimeout,
                                                              TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
@@ -655,7 +683,9 @@ void UBeamClient::ClearLocalSession(FString EntityId)
 
 
 TFuture<BeamOperationResult> UBeamClient::SignOperationUsingBrowserAsync(
-	PlayerOperationResponse operation, int secondsTimeout, TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
+	PlayerOperationResponse operation,
+	int secondsTimeout,
+	TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
 	bool calledFromGameThread = IsInGameThread();
@@ -993,9 +1023,10 @@ TFuture<FBeamSessionAndKeyPair> UBeamClient::GetActiveSessionAndKeysAsync(FStrin
 			if (res.Content.Session.IsSet())
 			{
 				sessionKeys.BeamSession = FBeamSession(res);
-			} else
+			}
+			else
 			{
-				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo did not return an active session"));	
+				UE_CLOG(DebugLog, LogBeamClient, Error, TEXT("GetActiveSessionInfo did not return an active session"));
 			}
 		}
 		else

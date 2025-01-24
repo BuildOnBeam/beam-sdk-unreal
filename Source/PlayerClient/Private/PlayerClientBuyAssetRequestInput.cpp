@@ -73,6 +73,65 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 	return false;
 }
 
+inline FString ToString(const PlayerClientBuyAssetRequestInput::AuthProviderEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientBuyAssetRequestInput::AuthProviderEnum::Any:
+		return TEXT("Any");
+	case PlayerClientBuyAssetRequestInput::AuthProviderEnum::Google:
+		return TEXT("Google");
+	case PlayerClientBuyAssetRequestInput::AuthProviderEnum::Discord:
+		return TEXT("Discord");
+	case PlayerClientBuyAssetRequestInput::AuthProviderEnum::Apple:
+		return TEXT("Apple");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientBuyAssetRequestInput::AuthProviderEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientBuyAssetRequestInput::EnumToString(const PlayerClientBuyAssetRequestInput::AuthProviderEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientBuyAssetRequestInput::AuthProviderEnum& Value)
+{
+	static TMap<FString, PlayerClientBuyAssetRequestInput::AuthProviderEnum> StringToEnum = { 
+		{ TEXT("Any"), PlayerClientBuyAssetRequestInput::AuthProviderEnum::Any },
+		{ TEXT("Google"), PlayerClientBuyAssetRequestInput::AuthProviderEnum::Google },
+		{ TEXT("Discord"), PlayerClientBuyAssetRequestInput::AuthProviderEnum::Discord },
+		{ TEXT("Apple"), PlayerClientBuyAssetRequestInput::AuthProviderEnum::Apple }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientBuyAssetRequestInput::EnumFromString(const FString& EnumAsString, PlayerClientBuyAssetRequestInput::AuthProviderEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientBuyAssetRequestInput::AuthProviderEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientBuyAssetRequestInput::AuthProviderEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientBuyAssetRequestInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
@@ -97,6 +156,10 @@ void PlayerClientBuyAssetRequestInput::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("operationProcessing")); WriteJsonValue(Writer, OperationProcessing.GetValue());
 	}
+	if (AuthProvider.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider.GetValue());
+	}
 	Writer->WriteObjectEnd();
 }
 
@@ -114,6 +177,7 @@ bool PlayerClientBuyAssetRequestInput::FromJson(const TSharedPtr<FJsonValue>& Js
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("policyId"), PolicyId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("operationProcessing"), OperationProcessing);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 
 	return ParseSuccess;
 }
