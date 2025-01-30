@@ -52,3 +52,6 @@ BeamClient->RevokeSessionAsync(EntityId, SessionAddress)
 Beam sometimes has to open a browser in order for the user to sign in to a Beam account and sign transactions/sessions. By default we call `FPlatformProcess::LaunchURL()`.
 
 In some cases you might want to implement your own way of opening URLs, f.e. using a built-in WebView. To do so, you need to override `FString UBeamClient::LaunchURL(const FString& Url)` in your implementation.
+
+#### Selecting AuthProvider
+All main BeamClient methods accept an optional argument called `authProvider`. By passing a provider value other than `Any`, you force the User to sign into Beam Identity using that provider. This allows you to skip the initial screen with Social Provider login selection, at the cost of taking the choice away from the User. This can be useful if you want to present Social Providers to choose from within your UI. Please keep in mind that Social Providers we support might change in the future and might then require changes in your UI.
