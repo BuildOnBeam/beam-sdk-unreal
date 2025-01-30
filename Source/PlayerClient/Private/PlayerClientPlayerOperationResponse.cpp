@@ -135,11 +135,71 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 	return false;
 }
 
+inline FString ToString(const PlayerClientPlayerOperationResponse::AuthProviderEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientPlayerOperationResponse::AuthProviderEnum::Any:
+		return TEXT("Any");
+	case PlayerClientPlayerOperationResponse::AuthProviderEnum::Google:
+		return TEXT("Google");
+	case PlayerClientPlayerOperationResponse::AuthProviderEnum::Discord:
+		return TEXT("Discord");
+	case PlayerClientPlayerOperationResponse::AuthProviderEnum::Apple:
+		return TEXT("Apple");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientPlayerOperationResponse::AuthProviderEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientPlayerOperationResponse::EnumToString(const PlayerClientPlayerOperationResponse::AuthProviderEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientPlayerOperationResponse::AuthProviderEnum& Value)
+{
+	static TMap<FString, PlayerClientPlayerOperationResponse::AuthProviderEnum> StringToEnum = { 
+		{ TEXT("Any"), PlayerClientPlayerOperationResponse::AuthProviderEnum::Any },
+		{ TEXT("Google"), PlayerClientPlayerOperationResponse::AuthProviderEnum::Google },
+		{ TEXT("Discord"), PlayerClientPlayerOperationResponse::AuthProviderEnum::Discord },
+		{ TEXT("Apple"), PlayerClientPlayerOperationResponse::AuthProviderEnum::Apple }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientPlayerOperationResponse::EnumFromString(const FString& EnumAsString, PlayerClientPlayerOperationResponse::AuthProviderEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientPlayerOperationResponse::AuthProviderEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientPlayerOperationResponse::AuthProviderEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientPlayerOperationResponse::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
 	Writer->WriteIdentifierPrefix(TEXT("status")); WriteJsonValue(Writer, Status);
 	Writer->WriteIdentifierPrefix(TEXT("processing")); WriteJsonValue(Writer, Processing);
+	Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider);
 	Writer->WriteIdentifierPrefix(TEXT("id")); WriteJsonValue(Writer, Id);
 	Writer->WriteIdentifierPrefix(TEXT("createdAt")); WriteJsonValue(Writer, CreatedAt);
 	if (UpdatedAt.IsSet())
@@ -165,6 +225,7 @@ bool PlayerClientPlayerOperationResponse::FromJson(const TSharedPtr<FJsonValue>&
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("status"), Status);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("processing"), Processing);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("id"), Id);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("createdAt"), CreatedAt);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("updatedAt"), UpdatedAt);

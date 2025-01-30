@@ -70,6 +70,65 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 	return false;
 }
 
+inline FString ToString(const PlayerClientCreateOnrampRequestInput::AuthProviderEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Any:
+		return TEXT("Any");
+	case PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Google:
+		return TEXT("Google");
+	case PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Discord:
+		return TEXT("Discord");
+	case PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Apple:
+		return TEXT("Apple");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientCreateOnrampRequestInput::AuthProviderEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientCreateOnrampRequestInput::EnumToString(const PlayerClientCreateOnrampRequestInput::AuthProviderEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientCreateOnrampRequestInput::AuthProviderEnum& Value)
+{
+	static TMap<FString, PlayerClientCreateOnrampRequestInput::AuthProviderEnum> StringToEnum = { 
+		{ TEXT("Any"), PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Any },
+		{ TEXT("Google"), PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Google },
+		{ TEXT("Discord"), PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Discord },
+		{ TEXT("Apple"), PlayerClientCreateOnrampRequestInput::AuthProviderEnum::Apple }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientCreateOnrampRequestInput::EnumFromString(const FString& EnumAsString, PlayerClientCreateOnrampRequestInput::AuthProviderEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientCreateOnrampRequestInput::AuthProviderEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientCreateOnrampRequestInput::AuthProviderEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientCreateOnrampRequestInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
@@ -97,6 +156,10 @@ void PlayerClientCreateOnrampRequestInput::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId.GetValue());
 	}
+	if (AuthProvider.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider.GetValue());
+	}
 	Writer->WriteObjectEnd();
 }
 
@@ -114,6 +177,7 @@ bool PlayerClientCreateOnrampRequestInput::FromJson(const TSharedPtr<FJsonValue>
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("paymentCurrency"), PaymentCurrency);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("canChangeAmount"), CanChangeAmount);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 
 	return ParseSuccess;
 }
