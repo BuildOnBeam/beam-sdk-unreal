@@ -14,7 +14,9 @@
 
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientRampApi.h"
-
+#include <string>
+#include <stdexcept>
+    
 #include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCreateOnrampRequestInput.h"
 #include "PlayerClientPlayerOperationResponse.h"

@@ -14,7 +14,9 @@
 
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientMarketplaceApi.h"
-
+#include <string>
+#include <stdexcept>
+    
 #include "PlayerClientAcceptAssetOfferRequestInput.h"
 #include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientBuyAssetRequestInput.h"

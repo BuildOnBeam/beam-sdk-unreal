@@ -14,7 +14,9 @@
 
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientConnectorApi.h"
-
+#include <string>
+#include <stdexcept>
+    
 #include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCreateConnectionRequestInput.h"
 #include "PlayerClientCreateConnectionRequestResponse.h"

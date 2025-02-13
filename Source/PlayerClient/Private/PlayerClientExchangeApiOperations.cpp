@@ -16,6 +16,8 @@
 #include "PlayerClientHelpers.h"
 
 #include <string>
+#include <stdexcept>
+
 #include "Dom/JsonObject.h"
 #include "Templates/SharedPointer.h"
 #include "HttpModule.h"
@@ -94,7 +96,7 @@ std::string PlayerClientExchangeApi::ConvertInputResponse::GetHttpStatusCategory
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -177,7 +179,7 @@ std::string PlayerClientExchangeApi::ConvertToOutputResponse::GetHttpStatusCateg
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -242,7 +244,7 @@ std::string PlayerClientExchangeApi::GetQuoteForInputResponse::GetHttpStatusCate
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -307,7 +309,7 @@ std::string PlayerClientExchangeApi::GetQuoteForOutputResponse::GetHttpStatusCat
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -390,7 +392,7 @@ std::string PlayerClientExchangeApi::UnwrapNativeResponse::GetHttpStatusCategory
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -473,7 +475,7 @@ std::string PlayerClientExchangeApi::WrapNativeResponse::GetHttpStatusCategory(E
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"

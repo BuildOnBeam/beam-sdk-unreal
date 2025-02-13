@@ -14,7 +14,9 @@
 
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientStatsApi.h"
-
+#include <string>
+#include <stdexcept>
+    
 #include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCommonStatsRequestInput.h"
 #include "PlayerClientCommonStatsResponse.h"

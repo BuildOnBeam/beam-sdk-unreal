@@ -14,7 +14,9 @@
 
 #include "PlayerClientBaseModel.h"
 #include "PlayerClientOperationApi.h"
-
+#include <string>
+#include <stdexcept>
+    
 #include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientConfirmOperationRequest.h"
 #include "PlayerClientPlayerOperationResponse.h"

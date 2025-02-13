@@ -16,6 +16,8 @@
 #include "PlayerClientHelpers.h"
 
 #include <string>
+#include <stdexcept>
+
 #include "Dom/JsonObject.h"
 #include "Templates/SharedPointer.h"
 #include "HttpModule.h"
@@ -86,7 +88,7 @@ std::string PlayerClientAssetsApi::GetAssetResponse::GetHttpStatusCategory(EHttp
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -169,7 +171,7 @@ std::string PlayerClientAssetsApi::GetAssetsForContractResponse::GetHttpStatusCa
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -232,7 +234,7 @@ std::string PlayerClientAssetsApi::GetAttributesResponse::GetHttpStatusCategory(
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -316,7 +318,7 @@ std::string PlayerClientAssetsApi::GetOwnerAssetsResponse::GetHttpStatusCategory
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -387,7 +389,7 @@ std::string PlayerClientAssetsApi::GetOwnersResponse::GetHttpStatusCategory(EHtt
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -470,7 +472,7 @@ std::string PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::GetHttpStat
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -536,7 +538,7 @@ std::string PlayerClientAssetsApi::GetUserCurrenciesResponse::GetHttpStatusCateg
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -602,7 +604,7 @@ std::string PlayerClientAssetsApi::GetUserNativeCurrencyResponse::GetHttpStatusC
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -685,7 +687,7 @@ std::string PlayerClientAssetsApi::TransferAssetResponse::GetHttpStatusCategory(
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -768,7 +770,7 @@ std::string PlayerClientAssetsApi::TransferNativeTokenResponse::GetHttpStatusCat
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -851,7 +853,7 @@ std::string PlayerClientAssetsApi::TransferTokenResponse::GetHttpStatusCategory(
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"

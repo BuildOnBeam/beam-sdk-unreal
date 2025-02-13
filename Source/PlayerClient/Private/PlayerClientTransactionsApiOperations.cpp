@@ -16,6 +16,8 @@
 #include "PlayerClientHelpers.h"
 
 #include <string>
+#include <stdexcept>
+
 #include "Dom/JsonObject.h"
 #include "Templates/SharedPointer.h"
 #include "HttpModule.h"
@@ -94,7 +96,7 @@ std::string PlayerClientTransactionsApi::CreateUserTransactionResponse::GetHttpS
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -152,7 +154,7 @@ std::string PlayerClientTransactionsApi::GetTransactionResponse::GetHttpStatusCa
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -218,7 +220,7 @@ std::string PlayerClientTransactionsApi::GetTransactionsResponse::GetHttpStatusC
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
@@ -288,7 +290,7 @@ std::string PlayerClientTransactionsApi::GetUserTransactionsResponse::GetHttpSta
 
     // Ensure the input is a valid 3-digit HTTP status code
     if (statusCode < 100 || statusCode > 599) {
-    throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
     }
 
     // Extract the first digit and append "XX"
