@@ -65,7 +65,7 @@ public:
 
     PlayerClientGetAssetResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all the assets of contract (NFT assets, e.g. ERC721 / ERC1155)
@@ -91,7 +91,7 @@ public:
 
     PlayerClientGetAssetsForContractResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -117,7 +117,7 @@ public:
 
     PlayerClientGetAttributesResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -144,7 +144,7 @@ public:
 
     PlayerClientGetOwnerAssetsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -172,7 +172,7 @@ public:
 
     PlayerClientGetOwnersResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all the assets of a profile (NFT assets, e.g. ERC721 / ERC1155)
@@ -198,7 +198,7 @@ public:
 
     PlayerClientGetAssetsForUserResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all the currencies owned by an account (ERC20)
@@ -224,7 +224,7 @@ public:
 
     PlayerClientGetUserCurrenciesResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get the native token balance
@@ -250,7 +250,7 @@ public:
 
     PlayerClientGetUserNativeCurrencyResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Transfer an asset (NFT assets, ERC721 / ERC1155)
@@ -276,7 +276,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Transfer the native token
@@ -302,7 +302,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Transfer a token (token assets, ERC20)
@@ -328,7 +328,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

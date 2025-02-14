@@ -61,7 +61,7 @@ public:
 
     {{#returnType}}{{{.}}} Content;{{/returnType}}
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 {{/operation}}

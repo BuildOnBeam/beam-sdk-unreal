@@ -58,7 +58,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Buy listed asset
@@ -85,7 +85,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Cancel an offer for an asset
@@ -112,7 +112,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Cancel asset listing
@@ -140,7 +140,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Make an offer for an asset
@@ -166,7 +166,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all offers for an asset
@@ -194,7 +194,7 @@ public:
 
     PlayerClientGetAssetListingsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get available currencies for given chain
@@ -219,7 +219,7 @@ public:
 
     PlayerClientGetChainCurrenciesResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all listed assets for a game (NFT assets, e.g. ERC721 / ERC1155)
@@ -244,7 +244,7 @@ public:
 
     PlayerClientGetAssetListingsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all the assets listed by a profile (NFT assets, e.g. ERC721 / ERC1155)
@@ -270,7 +270,7 @@ public:
 
     PlayerClientGetAssetListingsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all asset offers that a user created for a specific asset
@@ -299,7 +299,7 @@ public:
 
     PlayerClientGetAssetListingsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get all offers that a user created
@@ -326,7 +326,7 @@ public:
 
     PlayerClientGetAssetListingsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* List an asset for sale
@@ -352,7 +352,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Schedule a contract refresh in the indexer
@@ -377,7 +377,7 @@ public:
 
     
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Schedule a token refresh in the indexer
@@ -402,7 +402,7 @@ public:
 
     
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

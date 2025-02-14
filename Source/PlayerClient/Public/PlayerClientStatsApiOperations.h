@@ -48,7 +48,7 @@ public:
 
     PlayerClientCommonStatsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get contract stats
@@ -74,7 +74,7 @@ public:
 
     PlayerClientCommonStatsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

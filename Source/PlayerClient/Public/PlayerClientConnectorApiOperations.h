@@ -47,7 +47,7 @@ public:
 
     PlayerClientCreateConnectionRequestResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* 
@@ -72,7 +72,7 @@ public:
 
     PlayerClientGetConnectionRequestResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

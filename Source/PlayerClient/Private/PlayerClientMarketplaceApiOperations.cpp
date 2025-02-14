@@ -92,7 +92,7 @@ void PlayerClientMarketplaceApi::AcceptAssetOfferResponse::SetHttpResponseCode(E
         }
 }
 
-std::string PlayerClientMarketplaceApi::AcceptAssetOfferResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::AcceptAssetOfferResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -102,7 +102,7 @@ std::string PlayerClientMarketplaceApi::AcceptAssetOfferResponse::GetHttpStatusC
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::AcceptAssetOfferResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -176,7 +176,7 @@ void PlayerClientMarketplaceApi::BuyListedAssetResponse::SetHttpResponseCode(EHt
         }
 }
 
-std::string PlayerClientMarketplaceApi::BuyListedAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::BuyListedAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -186,7 +186,7 @@ std::string PlayerClientMarketplaceApi::BuyListedAssetResponse::GetHttpStatusCat
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::BuyListedAssetResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -235,7 +235,7 @@ void PlayerClientMarketplaceApi::CancelAssetOfferResponse::SetHttpResponseCode(E
         }
 }
 
-std::string PlayerClientMarketplaceApi::CancelAssetOfferResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::CancelAssetOfferResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -245,7 +245,7 @@ std::string PlayerClientMarketplaceApi::CancelAssetOfferResponse::GetHttpStatusC
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::CancelAssetOfferResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -302,7 +302,7 @@ void PlayerClientMarketplaceApi::CancelListingResponse::SetHttpResponseCode(EHtt
         }
 }
 
-std::string PlayerClientMarketplaceApi::CancelListingResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::CancelListingResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -312,7 +312,7 @@ std::string PlayerClientMarketplaceApi::CancelListingResponse::GetHttpStatusCate
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::CancelListingResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -385,7 +385,7 @@ void PlayerClientMarketplaceApi::CreateAssetOfferResponse::SetHttpResponseCode(E
         }
 }
 
-std::string PlayerClientMarketplaceApi::CreateAssetOfferResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::CreateAssetOfferResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -395,7 +395,7 @@ std::string PlayerClientMarketplaceApi::CreateAssetOfferResponse::GetHttpStatusC
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::CreateAssetOfferResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -456,7 +456,7 @@ void PlayerClientMarketplaceApi::GetAssetOffersResponse::SetHttpResponseCode(EHt
         }
 }
 
-std::string PlayerClientMarketplaceApi::GetAssetOffersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::GetAssetOffersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -466,7 +466,7 @@ std::string PlayerClientMarketplaceApi::GetAssetOffersResponse::GetHttpStatusCat
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::GetAssetOffersResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -514,7 +514,7 @@ void PlayerClientMarketplaceApi::GetChainCurrenciesResponse::SetHttpResponseCode
         }
 }
 
-std::string PlayerClientMarketplaceApi::GetChainCurrenciesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::GetChainCurrenciesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -524,7 +524,7 @@ std::string PlayerClientMarketplaceApi::GetChainCurrenciesResponse::GetHttpStatu
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::GetChainCurrenciesResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -593,7 +593,7 @@ void PlayerClientMarketplaceApi::GetListedAssetsResponse::SetHttpResponseCode(EH
         }
 }
 
-std::string PlayerClientMarketplaceApi::GetListedAssetsResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::GetListedAssetsResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -603,7 +603,7 @@ std::string PlayerClientMarketplaceApi::GetListedAssetsResponse::GetHttpStatusCa
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::GetListedAssetsResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -676,7 +676,7 @@ void PlayerClientMarketplaceApi::GetListedAssetsForUserResponse::SetHttpResponse
         }
 }
 
-std::string PlayerClientMarketplaceApi::GetListedAssetsForUserResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::GetListedAssetsForUserResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -686,7 +686,7 @@ std::string PlayerClientMarketplaceApi::GetListedAssetsForUserResponse::GetHttpS
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::GetListedAssetsForUserResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -748,7 +748,7 @@ void PlayerClientMarketplaceApi::GetUserAssetOffersResponse::SetHttpResponseCode
         }
 }
 
-std::string PlayerClientMarketplaceApi::GetUserAssetOffersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::GetUserAssetOffersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -758,7 +758,7 @@ std::string PlayerClientMarketplaceApi::GetUserAssetOffersResponse::GetHttpStatu
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::GetUserAssetOffersResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -818,7 +818,7 @@ void PlayerClientMarketplaceApi::GetUserOffersResponse::SetHttpResponseCode(EHtt
         }
 }
 
-std::string PlayerClientMarketplaceApi::GetUserOffersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::GetUserOffersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -828,7 +828,7 @@ std::string PlayerClientMarketplaceApi::GetUserOffersResponse::GetHttpStatusCate
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::GetUserOffersResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -901,7 +901,7 @@ void PlayerClientMarketplaceApi::ListAssetResponse::SetHttpResponseCode(EHttpRes
         }
 }
 
-std::string PlayerClientMarketplaceApi::ListAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::ListAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -911,7 +911,7 @@ std::string PlayerClientMarketplaceApi::ListAssetResponse::GetHttpStatusCategory
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::ListAssetResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -980,7 +980,7 @@ void PlayerClientMarketplaceApi::RefreshContractResponse::SetHttpResponseCode(EH
         }
 }
 
-std::string PlayerClientMarketplaceApi::RefreshContractResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::RefreshContractResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -990,7 +990,7 @@ std::string PlayerClientMarketplaceApi::RefreshContractResponse::GetHttpStatusCa
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::RefreshContractResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -1059,7 +1059,7 @@ void PlayerClientMarketplaceApi::RefreshTokenResponse::SetHttpResponseCode(EHttp
         }
 }
 
-std::string PlayerClientMarketplaceApi::RefreshTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientMarketplaceApi::RefreshTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -1069,7 +1069,7 @@ std::string PlayerClientMarketplaceApi::RefreshTokenResponse::GetHttpStatusCateg
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientMarketplaceApi::RefreshTokenResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

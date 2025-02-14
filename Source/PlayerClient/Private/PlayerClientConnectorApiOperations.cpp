@@ -87,7 +87,7 @@ void PlayerClientConnectorApi::CreateConnectionRequestResponse::SetHttpResponseC
         }
 }
 
-std::string PlayerClientConnectorApi::CreateConnectionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientConnectorApi::CreateConnectionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -97,7 +97,7 @@ std::string PlayerClientConnectorApi::CreateConnectionRequestResponse::GetHttpSt
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientConnectorApi::CreateConnectionRequestResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -145,7 +145,7 @@ void PlayerClientConnectorApi::GetConnectionRequestResponse::SetHttpResponseCode
         }
 }
 
-std::string PlayerClientConnectorApi::GetConnectionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientConnectorApi::GetConnectionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -155,7 +155,7 @@ std::string PlayerClientConnectorApi::GetConnectionRequestResponse::GetHttpStatu
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientConnectorApi::GetConnectionRequestResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

@@ -83,7 +83,7 @@ void PlayerClientAssetsApi::GetAssetResponse::SetHttpResponseCode(EHttpResponseC
         }
 }
 
-std::string PlayerClientAssetsApi::GetAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -93,7 +93,7 @@ std::string PlayerClientAssetsApi::GetAssetResponse::GetHttpStatusCategory(EHttp
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetAssetResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -166,7 +166,7 @@ void PlayerClientAssetsApi::GetAssetsForContractResponse::SetHttpResponseCode(EH
         }
 }
 
-std::string PlayerClientAssetsApi::GetAssetsForContractResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetAssetsForContractResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -176,7 +176,7 @@ std::string PlayerClientAssetsApi::GetAssetsForContractResponse::GetHttpStatusCa
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetAssetsForContractResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -229,7 +229,7 @@ void PlayerClientAssetsApi::GetAttributesResponse::SetHttpResponseCode(EHttpResp
         }
 }
 
-std::string PlayerClientAssetsApi::GetAttributesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetAttributesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -239,7 +239,7 @@ std::string PlayerClientAssetsApi::GetAttributesResponse::GetHttpStatusCategory(
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetAttributesResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -313,7 +313,7 @@ void PlayerClientAssetsApi::GetOwnerAssetsResponse::SetHttpResponseCode(EHttpRes
         }
 }
 
-std::string PlayerClientAssetsApi::GetOwnerAssetsResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetOwnerAssetsResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -323,7 +323,7 @@ std::string PlayerClientAssetsApi::GetOwnerAssetsResponse::GetHttpStatusCategory
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetOwnerAssetsResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -384,7 +384,7 @@ void PlayerClientAssetsApi::GetOwnersResponse::SetHttpResponseCode(EHttpResponse
         }
 }
 
-std::string PlayerClientAssetsApi::GetOwnersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetOwnersResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -394,7 +394,7 @@ std::string PlayerClientAssetsApi::GetOwnersResponse::GetHttpStatusCategory(EHtt
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetOwnersResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -467,7 +467,7 @@ void PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::SetHttpResponseCod
         }
 }
 
-std::string PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -477,7 +477,7 @@ std::string PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::GetHttpStat
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetUserAssetsForGamePostResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -533,7 +533,7 @@ void PlayerClientAssetsApi::GetUserCurrenciesResponse::SetHttpResponseCode(EHttp
         }
 }
 
-std::string PlayerClientAssetsApi::GetUserCurrenciesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetUserCurrenciesResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -543,7 +543,7 @@ std::string PlayerClientAssetsApi::GetUserCurrenciesResponse::GetHttpStatusCateg
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetUserCurrenciesResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -599,7 +599,7 @@ void PlayerClientAssetsApi::GetUserNativeCurrencyResponse::SetHttpResponseCode(E
         }
 }
 
-std::string PlayerClientAssetsApi::GetUserNativeCurrencyResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::GetUserNativeCurrencyResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -609,7 +609,7 @@ std::string PlayerClientAssetsApi::GetUserNativeCurrencyResponse::GetHttpStatusC
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::GetUserNativeCurrencyResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -682,7 +682,7 @@ void PlayerClientAssetsApi::TransferAssetResponse::SetHttpResponseCode(EHttpResp
         }
 }
 
-std::string PlayerClientAssetsApi::TransferAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::TransferAssetResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -692,7 +692,7 @@ std::string PlayerClientAssetsApi::TransferAssetResponse::GetHttpStatusCategory(
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::TransferAssetResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -765,7 +765,7 @@ void PlayerClientAssetsApi::TransferNativeTokenResponse::SetHttpResponseCode(EHt
         }
 }
 
-std::string PlayerClientAssetsApi::TransferNativeTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::TransferNativeTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -775,7 +775,7 @@ std::string PlayerClientAssetsApi::TransferNativeTokenResponse::GetHttpStatusCat
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::TransferNativeTokenResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -848,7 +848,7 @@ void PlayerClientAssetsApi::TransferTokenResponse::SetHttpResponseCode(EHttpResp
         }
 }
 
-std::string PlayerClientAssetsApi::TransferTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientAssetsApi::TransferTokenResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -858,7 +858,7 @@ std::string PlayerClientAssetsApi::TransferTokenResponse::GetHttpStatusCategory(
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientAssetsApi::TransferTokenResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

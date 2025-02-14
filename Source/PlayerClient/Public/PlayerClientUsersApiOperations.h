@@ -48,7 +48,7 @@ public:
 
     PlayerClientGetAllUsersResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Returns a particular user
@@ -73,7 +73,7 @@ public:
 
     PlayerClientGetUserResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Unlinks an entity ID from a user
@@ -98,7 +98,7 @@ public:
 
     PlayerClientGetUserResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Updates entityId for the user
@@ -124,7 +124,7 @@ public:
 
     PlayerClientGetUserResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

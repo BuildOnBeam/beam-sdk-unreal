@@ -91,7 +91,7 @@ void PlayerClientRampApi::CreateOnrampRequestResponse::SetHttpResponseCode(EHttp
         }
 }
 
-std::string PlayerClientRampApi::CreateOnrampRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientRampApi::CreateOnrampRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -101,7 +101,7 @@ std::string PlayerClientRampApi::CreateOnrampRequestResponse::GetHttpStatusCateg
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientRampApi::CreateOnrampRequestResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

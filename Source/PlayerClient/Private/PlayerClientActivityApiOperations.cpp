@@ -92,7 +92,7 @@ void PlayerClientActivityApi::GetAssetActivityResponse::SetHttpResponseCode(EHtt
         }
 }
 
-std::string PlayerClientActivityApi::GetAssetActivityResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientActivityApi::GetAssetActivityResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -102,7 +102,7 @@ std::string PlayerClientActivityApi::GetAssetActivityResponse::GetHttpStatusCate
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientActivityApi::GetAssetActivityResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -175,7 +175,7 @@ void PlayerClientActivityApi::GetContractActivityResponse::SetHttpResponseCode(E
         }
 }
 
-std::string PlayerClientActivityApi::GetContractActivityResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientActivityApi::GetContractActivityResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -185,7 +185,7 @@ std::string PlayerClientActivityApi::GetContractActivityResponse::GetHttpStatusC
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientActivityApi::GetContractActivityResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -258,7 +258,7 @@ void PlayerClientActivityApi::GetUserActivityResponse::SetHttpResponseCode(EHttp
         }
 }
 
-std::string PlayerClientActivityApi::GetUserActivityResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientActivityApi::GetUserActivityResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -268,7 +268,7 @@ std::string PlayerClientActivityApi::GetUserActivityResponse::GetHttpStatusCateg
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientActivityApi::GetUserActivityResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

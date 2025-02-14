@@ -324,7 +324,7 @@ void {{classname}}::{{operationIdCamelCase}}Response::SetHttpResponseCode(EHttpR
 }
 {{/responses.0}}
 
-std::string {{classname}}::{{operationIdCamelCase}}Response::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString {{classname}}::{{operationIdCamelCase}}Response::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -334,7 +334,7 @@ std::string {{classname}}::{{operationIdCamelCase}}Response::GetHttpStatusCatego
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool {{classname}}::{{operationIdCamelCase}}Response::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

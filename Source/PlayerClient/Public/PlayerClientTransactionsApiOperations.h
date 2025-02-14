@@ -49,7 +49,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Getting a transaction
@@ -74,7 +74,7 @@ public:
 
     PlayerClientGetTransactionResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get a paginated list of transactions from your game
@@ -100,7 +100,7 @@ public:
 
     PlayerClientGetTransactionsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Get a paginated list of transactions created on behalf of a user
@@ -127,7 +127,7 @@ public:
 
     PlayerClientGetTransactionsResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }
