@@ -91,7 +91,7 @@ void PlayerClientExchangeApi::ConvertInputResponse::SetHttpResponseCode(EHttpRes
         }
 }
 
-std::string PlayerClientExchangeApi::ConvertInputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientExchangeApi::ConvertInputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -101,7 +101,7 @@ std::string PlayerClientExchangeApi::ConvertInputResponse::GetHttpStatusCategory
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientExchangeApi::ConvertInputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -174,7 +174,7 @@ void PlayerClientExchangeApi::ConvertToOutputResponse::SetHttpResponseCode(EHttp
         }
 }
 
-std::string PlayerClientExchangeApi::ConvertToOutputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientExchangeApi::ConvertToOutputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -184,7 +184,7 @@ std::string PlayerClientExchangeApi::ConvertToOutputResponse::GetHttpStatusCateg
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientExchangeApi::ConvertToOutputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -239,7 +239,7 @@ void PlayerClientExchangeApi::GetQuoteForInputResponse::SetHttpResponseCode(EHtt
         }
 }
 
-std::string PlayerClientExchangeApi::GetQuoteForInputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientExchangeApi::GetQuoteForInputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -249,7 +249,7 @@ std::string PlayerClientExchangeApi::GetQuoteForInputResponse::GetHttpStatusCate
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientExchangeApi::GetQuoteForInputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -304,7 +304,7 @@ void PlayerClientExchangeApi::GetQuoteForOutputResponse::SetHttpResponseCode(EHt
         }
 }
 
-std::string PlayerClientExchangeApi::GetQuoteForOutputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientExchangeApi::GetQuoteForOutputResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -314,7 +314,7 @@ std::string PlayerClientExchangeApi::GetQuoteForOutputResponse::GetHttpStatusCat
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientExchangeApi::GetQuoteForOutputResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -387,7 +387,7 @@ void PlayerClientExchangeApi::UnwrapNativeResponse::SetHttpResponseCode(EHttpRes
         }
 }
 
-std::string PlayerClientExchangeApi::UnwrapNativeResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientExchangeApi::UnwrapNativeResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -397,7 +397,7 @@ std::string PlayerClientExchangeApi::UnwrapNativeResponse::GetHttpStatusCategory
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientExchangeApi::UnwrapNativeResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -470,7 +470,7 @@ void PlayerClientExchangeApi::WrapNativeResponse::SetHttpResponseCode(EHttpRespo
         }
 }
 
-std::string PlayerClientExchangeApi::WrapNativeResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientExchangeApi::WrapNativeResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -480,7 +480,7 @@ std::string PlayerClientExchangeApi::WrapNativeResponse::GetHttpStatusCategory(E
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientExchangeApi::WrapNativeResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

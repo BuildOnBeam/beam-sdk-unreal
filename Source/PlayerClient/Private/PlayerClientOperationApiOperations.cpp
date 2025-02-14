@@ -66,7 +66,7 @@ void PlayerClientOperationApi::DeleteOperationResponse::SetHttpResponseCode(EHtt
         }
 }
 
-std::string PlayerClientOperationApi::DeleteOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientOperationApi::DeleteOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -76,7 +76,7 @@ std::string PlayerClientOperationApi::DeleteOperationResponse::GetHttpStatusCate
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientOperationApi::DeleteOperationResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -138,7 +138,7 @@ void PlayerClientOperationApi::ExecuteSignedOperationResponse::SetHttpResponseCo
         }
 }
 
-std::string PlayerClientOperationApi::ExecuteSignedOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientOperationApi::ExecuteSignedOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -148,7 +148,7 @@ std::string PlayerClientOperationApi::ExecuteSignedOperationResponse::GetHttpSta
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientOperationApi::ExecuteSignedOperationResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -196,7 +196,7 @@ void PlayerClientOperationApi::GetOperationResponse::SetHttpResponseCode(EHttpRe
         }
 }
 
-std::string PlayerClientOperationApi::GetOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientOperationApi::GetOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -206,7 +206,7 @@ std::string PlayerClientOperationApi::GetOperationResponse::GetHttpStatusCategor
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientOperationApi::GetOperationResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -279,7 +279,7 @@ void PlayerClientOperationApi::ProcessOperationResponse::SetHttpResponseCode(EHt
         }
 }
 
-std::string PlayerClientOperationApi::ProcessOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientOperationApi::ProcessOperationResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -289,7 +289,7 @@ std::string PlayerClientOperationApi::ProcessOperationResponse::GetHttpStatusCat
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientOperationApi::ProcessOperationResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

@@ -50,7 +50,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Swap a maximum amount of &#x60;tokenIn&#x60; for an exact amount of &#x60;tokenOut&#x60;
@@ -76,7 +76,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Returns the maximum necessary input amount for a token trade, given a desired output amount
@@ -104,7 +104,7 @@ public:
 
     PlayerClientGetQuoteResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Returns the minimum expected output amount for a token trade, given an input amount
@@ -132,7 +132,7 @@ public:
 
     PlayerClientGetQuoteResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Unwrap an amount of wrapped to native token
@@ -158,7 +158,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 /* Wrap an amount of native token to wrapped native token
@@ -184,7 +184,7 @@ public:
 
     PlayerClientPlayerOperationResponse Content;
 private:
-    std::string GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };
 
 }

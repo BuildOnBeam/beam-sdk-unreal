@@ -91,7 +91,7 @@ void PlayerClientSessionsApi::CreateSessionRequestResponse::SetHttpResponseCode(
         }
 }
 
-std::string PlayerClientSessionsApi::CreateSessionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientSessionsApi::CreateSessionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -101,7 +101,7 @@ std::string PlayerClientSessionsApi::CreateSessionRequestResponse::GetHttpStatus
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientSessionsApi::CreateSessionRequestResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -158,7 +158,7 @@ void PlayerClientSessionsApi::GetActiveSessionResponse::SetHttpResponseCode(EHtt
         }
 }
 
-std::string PlayerClientSessionsApi::GetActiveSessionResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientSessionsApi::GetActiveSessionResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -168,7 +168,7 @@ std::string PlayerClientSessionsApi::GetActiveSessionResponse::GetHttpStatusCate
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientSessionsApi::GetActiveSessionResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -225,7 +225,7 @@ void PlayerClientSessionsApi::GetActiveSessionV2Response::SetHttpResponseCode(EH
         }
 }
 
-std::string PlayerClientSessionsApi::GetActiveSessionV2Response::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientSessionsApi::GetActiveSessionV2Response::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -235,7 +235,7 @@ std::string PlayerClientSessionsApi::GetActiveSessionV2Response::GetHttpStatusCa
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientSessionsApi::GetActiveSessionV2Response::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -291,7 +291,7 @@ void PlayerClientSessionsApi::GetAllActiveSessionsResponse::SetHttpResponseCode(
         }
 }
 
-std::string PlayerClientSessionsApi::GetAllActiveSessionsResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientSessionsApi::GetAllActiveSessionsResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -301,7 +301,7 @@ std::string PlayerClientSessionsApi::GetAllActiveSessionsResponse::GetHttpStatus
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientSessionsApi::GetAllActiveSessionsResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -349,7 +349,7 @@ void PlayerClientSessionsApi::GetSessionRequestResponse::SetHttpResponseCode(EHt
         }
 }
 
-std::string PlayerClientSessionsApi::GetSessionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientSessionsApi::GetSessionRequestResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -359,7 +359,7 @@ std::string PlayerClientSessionsApi::GetSessionRequestResponse::GetHttpStatusCat
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientSessionsApi::GetSessionRequestResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
@@ -432,7 +432,7 @@ void PlayerClientSessionsApi::RevokeSessionResponse::SetHttpResponseCode(EHttpRe
         }
 }
 
-std::string PlayerClientSessionsApi::RevokeSessionResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientSessionsApi::RevokeSessionResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -442,7 +442,7 @@ std::string PlayerClientSessionsApi::RevokeSessionResponse::GetHttpStatusCategor
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientSessionsApi::RevokeSessionResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)

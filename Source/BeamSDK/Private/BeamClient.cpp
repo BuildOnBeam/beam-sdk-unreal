@@ -351,7 +351,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
 	auto resultFuture = Async(EAsyncExecution::Thread,
-	                          [&, Promise, entityId, chainId, secondsTimeout, suggestedExpiry, OutCancellationToken]()
+	                          [&, Promise, entityId, chainId, authProvider, secondsTimeout, suggestedExpiry, OutCancellationToken]()
 	                          {
 		                          UE_CLOG(DebugLog, LogBeamClient, Log,
 		                                  TEXT("CreateSessionAsync: Retrieving active session: "

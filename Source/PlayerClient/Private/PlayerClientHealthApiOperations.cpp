@@ -67,7 +67,7 @@ void PlayerClientHealthApi::CheckResponse::SetHttpResponseCode(EHttpResponseCode
         }
 }
 
-std::string PlayerClientHealthApi::CheckResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+FString PlayerClientHealthApi::CheckResponse::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
     int statusCode = (int)InHttpResponseCode;
 
     // Ensure the input is a valid 3-digit HTTP status code
@@ -77,7 +77,7 @@ std::string PlayerClientHealthApi::CheckResponse::GetHttpStatusCategory(EHttpRes
 
     // Extract the first digit and append "XX"
     int firstDigit = statusCode / 100;
-    return std::to_string(firstDigit) + "XX";
+    return FString::Printf(TEXT("%dXX"), firstDigit);
 }
 
 bool PlayerClientHealthApi::CheckResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
