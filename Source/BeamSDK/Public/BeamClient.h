@@ -98,6 +98,7 @@ public:
 	TSharedPtr<PlayerClientOperationApi> OperationApi = MakeShared<PlayerClientOperationApi>();
 	TSharedPtr<PlayerClientConnectorApi> ConnectorApi = MakeShared<PlayerClientConnectorApi>();
 	TSharedPtr<PlayerClientRampApi> RampApi = MakeShared<PlayerClientRampApi>();
+	TSharedPtr<PlayerClientContractApi> ContractApi = MakeShared<PlayerClientContractApi>();
 
 public:
 	UBeamClient();

@@ -68,6 +68,7 @@ UBeamClient* UBeamClient::SetEnvironment(EBeamEnvironment InEnvironment)
 	ConfigureApi(OperationApi);
 	ConfigureApi(ConnectorApi);
 	ConfigureApi(RampApi);
+	ConfigureApi(ContractApi);
 
 	return this;
 }

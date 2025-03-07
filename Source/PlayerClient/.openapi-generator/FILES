@@ -29,6 +29,8 @@ Private/PlayerClientConfirmOperationRequest.cpp
 Private/PlayerClientConfirmOperationRequestTransactionsInner.cpp
 Private/PlayerClientConnectorApi.cpp
 Private/PlayerClientConnectorApiOperations.cpp
+Private/PlayerClientContractApi.cpp
+Private/PlayerClientContractApiOperations.cpp
 Private/PlayerClientConvertTokenRequestInput.cpp
 Private/PlayerClientCreateAssetOfferRequestInput.cpp
 Private/PlayerClientCreateConnectionRequestInput.cpp
@@ -109,6 +111,8 @@ Private/PlayerClientPlayerOperationResponse.cpp
 Private/PlayerClientPlayerOperationResponseTransactionsInner.cpp
 Private/PlayerClientRampApi.cpp
 Private/PlayerClientRampApiOperations.cpp
+Private/PlayerClientReadContractRequest.cpp
+Private/PlayerClientReadContractResonse.cpp
 Private/PlayerClientRefreshContractRequestBody.cpp
 Private/PlayerClientRefreshTokenRequestBody.cpp
 Private/PlayerClientRevokeSessionRequestInput.cpp
@@ -157,6 +161,8 @@ Public/PlayerClientConfirmOperationRequest.h
 Public/PlayerClientConfirmOperationRequestTransactionsInner.h
 Public/PlayerClientConnectorApi.h
 Public/PlayerClientConnectorApiOperations.h
+Public/PlayerClientContractApi.h
+Public/PlayerClientContractApiOperations.h
 Public/PlayerClientConvertTokenRequestInput.h
 Public/PlayerClientCreateAssetOfferRequestInput.h
 Public/PlayerClientCreateConnectionRequestInput.h
@@ -235,6 +241,8 @@ Public/PlayerClientPlayerOperationResponse.h
 Public/PlayerClientPlayerOperationResponseTransactionsInner.h
 Public/PlayerClientRampApi.h
 Public/PlayerClientRampApiOperations.h
+Public/PlayerClientReadContractRequest.h
+Public/PlayerClientReadContractResonse.h
 Public/PlayerClientRefreshContractRequestBody.h
 Public/PlayerClientRefreshTokenRequestBody.h
 Public/PlayerClientRevokeSessionRequestInput.h
