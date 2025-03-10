@@ -263,8 +263,6 @@ private:
 					          }
 					          else if (cancellationToken.IsValid() && cancellationToken->ShouldCancel())
 					          {
-						          cancellationToken->Reset();
-						          result.Reset();
 						          break;
 					          }
 				          }
@@ -277,6 +275,13 @@ private:
 					          {
 						          break;
 					          }
+				          }
+
+				          if (cancellationToken.IsValid() && cancellationToken->ShouldCancel())
+				          {
+					          cancellationToken->Reset();
+					          result.Reset();
+					          break;
 				          }
 
 				          FPlatformProcess::Sleep(secondsBetweenPolls);
