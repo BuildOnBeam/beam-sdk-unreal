@@ -6,7 +6,7 @@
     "generate-yaml": "openapi-generator-cli generate -i https://api.testnet.onbeam.com/api/player-json -g openapi-yaml -o ./yaml --skip-validate-spec & TIMEOUT 10"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.13.5",
+    "@openapitools/openapi-generator-cli": "^2.17.0",
     "rimraf": "^6.0.1"
   },
   "engines": {
