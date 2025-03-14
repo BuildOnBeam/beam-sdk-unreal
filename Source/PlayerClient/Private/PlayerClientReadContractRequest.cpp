@@ -28,7 +28,7 @@ void PlayerClientReadContractRequest::WriteJson(JsonWriter& Writer) const
 		Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId.GetValue());
 	}
 	Writer->WriteIdentifierPrefix(TEXT("functionName")); WriteJsonValue(Writer, FunctionName);
-	Writer->WriteIdentifierPrefix(TEXT("functionArguments")); WriteJsonValue(Writer, FunctionArguments);
+	Writer->WriteIdentifierPrefix(TEXT("functionArgs")); WriteJsonValue(Writer, FunctionArgs);
 	Writer->WriteObjectEnd();
 }
 
@@ -42,7 +42,7 @@ bool PlayerClientReadContractRequest::FromJson(const TSharedPtr<FJsonValue>& Jso
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("functionName"), FunctionName);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("functionArguments"), FunctionArguments);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("functionArgs"), FunctionArgs);
 
 	return ParseSuccess;
 }
