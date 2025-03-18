@@ -265,7 +265,8 @@ TFuture<BeamOperationResult> UBeamClient::RevokeSessionAsync(FString entityId, F
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
 	auto resultFuture = Async(EAsyncExecution::Thread,
-	                          [&, Promise, entityId, sessionAddress, chainId, authProvider, secondsTimeout, OutCancellationToken]()
+	                          [&, Promise, entityId, sessionAddress, chainId, authProvider, secondsTimeout,
+		                          OutCancellationToken]()
 	                          {
 		                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
 
@@ -343,6 +344,7 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
                                                            TOptional<
 	                                                           PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum>
                                                            authProvider,
+                                                           TOptional<TArray<FString>> contracts,
                                                            TSharedPtr<FBeamCancellationToken>* OutCancellationToken)
 {
 	// Track whether this was called from the game thread.
@@ -352,7 +354,8 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 
 	// Run on another thread so we can use concepts like sleep() when retrying requests without blocking the game thread
 	auto resultFuture = Async(EAsyncExecution::Thread,
-	                          [&, Promise, entityId, chainId, authProvider, secondsTimeout, suggestedExpiry, OutCancellationToken]()
+	                          [&, Promise, entityId, chainId, authProvider, secondsTimeout, suggestedExpiry, contracts,
+		                          OutCancellationToken]()
 	                          {
 		                          UE_CLOG(DebugLog, LogBeamClient, Log,
 		                                  TEXT("CreateSessionAsync: Retrieving active session: "
@@ -395,6 +398,12 @@ TFuture<BeamSessionResult> UBeamClient::CreateSessionAsync(FString entityId, int
 		                          {
 			                          request.PlayerClientGenerateSessionUrlRequestInput.SuggestedExpiry =
 				                          suggestedExpiry.GetValue();
+		                          }
+
+		                          if (contracts.IsSet())
+		                          {
+			                          request.PlayerClientGenerateSessionUrlRequestInput.Contracts = contracts.
+				                          GetValue();
 		                          }
 
 		                          const auto resPromise = MakeShared<

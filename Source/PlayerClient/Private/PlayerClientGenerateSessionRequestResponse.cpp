@@ -92,6 +92,7 @@ void PlayerClientGenerateSessionRequestResponse::WriteJson(JsonWriter& Writer) c
 		Writer->WriteIdentifierPrefix(TEXT("openfortId")); WriteJsonValue(Writer, OpenfortId.GetValue());
 	}
 	Writer->WriteIdentifierPrefix(TEXT("address")); WriteJsonValue(Writer, Address);
+	Writer->WriteIdentifierPrefix(TEXT("contracts")); WriteJsonValue(Writer, Contracts);
 	Writer->WriteIdentifierPrefix(TEXT("url")); WriteJsonValue(Writer, Url);
 	Writer->WriteObjectEnd();
 }
@@ -111,6 +112,7 @@ bool PlayerClientGenerateSessionRequestResponse::FromJson(const TSharedPtr<FJson
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("openfortId"), OpenfortId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("address"), Address);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("contracts"), Contracts);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("url"), Url);
 
 	return ParseSuccess;

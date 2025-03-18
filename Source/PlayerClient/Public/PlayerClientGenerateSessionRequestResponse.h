@@ -45,6 +45,7 @@ public:
 	int64 ChainId = 0;
 	TOptional<FString> OpenfortId;
 	FString Address;
+	TArray<FString> Contracts;
 	FString Url;
 };
 
