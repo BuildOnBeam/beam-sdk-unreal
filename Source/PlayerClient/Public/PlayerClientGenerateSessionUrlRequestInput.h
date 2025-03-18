@@ -43,6 +43,8 @@ public:
 	static bool EnumFromString(const FString& EnumAsString, AuthProviderEnum& EnumValue);
 	/* Auth Provider for the user to use. If it's Any, user will be able to choose his preferred login method. Useful when you want to present social login choice in your UI. */
 	TOptional<AuthProviderEnum> AuthProvider;
+	/* List of contract addresses to be used in the session */
+	TOptional<TArray<FString>> Contracts;
 	TOptional<int64> ChainId;
 };
 

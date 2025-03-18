@@ -31,7 +31,7 @@ public:
 
 	TOptional<int64> ChainId;
 	FString FunctionName;
-	TArray<FString> FunctionArguments;
+	TArray<FString> FunctionArgs;
 };
 
 }

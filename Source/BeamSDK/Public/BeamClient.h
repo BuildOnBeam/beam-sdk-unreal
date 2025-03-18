@@ -184,6 +184,7 @@ public:
 	///  @param[in]		secondsTimeout	Optional timeout in seconds, defaults to 240
 	///  @param[in]     suggestedExpiry Suggested Expiry date that will be pre-selected for the User
 	///  @param[in]		authProvider    Optional authProvider, if set to Any(default), User will be able to choose social login provider. Useful if you want to present Google/Discord/Apple/etc options within your UI.
+	///  @param[in]		contracts		Optional contracts to include within the session. These should be contracts you plan on interacting with that would require users signature. If left out or empty, it will automatically use all your game and some global contracts in the session.
 	/// @return TFuture
 	TFuture<BeamSessionResult> CreateSessionAsync(
 		FString entityId,
@@ -192,6 +193,7 @@ public:
 		TOptional<FDateTime> suggestedExpiry = TOptional<FDateTime>(),
 		TOptional<PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum> authProvider =
 			PlayerClientGenerateSessionUrlRequestInput::AuthProviderEnum::Any,
+		TOptional<TArray<FString>> contracts = TOptional<TArray<FString>>(),
 		TSharedPtr<FBeamCancellationToken>* OutCancellationToken = nullptr
 	);
 
