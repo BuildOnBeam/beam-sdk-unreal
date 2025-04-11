@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnrealBuildTool;
 
 public class BeamSDK : ModuleRules
@@ -63,14 +63,19 @@ public class BeamSDK : ModuleRules
 			}
 		);
 
-
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "External/libsecp256k1.lib"));
 		}
-		if (Target.Platform == UnrealTargetPlatform.Linux || Target.Platform == UnrealTargetPlatform.Mac)
+
+		if (Target.Platform == UnrealTargetPlatform.Mac)
 		{
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "External/libsecp256k1.a"));
+		}
+
+		if (Target.Platform == UnrealTargetPlatform.Linux)
+		{
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "External/Ubuntu/libsecp256k1.a"));
 		}
 	}
 }

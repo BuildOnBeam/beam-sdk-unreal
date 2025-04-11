@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "secp256k1.h"  // For ECDSA operations
 
 class Keccak256Helper

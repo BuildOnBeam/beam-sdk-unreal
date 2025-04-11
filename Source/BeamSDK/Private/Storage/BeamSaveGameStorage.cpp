@@ -7,17 +7,21 @@
 
 #include "Kismet/GameplayStatics.h"
 
+#define DEFAULT_SLOT_NAME	TEXT("BeamStorage")
 namespace
 {
-	static const FString BeamStorageSlotName(TEXT("BeamStorage"));
+	FString BeamStorageSlotName(DEFAULT_SLOT_NAME);
 }
 
-UBeamSaveGameStorage* UBeamSaveGameStorage::LoadOrCreate()
+UBeamSaveGameStorage* UBeamSaveGameStorage::LoadOrCreate(const FString& CustomSlot)
 {
+	BeamStorageSlotName = DEFAULT_SLOT_NAME;
+	BeamStorageSlotName += CustomSlot;
+
 	UBeamSaveGameStorage* BeamStorage = Cast<UBeamSaveGameStorage>(UGameplayStatics::LoadGameFromSlot(BeamStorageSlotName, 0));
 	if (!BeamStorage)
 	{
-		BeamStorage = Cast<UBeamSaveGameStorage>(UGameplayStatics::CreateSaveGameObject(UBeamSaveGameStorage::StaticClass()));
+		BeamStorage = Cast<UBeamSaveGameStorage>(UGameplayStatics::CreateSaveGameObject(StaticClass()));
 		BeamStorage->bIsDirty = true;
 	}
 	return BeamStorage;

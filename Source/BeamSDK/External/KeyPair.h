@@ -1,4 +1,7 @@
 #pragma once
+
+#include "CoreMinimal.h"
+
 #include <string>
 #include "secp256k1.h"
 
