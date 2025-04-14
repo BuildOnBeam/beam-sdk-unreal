@@ -109,6 +109,85 @@ bool PlayerClientSessionsApi::CreateSessionRequestResponse::FromJson(const TShar
 	return TryGetJsonValue(JsonValue, Content);
 }
 
+FString PlayerClientSessionsApi::CreateSessionRequestV2Request::ComputePath() const
+{
+	FString Path(TEXT("/v2/player/sessions/request"));
+	return Path;
+}
+
+void PlayerClientSessionsApi::CreateSessionRequestV2Request::SetupHttpRequest(const FHttpRequestRef& HttpRequest) const
+{
+	static const TArray<FString> Consumes = { TEXT("application/json") };
+	//static const TArray<FString> Produces = { TEXT("application/json") };
+
+	HttpRequest->SetVerb(TEXT("POST"));
+
+	// Default to Json Body request
+	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
+	{
+		// Body parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+
+		WriteJsonValue(Writer, PlayerClientGenerateSessionUrlRequestInput);
+		Writer->Close();
+
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
+	}
+	else if (Consumes.Contains(TEXT("multipart/form-data")))
+	{
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientGenerateSessionUrlRequestInput) was ignored, not supported in multipart form"));
+	}
+	else if (Consumes.Contains(TEXT("application/x-www-form-urlencoded")))
+	{
+		UE_LOG(LogPlayerClient, Error, TEXT("Body parameter (PlayerClientGenerateSessionUrlRequestInput) was ignored, not supported in urlencoded requests"));
+	}
+	else
+	{
+		UE_LOG(LogPlayerClient, Error, TEXT("Request ContentType not supported (%s)"), *FString::Join(Consumes, TEXT(",")));
+	}
+}
+
+void PlayerClientSessionsApi::CreateSessionRequestV2Response::SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode)
+{
+	Response::SetHttpResponseCode(InHttpResponseCode);
+
+        if ((int)InHttpResponseCode == 200)
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "4XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+        if (GetHttpStatusCategory(InHttpResponseCode) == "5XX")
+        {
+            SetResponseString(TEXT(""));
+            return;
+        }
+}
+
+FString PlayerClientSessionsApi::CreateSessionRequestV2Response::GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode) {
+    int statusCode = (int)InHttpResponseCode;
+
+    // Ensure the input is a valid 3-digit HTTP status code
+    if (statusCode < 100 || statusCode > 599) {
+        throw std::invalid_argument("Invalid HTTP status code. Must be between 100 and 599.");
+    }
+
+    // Extract the first digit and append "XX"
+    int firstDigit = statusCode / 100;
+    return FString::Printf(TEXT("%dXX"), firstDigit);
+}
+
+bool PlayerClientSessionsApi::CreateSessionRequestV2Response::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
+{
+	return TryGetJsonValue(JsonValue, Content);
+}
+
 FString PlayerClientSessionsApi::GetActiveSessionRequest::ComputePath() const
 {
 	TMap<FString, FStringFormatArg> PathParams = { 

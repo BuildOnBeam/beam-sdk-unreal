@@ -76,15 +76,83 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 	return false;
 }
 
+inline FString ToString(const PlayerClientGenerateSessionRequestResponse::AuthProviderEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Any:
+		return TEXT("Any");
+	case PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Google:
+		return TEXT("Google");
+	case PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Discord:
+		return TEXT("Discord");
+	case PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Apple:
+		return TEXT("Apple");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientGenerateSessionRequestResponse::AuthProviderEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientGenerateSessionRequestResponse::EnumToString(const PlayerClientGenerateSessionRequestResponse::AuthProviderEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientGenerateSessionRequestResponse::AuthProviderEnum& Value)
+{
+	static TMap<FString, PlayerClientGenerateSessionRequestResponse::AuthProviderEnum> StringToEnum = { 
+		{ TEXT("Any"), PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Any },
+		{ TEXT("Google"), PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Google },
+		{ TEXT("Discord"), PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Discord },
+		{ TEXT("Apple"), PlayerClientGenerateSessionRequestResponse::AuthProviderEnum::Apple }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientGenerateSessionRequestResponse::EnumFromString(const FString& EnumAsString, PlayerClientGenerateSessionRequestResponse::AuthProviderEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientGenerateSessionRequestResponse::AuthProviderEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientGenerateSessionRequestResponse::AuthProviderEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientGenerateSessionRequestResponse::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
 	Writer->WriteIdentifierPrefix(TEXT("status")); WriteJsonValue(Writer, Status);
+	Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider);
 	Writer->WriteIdentifierPrefix(TEXT("id")); WriteJsonValue(Writer, Id);
 	Writer->WriteIdentifierPrefix(TEXT("createdAt")); WriteJsonValue(Writer, CreatedAt);
 	if (UpdatedAt.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("updatedAt")); WriteJsonValue(Writer, UpdatedAt.GetValue());
+	}
+	if (EntityId.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("entityId")); WriteJsonValue(Writer, EntityId.GetValue());
+	}
+	if (GameId.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("gameId")); WriteJsonValue(Writer, GameId.GetValue());
 	}
 	Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId);
 	if (OpenfortId.IsSet())
@@ -106,9 +174,12 @@ bool PlayerClientGenerateSessionRequestResponse::FromJson(const TSharedPtr<FJson
 	bool ParseSuccess = true;
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("status"), Status);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("id"), Id);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("createdAt"), CreatedAt);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("updatedAt"), UpdatedAt);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("entityId"), EntityId);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("gameId"), GameId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("openfortId"), OpenfortId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("address"), Address);

@@ -30,6 +30,7 @@ public:
 	void WriteJson(JsonWriter& Writer) const final;
 
 	FString Address;
+	TOptional<FString> EntityId;
 	TOptional<FDateTime> SuggestedExpiry;
 	enum class AuthProviderEnum
 	{
