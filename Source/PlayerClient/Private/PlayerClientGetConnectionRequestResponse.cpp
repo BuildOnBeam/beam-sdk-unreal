@@ -150,10 +150,7 @@ void PlayerClientGetConnectionRequestResponse::WriteJson(JsonWriter& Writer) con
 	{
 		Writer->WriteIdentifierPrefix(TEXT("entityId")); WriteJsonValue(Writer, EntityId.GetValue());
 	}
-	if (GameId.IsSet())
-	{
-		Writer->WriteIdentifierPrefix(TEXT("gameId")); WriteJsonValue(Writer, GameId.GetValue());
-	}
+	Writer->WriteIdentifierPrefix(TEXT("gameId")); WriteJsonValue(Writer, GameId);
 	Writer->WriteObjectEnd();
 }
 

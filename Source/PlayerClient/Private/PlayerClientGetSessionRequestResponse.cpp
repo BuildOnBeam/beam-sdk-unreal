@@ -150,10 +150,7 @@ void PlayerClientGetSessionRequestResponse::WriteJson(JsonWriter& Writer) const
 	{
 		Writer->WriteIdentifierPrefix(TEXT("entityId")); WriteJsonValue(Writer, EntityId.GetValue());
 	}
-	if (GameId.IsSet())
-	{
-		Writer->WriteIdentifierPrefix(TEXT("gameId")); WriteJsonValue(Writer, GameId.GetValue());
-	}
+	Writer->WriteIdentifierPrefix(TEXT("gameId")); WriteJsonValue(Writer, GameId);
 	Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId);
 	if (OpenfortId.IsSet())
 	{

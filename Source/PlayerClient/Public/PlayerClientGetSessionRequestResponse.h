@@ -54,7 +54,7 @@ public:
 	FDateTime CreatedAt;
 	TOptional<FDateTime> UpdatedAt;
 	TOptional<FString> EntityId;
-	TOptional<FString> GameId;
+	FString GameId;
 	int64 ChainId = 0;
 	TOptional<FString> OpenfortId;
 	FString Address;
