@@ -20,8 +20,8 @@ public class BeamSDK : ModuleRules
 				Path.Combine(PluginDirectory, "Source", "PlayerClient", "Public"),
 			}
 		);
-				
-		
+
+
 		PrivateIncludePaths.AddRange(
 			new string[]
 			{
@@ -30,8 +30,8 @@ public class BeamSDK : ModuleRules
 				Path.Combine(ModuleDirectory, "Private", "Utils"),
 			}
 		);
-			
-		
+
+
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -42,8 +42,8 @@ public class BeamSDK : ModuleRules
 				"Serialization",
 			}
 		);
-			
-		
+
+
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -54,8 +54,8 @@ public class BeamSDK : ModuleRules
 				"PlayerClient"
 			}
 		);
-		
-		
+
+
 		DynamicallyLoadedModuleNames.AddRange(
 			new string[]
 			{
@@ -65,6 +65,7 @@ public class BeamSDK : ModuleRules
 
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
+			PublicDefinitions.Add("NOMINMAX");
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "External/libsecp256k1.lib"));
 		}
 
