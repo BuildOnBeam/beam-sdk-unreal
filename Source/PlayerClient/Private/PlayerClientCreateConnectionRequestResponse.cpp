@@ -76,16 +76,81 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 	return false;
 }
 
+inline FString ToString(const PlayerClientCreateConnectionRequestResponse::AuthProviderEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Any:
+		return TEXT("Any");
+	case PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Google:
+		return TEXT("Google");
+	case PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Discord:
+		return TEXT("Discord");
+	case PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Apple:
+		return TEXT("Apple");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientCreateConnectionRequestResponse::AuthProviderEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientCreateConnectionRequestResponse::EnumToString(const PlayerClientCreateConnectionRequestResponse::AuthProviderEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientCreateConnectionRequestResponse::AuthProviderEnum& Value)
+{
+	static TMap<FString, PlayerClientCreateConnectionRequestResponse::AuthProviderEnum> StringToEnum = { 
+		{ TEXT("Any"), PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Any },
+		{ TEXT("Google"), PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Google },
+		{ TEXT("Discord"), PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Discord },
+		{ TEXT("Apple"), PlayerClientCreateConnectionRequestResponse::AuthProviderEnum::Apple }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientCreateConnectionRequestResponse::EnumFromString(const FString& EnumAsString, PlayerClientCreateConnectionRequestResponse::AuthProviderEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientCreateConnectionRequestResponse::AuthProviderEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientCreateConnectionRequestResponse::AuthProviderEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 void PlayerClientCreateConnectionRequestResponse::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
 	Writer->WriteIdentifierPrefix(TEXT("status")); WriteJsonValue(Writer, Status);
+	Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider);
 	Writer->WriteIdentifierPrefix(TEXT("id")); WriteJsonValue(Writer, Id);
 	Writer->WriteIdentifierPrefix(TEXT("createdAt")); WriteJsonValue(Writer, CreatedAt);
 	if (UpdatedAt.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("updatedAt")); WriteJsonValue(Writer, UpdatedAt.GetValue());
 	}
+	if (EntityId.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("entityId")); WriteJsonValue(Writer, EntityId.GetValue());
+	}
+	Writer->WriteIdentifierPrefix(TEXT("gameId")); WriteJsonValue(Writer, GameId);
 	Writer->WriteIdentifierPrefix(TEXT("url")); WriteJsonValue(Writer, Url);
 	Writer->WriteObjectEnd();
 }
@@ -99,9 +164,12 @@ bool PlayerClientCreateConnectionRequestResponse::FromJson(const TSharedPtr<FJso
 	bool ParseSuccess = true;
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("status"), Status);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("id"), Id);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("createdAt"), CreatedAt);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("updatedAt"), UpdatedAt);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("entityId"), EntityId);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("gameId"), GameId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("url"), Url);
 
 	return ParseSuccess;

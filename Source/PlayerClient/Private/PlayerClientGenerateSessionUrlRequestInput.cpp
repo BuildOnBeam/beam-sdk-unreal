@@ -83,6 +83,10 @@ void PlayerClientGenerateSessionUrlRequestInput::WriteJson(JsonWriter& Writer) c
 {
 	Writer->WriteObjectStart();
 	Writer->WriteIdentifierPrefix(TEXT("address")); WriteJsonValue(Writer, Address);
+	if (EntityId.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("entityId")); WriteJsonValue(Writer, EntityId.GetValue());
+	}
 	if (SuggestedExpiry.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("suggestedExpiry")); WriteJsonValue(Writer, SuggestedExpiry.GetValue());
@@ -111,6 +115,7 @@ bool PlayerClientGenerateSessionUrlRequestInput::FromJson(const TSharedPtr<FJson
 	bool ParseSuccess = true;
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("address"), Address);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("entityId"), EntityId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("suggestedExpiry"), SuggestedExpiry);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("contracts"), Contracts);

@@ -8,7 +8,7 @@
         "generatorName": "cpp-ue4",
         "output": "../Source/PlayerClient",
         "templateDir": "templates",
-        "inputSpec": "https://api.testnet.onbeam.com/api/player-json",
+        "inputSpec": "https://api.beta.onbeam.com/api/player-json",
         "skipValidateSpec": false,
         "type-mappings": "string+uri=FString",
         "additionalProperties": {

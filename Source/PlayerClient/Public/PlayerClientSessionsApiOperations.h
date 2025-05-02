@@ -59,6 +59,31 @@ private:
 /* 
 
 */
+class PLAYERCLIENT_API PlayerClientSessionsApi::CreateSessionRequestV2Request : public Request
+{
+public:
+    virtual ~CreateSessionRequestV2Request() {}
+	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+	FString ComputePath() const final;
+
+	PlayerClientGenerateSessionUrlRequestInput PlayerClientGenerateSessionUrlRequestInput;
+};
+
+class PLAYERCLIENT_API PlayerClientSessionsApi::CreateSessionRequestV2Response : public Response
+{
+public:
+    virtual ~CreateSessionRequestV2Response() {}
+	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
+
+    PlayerClientGenerateSessionRequestResponse Content;
+private:
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+};
+
+/* 
+
+*/
 class PLAYERCLIENT_API PlayerClientSessionsApi::GetActiveSessionRequest : public Request
 {
 public:

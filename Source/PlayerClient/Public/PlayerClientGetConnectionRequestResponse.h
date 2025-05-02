@@ -39,9 +39,22 @@ public:
 	static FString EnumToString(const StatusEnum& EnumValue);
 	static bool EnumFromString(const FString& EnumAsString, StatusEnum& EnumValue);
 	StatusEnum Status;
+	enum class AuthProviderEnum
+	{
+		Any,
+		Google,
+		Discord,
+		Apple,
+  	};
+
+	static FString EnumToString(const AuthProviderEnum& EnumValue);
+	static bool EnumFromString(const FString& EnumAsString, AuthProviderEnum& EnumValue);
+	AuthProviderEnum AuthProvider;
 	FString Id;
 	FDateTime CreatedAt;
 	TOptional<FDateTime> UpdatedAt;
+	TOptional<FString> EntityId;
+	FString GameId;
 };
 
 }

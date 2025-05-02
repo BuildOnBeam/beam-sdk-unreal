@@ -82,14 +82,13 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 void PlayerClientCreateConnectionRequestInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
-	Writer->WriteIdentifierPrefix(TEXT("entityId")); WriteJsonValue(Writer, EntityId);
+	if (EntityId.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("entityId")); WriteJsonValue(Writer, EntityId.GetValue());
+	}
 	if (AuthProvider.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("authProvider")); WriteJsonValue(Writer, AuthProvider.GetValue());
-	}
-	if (ChainId.IsSet())
-	{
-		Writer->WriteIdentifierPrefix(TEXT("chainId")); WriteJsonValue(Writer, ChainId.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }
@@ -104,7 +103,6 @@ bool PlayerClientCreateConnectionRequestInput::FromJson(const TSharedPtr<FJsonVa
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("entityId"), EntityId);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("authProvider"), AuthProvider);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("chainId"), ChainId);
 
 	return ParseSuccess;
 }
