@@ -21,7 +21,7 @@ UE_DISABLE_OPTIMIZATION
 
 UBeamClient::UBeamClient()
 {
-	SetEnvironment(EBeamEnvironment::Testnet);
+	SetEnvironment(EBeamEnvironment::Beta);
 }
 
 FString UBeamClient::LaunchURL(const FString& Url)
@@ -48,6 +48,7 @@ UBeamClient* UBeamClient::SetEnvironment(EBeamEnvironment InEnvironment)
 	switch (InEnvironment)
 	{
 	case EBeamEnvironment::Mainnet:
+	case EBeamEnvironment::Production:
 		apiUrl = "https://api.onbeam.com";
 		break;
 	default:
@@ -115,7 +116,6 @@ TFuture<BeamConnectionResult> UBeamClient::ConnectUserToGameAsync(FString entity
 
 		                          PlayerClientConnectorApi::CreateConnectionRequestRequest request;
 		                          request.PlayerClientCreateConnectionRequestInput.EntityId = entityId;
-		                          request.PlayerClientCreateConnectionRequestInput.ChainId = chainId;
 
 		                          if (authProvider.IsSet())
 		                          {
