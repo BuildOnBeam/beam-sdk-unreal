@@ -20,12 +20,67 @@
 namespace OpenAPI
 {
 
+inline FString ToString(const PlayerClientCreateOnrampRequestInput::PlatformEnum& Value)
+{
+	switch (Value)
+	{
+	case PlayerClientCreateOnrampRequestInput::PlatformEnum::Transak:
+		return TEXT("transak");
+	case PlayerClientCreateOnrampRequestInput::PlatformEnum::Thirdweb:
+		return TEXT("thirdweb");
+	}
+
+	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientCreateOnrampRequestInput::PlatformEnum Value (%d)"), (int)Value);
+	return TEXT("");
+}
+
+FString PlayerClientCreateOnrampRequestInput::EnumToString(const PlayerClientCreateOnrampRequestInput::PlatformEnum& EnumValue)
+{
+	return ToString(EnumValue);
+}
+
+inline bool FromString(const FString& EnumAsString, PlayerClientCreateOnrampRequestInput::PlatformEnum& Value)
+{
+	static TMap<FString, PlayerClientCreateOnrampRequestInput::PlatformEnum> StringToEnum = { 
+		{ TEXT("transak"), PlayerClientCreateOnrampRequestInput::PlatformEnum::Transak },
+		{ TEXT("thirdweb"), PlayerClientCreateOnrampRequestInput::PlatformEnum::Thirdweb }, };
+
+	const auto Found = StringToEnum.Find(EnumAsString);
+	if(Found)
+		Value = *Found;
+
+	return Found != nullptr;
+}
+
+bool PlayerClientCreateOnrampRequestInput::EnumFromString(const FString& EnumAsString, PlayerClientCreateOnrampRequestInput::PlatformEnum& EnumValue)
+{
+	return FromString(EnumAsString, EnumValue);
+}
+
+inline void WriteJsonValue(JsonWriter& Writer, const PlayerClientCreateOnrampRequestInput::PlatformEnum& Value)
+{
+	WriteJsonValue(Writer, ToString(Value));
+}
+
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClientCreateOnrampRequestInput::PlatformEnum& Value)
+{
+	FString TmpValue;
+	if (JsonValue->TryGetString(TmpValue))
+	{
+		if(FromString(TmpValue, Value))
+			return true;
+	}
+	return false;
+}
+
 inline FString ToString(const PlayerClientCreateOnrampRequestInput::TokenEnum& Value)
 {
 	switch (Value)
 	{
 	case PlayerClientCreateOnrampRequestInput::TokenEnum::Beam:
 		return TEXT("BEAM");
+	case PlayerClientCreateOnrampRequestInput::TokenEnum::Fp:
+		return TEXT("FP");
 	}
 
 	UE_LOG(LogPlayerClient, Error, TEXT("Invalid PlayerClientCreateOnrampRequestInput::TokenEnum Value (%d)"), (int)Value);
@@ -40,7 +95,8 @@ FString PlayerClientCreateOnrampRequestInput::EnumToString(const PlayerClientCre
 inline bool FromString(const FString& EnumAsString, PlayerClientCreateOnrampRequestInput::TokenEnum& Value)
 {
 	static TMap<FString, PlayerClientCreateOnrampRequestInput::TokenEnum> StringToEnum = { 
-		{ TEXT("BEAM"), PlayerClientCreateOnrampRequestInput::TokenEnum::Beam }, };
+		{ TEXT("BEAM"), PlayerClientCreateOnrampRequestInput::TokenEnum::Beam },
+		{ TEXT("FP"), PlayerClientCreateOnrampRequestInput::TokenEnum::Fp }, };
 
 	const auto Found = StringToEnum.Find(EnumAsString);
 	if(Found)
@@ -132,6 +188,10 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, PlayerClien
 void PlayerClientCreateOnrampRequestInput::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
+	if (Platform.IsSet())
+	{
+		Writer->WriteIdentifierPrefix(TEXT("platform")); WriteJsonValue(Writer, Platform.GetValue());
+	}
 	if (Token.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("token")); WriteJsonValue(Writer, Token.GetValue());
@@ -171,6 +231,7 @@ bool PlayerClientCreateOnrampRequestInput::FromJson(const TSharedPtr<FJsonValue>
 
 	bool ParseSuccess = true;
 
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("platform"), Platform);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("token"), Token);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("tokenAmount"), TokenAmount);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("fiatAmount"), FiatAmount);

@@ -29,9 +29,19 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 	void WriteJson(JsonWriter& Writer) const final;
 
+	enum class PlatformEnum
+	{
+		Transak,
+		Thirdweb,
+  	};
+
+	static FString EnumToString(const PlatformEnum& EnumValue);
+	static bool EnumFromString(const FString& EnumAsString, PlatformEnum& EnumValue);
+	TOptional<PlatformEnum> Platform;
 	enum class TokenEnum
 	{
 		Beam,
+		Fp,
   	};
 
 	static FString EnumToString(const TokenEnum& EnumValue);
