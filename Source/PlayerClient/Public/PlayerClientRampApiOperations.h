@@ -19,6 +19,7 @@
     
 #include "PlayerClientBeamErrorResponse.h"
 #include "PlayerClientCreateOnrampRequestInput.h"
+#include "PlayerClientGetOnRampQuoteResponse.h"
 #include "PlayerClientPlayerOperationResponse.h"
 
 namespace OpenAPI
@@ -46,6 +47,32 @@ public:
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
     PlayerClientPlayerOperationResponse Content;
+private:
+    FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
+};
+
+/* 
+
+*/
+class PLAYERCLIENT_API PlayerClientRampApi::GetOnRampQuoteRequest : public Request
+{
+public:
+    virtual ~GetOnRampQuoteRequest() {}
+	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+	FString ComputePath() const final;
+
+	FString EntityId;
+	PlayerClientCreateOnrampRequestInput PlayerClientCreateOnrampRequestInput;
+};
+
+class PLAYERCLIENT_API PlayerClientRampApi::GetOnRampQuoteResponse : public Response
+{
+public:
+    virtual ~GetOnRampQuoteResponse() {}
+	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
+
+    PlayerClientGetOnRampQuoteResponse Content;
 private:
     FString GetHttpStatusCategory(EHttpResponseCodes::Type InHttpResponseCode);
 };

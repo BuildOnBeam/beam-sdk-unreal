@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 
-#include "PlayerClientConfirmOperationRequestTransactionsInner.h"
+#include "PlayerClientGetOnRampQuoteResponseQuote.h"
 
 #include "PlayerClientModule.h"
 #include "PlayerClientHelpers.h"
@@ -20,15 +20,15 @@
 namespace OpenAPI
 {
 
-void PlayerClientConfirmOperationRequestTransactionsInner::WriteJson(JsonWriter& Writer) const
+void PlayerClientGetOnRampQuoteResponseQuote::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
-	Writer->WriteIdentifierPrefix(TEXT("id")); WriteJsonValue(Writer, Id);
-	Writer->WriteIdentifierPrefix(TEXT("signature")); WriteJsonValue(Writer, Signature);
+	Writer->WriteIdentifierPrefix(TEXT("input")); WriteJsonValue(Writer, Input);
+	Writer->WriteIdentifierPrefix(TEXT("output")); WriteJsonValue(Writer, Output);
 	Writer->WriteObjectEnd();
 }
 
-bool PlayerClientConfirmOperationRequestTransactionsInner::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
+bool PlayerClientGetOnRampQuoteResponseQuote::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
 {
 	const TSharedPtr<FJsonObject>* Object;
 	if (!JsonValue->TryGetObject(Object))
@@ -36,8 +36,8 @@ bool PlayerClientConfirmOperationRequestTransactionsInner::FromJson(const TShare
 
 	bool ParseSuccess = true;
 
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("id"), Id);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("signature"), Signature);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("input"), Input);
+	ParseSuccess &= TryGetJsonValue(*Object, TEXT("output"), Output);
 
 	return ParseSuccess;
 }

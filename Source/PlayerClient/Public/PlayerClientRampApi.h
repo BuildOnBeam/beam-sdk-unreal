@@ -40,13 +40,18 @@ public:
 
 	class CreateOnrampRequestRequest;
 	class CreateOnrampRequestResponse;
+	class GetOnRampQuoteRequest;
+	class GetOnRampQuoteResponse;
 	
     DECLARE_DELEGATE_OneParam(FCreateOnrampRequestDelegate, const CreateOnrampRequestResponse&);
+    DECLARE_DELEGATE_OneParam(FGetOnRampQuoteDelegate, const GetOnRampQuoteResponse&);
     
     FHttpRequestPtr CreateOnrampRequest(const CreateOnrampRequestRequest& Request, const FCreateOnrampRequestDelegate& Delegate = FCreateOnrampRequestDelegate()) const;
+    FHttpRequestPtr GetOnRampQuote(const GetOnRampQuoteRequest& Request, const FGetOnRampQuoteDelegate& Delegate = FGetOnRampQuoteDelegate()) const;
     
 private:
     void OnCreateOnrampRequestResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FCreateOnrampRequestDelegate Delegate) const;
+    void OnGetOnRampQuoteResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetOnRampQuoteDelegate Delegate) const;
     
 	FHttpRequestRef CreateHttpRequest(const Request& Request) const;
 	bool IsValid() const;

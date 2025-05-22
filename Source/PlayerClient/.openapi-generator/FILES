@@ -26,7 +26,7 @@ Private/PlayerClientCommonStatsResponse.cpp
 Private/PlayerClientCommonStatsResponseCount.cpp
 Private/PlayerClientCommonUserActivityRequestInput.cpp
 Private/PlayerClientConfirmOperationRequest.cpp
-Private/PlayerClientConfirmOperationRequestTransactionsInner.cpp
+Private/PlayerClientConfirmOperationRequestActionsInner.cpp
 Private/PlayerClientConnectorApi.cpp
 Private/PlayerClientConnectorApiOperations.cpp
 Private/PlayerClientContractApi.cpp
@@ -72,6 +72,10 @@ Private/PlayerClientGetChainCurrenciesResponse.cpp
 Private/PlayerClientGetChainCurrenciesResponseDataInner.cpp
 Private/PlayerClientGetConnectionRequestResponse.cpp
 Private/PlayerClientGetListedAssetsBodyInput.cpp
+Private/PlayerClientGetOnRampQuoteResponse.cpp
+Private/PlayerClientGetOnRampQuoteResponseQuote.cpp
+Private/PlayerClientGetOnRampQuoteResponseQuoteInput.cpp
+Private/PlayerClientGetOnRampQuoteResponseQuoteOutput.cpp
 Private/PlayerClientGetOwnerAssetsBodyInput.cpp
 Private/PlayerClientGetOwnerAssetsResponse.cpp
 Private/PlayerClientGetOwnersResponse.cpp
@@ -108,7 +112,6 @@ Private/PlayerClientPlayerOperationAction.cpp
 Private/PlayerClientPlayerOperationActionSignature.cpp
 Private/PlayerClientPlayerOperationActionTransaction.cpp
 Private/PlayerClientPlayerOperationResponse.cpp
-Private/PlayerClientPlayerOperationResponseTransactionsInner.cpp
 Private/PlayerClientRampApi.cpp
 Private/PlayerClientRampApiOperations.cpp
 Private/PlayerClientReadContractRequest.cpp
@@ -158,7 +161,7 @@ Public/PlayerClientCommonStatsResponse.h
 Public/PlayerClientCommonStatsResponseCount.h
 Public/PlayerClientCommonUserActivityRequestInput.h
 Public/PlayerClientConfirmOperationRequest.h
-Public/PlayerClientConfirmOperationRequestTransactionsInner.h
+Public/PlayerClientConfirmOperationRequestActionsInner.h
 Public/PlayerClientConnectorApi.h
 Public/PlayerClientConnectorApiOperations.h
 Public/PlayerClientContractApi.h
@@ -204,6 +207,10 @@ Public/PlayerClientGetChainCurrenciesResponse.h
 Public/PlayerClientGetChainCurrenciesResponseDataInner.h
 Public/PlayerClientGetConnectionRequestResponse.h
 Public/PlayerClientGetListedAssetsBodyInput.h
+Public/PlayerClientGetOnRampQuoteResponse.h
+Public/PlayerClientGetOnRampQuoteResponseQuote.h
+Public/PlayerClientGetOnRampQuoteResponseQuoteInput.h
+Public/PlayerClientGetOnRampQuoteResponseQuoteOutput.h
 Public/PlayerClientGetOwnerAssetsBodyInput.h
 Public/PlayerClientGetOwnerAssetsResponse.h
 Public/PlayerClientGetOwnersResponse.h
@@ -238,7 +245,6 @@ Public/PlayerClientPlayerOperationAction.h
 Public/PlayerClientPlayerOperationActionSignature.h
 Public/PlayerClientPlayerOperationActionTransaction.h
 Public/PlayerClientPlayerOperationResponse.h
-Public/PlayerClientPlayerOperationResponseTransactionsInner.h
 Public/PlayerClientRampApi.h
 Public/PlayerClientRampApiOperations.h
 Public/PlayerClientReadContractRequest.h

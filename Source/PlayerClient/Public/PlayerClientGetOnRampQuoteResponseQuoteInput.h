@@ -18,19 +18,19 @@ namespace OpenAPI
 {
 
 /*
- * PlayerClientConfirmOperationRequestTransactionsInner
+ * PlayerClientGetOnRampQuoteResponseQuoteInput
  *
  * 
  */
-class PLAYERCLIENT_API PlayerClientConfirmOperationRequestTransactionsInner : public Model
+class PLAYERCLIENT_API PlayerClientGetOnRampQuoteResponseQuoteInput : public Model
 {
 public:
-    virtual ~PlayerClientConfirmOperationRequestTransactionsInner() {}
+    virtual ~PlayerClientGetOnRampQuoteResponseQuoteInput() {}
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 	void WriteJson(JsonWriter& Writer) const final;
 
-	FString Id;
-	FString Signature;
+	FString PaymentCurrency;
+	FString FiatAmount;
 };
 
 }

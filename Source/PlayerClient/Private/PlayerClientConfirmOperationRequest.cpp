@@ -86,10 +86,6 @@ void PlayerClientConfirmOperationRequest::WriteJson(JsonWriter& Writer) const
 {
 	Writer->WriteObjectStart();
 	Writer->WriteIdentifierPrefix(TEXT("status")); WriteJsonValue(Writer, Status);
-	if (Transactions.IsSet())
-	{
-		Writer->WriteIdentifierPrefix(TEXT("transactions")); WriteJsonValue(Writer, Transactions.GetValue());
-	}
 	if (Actions.IsSet())
 	{
 		Writer->WriteIdentifierPrefix(TEXT("actions")); WriteJsonValue(Writer, Actions.GetValue());
@@ -106,7 +102,6 @@ bool PlayerClientConfirmOperationRequest::FromJson(const TSharedPtr<FJsonValue>&
 	bool ParseSuccess = true;
 
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("status"), Status);
-	ParseSuccess &= TryGetJsonValue(*Object, TEXT("transactions"), Transactions);
 	ParseSuccess &= TryGetJsonValue(*Object, TEXT("actions"), Actions);
 
 	return ParseSuccess;

@@ -160,4 +160,31 @@ void PlayerClientRampApi::OnCreateOnrampRequestResponse(FHttpRequestPtr HttpRequ
 	Delegate.ExecuteIfBound(Response);
 }
 
+FHttpRequestPtr PlayerClientRampApi::GetOnRampQuote(const GetOnRampQuoteRequest& Request, const FGetOnRampQuoteDelegate& Delegate /*= FGetOnRampQuoteDelegate()*/) const
+{
+	if (!IsValid())
+		return nullptr;
+
+	FHttpRequestRef HttpRequest = CreateHttpRequest(Request);
+	HttpRequest->SetURL(*(Url + Request.ComputePath()));
+
+	for(const auto& It : AdditionalHeaderParams)
+	{
+		HttpRequest->SetHeader(It.Key, It.Value);
+	}
+
+	Request.SetupHttpRequest(HttpRequest);
+
+	HttpRequest->OnProcessRequestComplete().BindRaw(this, &PlayerClientRampApi::OnGetOnRampQuoteResponse, Delegate);
+	HttpRequest->ProcessRequest();
+	return HttpRequest;
+}
+
+void PlayerClientRampApi::OnGetOnRampQuoteResponse(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded, FGetOnRampQuoteDelegate Delegate) const
+{
+	GetOnRampQuoteResponse Response;
+	HandleResponse(HttpResponse, bSucceeded, Response);
+	Delegate.ExecuteIfBound(Response);
+}
+
 }
