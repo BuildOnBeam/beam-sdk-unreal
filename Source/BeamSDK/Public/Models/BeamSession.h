@@ -1,8 +1,12 @@
 #pragma once
 
+#include "CoreMinimal.h"
+
 #include "Misc/DateTime.h"
 #include "Misc/Optional.h"
 #include "KeyPair.h"
+
+#include "BeamPlayerClientAPI.h"
 
 #include "BeamSession.generated.h"
 
