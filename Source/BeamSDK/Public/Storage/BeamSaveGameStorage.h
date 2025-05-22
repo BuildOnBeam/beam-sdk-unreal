@@ -5,7 +5,7 @@
 
 #include "BeamSaveGameStorage.generated.h"
 
-#define DEFAULT_SLOT_NAME	TEXT("BeamStorage")
+#define BEAM_DEFAULT_SLOT_NAME	TEXT("BeamStorage")
 
 // This class does not need to be modified.
 UCLASS()
@@ -17,7 +17,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Beam Storage")
 	TMap<FString, FString> BeamStorageRegistry;
 
-	static UBeamSaveGameStorage* LoadOrCreate(const FString& BeamStorageSlotName = DEFAULT_SLOT_NAME);
+	static UBeamSaveGameStorage* LoadOrCreate(const FString& BeamStorageSlotName = BEAM_DEFAULT_SLOT_NAME);
 
 	virtual FString Get(FString Key) const override;
 
