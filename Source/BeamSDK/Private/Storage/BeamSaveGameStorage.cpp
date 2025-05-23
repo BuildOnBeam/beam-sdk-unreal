@@ -15,6 +15,9 @@ UBeamSaveGameStorage* UBeamSaveGameStorage::LoadOrCreate(const FString& BeamStor
 		BeamStorage = Cast<UBeamSaveGameStorage>(UGameplayStatics::CreateSaveGameObject(StaticClass()));
 		BeamStorage->bIsDirty = true;
 		BeamStorage->beamStorageSlotName = BeamStorageSlotName;
+	} else
+	{
+		BeamStorage->beamStorageSlotName = BeamStorageSlotName;
 	}
 	return BeamStorage;
 }
