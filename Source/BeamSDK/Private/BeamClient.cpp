@@ -630,8 +630,14 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationAsync(FString entityId,
 		                          }
 
 		                          PlayerOperationResponse operation = res.Content;
+
+	                          	// if more than one actions and at least one has a signature, otherwise try Browser
+	                          	bool hasSignaturesToSign = operation.Actions.Num() > 0
+	                          		&& operation.Actions.ContainsByPredicate([](const auto& action) {
+	                          			return action.Signature.IsSet() || action.Transaction.IsSet();
+	                          		});
 		                          if (signingBy == EBeamOperationSigningBy::Auto || signingBy ==
-			                          EBeamOperationSigningBy::Session)
+			                          EBeamOperationSigningBy::Session && hasSignaturesToSign)
 		                          {
 			                          UE_CLOG(DebugLog, LogBeamClient, Log, TEXT("Retrieving active session"));
 			                          auto sessionKeys = GetActiveSessionAndKeysAsync(entityId, chainId).Get();
