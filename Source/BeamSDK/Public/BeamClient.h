@@ -24,7 +24,7 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBeamClient, Log, All);
 
-typedef PlayerClientConfirmOperationRequestTransactionsInner ConfirmOperationRequestAction;
+typedef PlayerClientConfirmOperationRequestActionsInner ConfirmOperationRequestAction;
 
 typedef PlayerClientPlayerOperationResponse PlayerOperationResponse;
 typedef PlayerClientPlayerOperationAction PlayerOperationResponseAction;

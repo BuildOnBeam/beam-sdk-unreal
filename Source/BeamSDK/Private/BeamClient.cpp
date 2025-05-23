@@ -846,7 +846,7 @@ TFuture<BeamOperationResult> UBeamClient::SignOperationUsingSessionAsync(
 		                          ConfirmOperationRequest confirmationModel;
 		                          confirmationModel.Status = ConfirmOperationStatusEnum::Pending;
 		                          confirmationModel.Actions = TArray<
-			                          PlayerClientConfirmOperationRequestTransactionsInner>();
+			                          ConfirmOperationRequestAction>();
 
 		                          for (auto& action : operation.Actions)
 		                          {
